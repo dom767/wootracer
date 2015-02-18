@@ -1,0 +1,257 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Core">
+      <UniqueIdentifier>{a7d6e28a-f787-4448-a736-0dfe743a285d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Helper">
+      <UniqueIdentifier>{e776d568-1af9-491c-8956-4b95280654ae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Scene">
+      <UniqueIdentifier>{bd411274-d2e8-4d5d-8628-cdee8c3e4299}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Functions">
+      <UniqueIdentifier>{95c771d3-89b6-42df-990b-51b0ff5d4b75}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\RenderUtils">
+      <UniqueIdentifier>{399babe7-732b-4cbd-a075-126508963c12}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ReadMe.txt" />
+    <None Include="small.ico">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="DebugExeTest.ico">
+      <Filter>Resource Files</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="stdafx.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CoreTracer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\AABoundingBox.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Vector3.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Camera.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Colour.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\ColourFunction.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\KDTree.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Light.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Material.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Matrix4.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Ray.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\RenderCircle.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\RenderObject.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\RenderSphere.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Scene.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\SceneIO.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\SceneObject.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Timer.h">
+      <Filter>Core\Helper</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Viewport.h">
+      <Filter>Core\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\convert.h">
+      <Filter>Core\Helper</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\RenderCube.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Random.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\RenderSquare.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\RenderManger.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Background.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\RenderCylinder.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Log.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\RenderDistance.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\ParseUtils.h">
+      <Filter>Core\Functions</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\FuncCore.h">
+      <Filter>Core\Functions</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\FuncFactory.h">
+      <Filter>Core\Functions</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Functions.h">
+      <Filter>Core\Functions</Filter>
+    </ClInclude>
+    <ClInclude Include="PostProcess.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\RenderFragment.h">
+      <Filter>Core\RenderUtils</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\WorkQueue.h">
+      <Filter>Core\RenderUtils</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CoreTracer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="dllmain.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\AABoundingBox.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\Camera.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\ColourFunction.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\KDTree.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\Light.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\Material.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\RenderCircle.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\RenderSphere.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\Scene.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\SceneIO.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\Timer.cpp">
+      <Filter>Core\Helper</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\Viewport.cpp">
+      <Filter>Core\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\convert.cpp">
+      <Filter>Core\Helper</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\RenderCube.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\RenderObject.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\RenderSquare.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\RenderManger.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\Background.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\RenderCylinder.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\Log.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\RenderDistance.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\ParseUtils.cpp">
+      <Filter>Core\Functions</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\FuncCore.cpp">
+      <Filter>Core\Functions</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\FuncFactory.cpp">
+      <Filter>Core\Functions</Filter>
+    </ClCompile>
+    <ClCompile Include="PostProcess.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\RenderFragment.cpp">
+      <Filter>Core\RenderUtils</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\WorkQueue.cpp">
+      <Filter>Core\RenderUtils</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="..\Debug\xml.lib" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="DebugExeTest.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+</Project>
