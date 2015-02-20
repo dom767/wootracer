@@ -173,6 +173,7 @@
     <ClInclude Include="Code\Matrix4.h" />
     <ClInclude Include="Code\ParseUtils.h" />
     <ClInclude Include="Code\Random.h" />
+    <ClInclude Include="Code\RandomSequence.h" />
     <ClInclude Include="Code\Ray.h" />
     <ClInclude Include="Code\RenderCircle.h" />
     <ClInclude Include="Code\RenderCube.h" />
@@ -187,6 +188,7 @@
     <ClInclude Include="Code\SceneIO.h" />
     <ClInclude Include="Code\SceneObject.h" />
     <ClInclude Include="Code\Timer.h" />
+    <ClInclude Include="Code\Vector2.h" />
     <ClInclude Include="Code\Vector3.h" />
     <ClInclude Include="Code\Viewport.h" />
     <ClInclude Include="Code\WorkQueue.h" />
@@ -209,6 +211,7 @@
     <ClCompile Include="Code\Log.cpp" />
     <ClCompile Include="Code\Material.cpp" />
     <ClCompile Include="Code\ParseUtils.cpp" />
+    <ClCompile Include="Code\RandomSequence.cpp" />
     <ClCompile Include="Code\RenderCircle.cpp" />
     <ClCompile Include="Code\RenderCube.cpp" />
     <ClCompile Include="Code\RenderCylinder.cpp" />

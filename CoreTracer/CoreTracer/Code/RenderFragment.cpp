@@ -3,7 +3,7 @@
 #include "Camera.h"
 
 DRenderFragment::DRenderFragment(const DScene* scene, int width, int height, DCamera* camera, int left, int top)
-	: mScene(scene), mWidth(width), mHeight(height), mCamera(camera), mLeft(left), mTop(top), mSamples(0)
+	: mScene(scene), mWidth(width), mHeight(height), mCamera(camera), mLeft(left), mTop(top), mSubFrame(0)
 {
 	int x, y;
 	for (y=0; y<16; y++)
@@ -14,7 +14,7 @@ DRenderFragment::DRenderFragment(const DScene* scene, int width, int height, DCa
 
 void DRenderFragment::Render()
 {
-	mCamera->RenderFragment(*mScene, mWidth, mHeight, mLeft, mTop, mPixels);
-	mSamples++;
-	mCamera->CopyFragment(mWidth, mHeight, mLeft, mTop, mPixels, mSamples);
+	mCamera->RenderFragment(*mScene, mSubFrame, mWidth, mHeight, mLeft, mTop, mPixels);
+	mSubFrame++;
+	mCamera->CopyFragment(mWidth, mHeight, mLeft, mTop, mPixels, mSubFrame);
 }

@@ -60,3 +60,7 @@ Temporary Items
 *.cache
 *.ipch
 *.ilk
+*.filters
+*.txt
+*.opensdf
+CoreTracer/CoreTracer/log.txt

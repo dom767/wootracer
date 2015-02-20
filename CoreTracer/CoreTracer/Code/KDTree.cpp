@@ -404,10 +404,10 @@ void DKDTree::IntersectRecurse(DKDTreeNode* node, EAxis axis, const DVector3& st
 			tempResponse.m_WithinObjectId = RenderCache.m_WithinObjectId;
 			if (!RenderCache.Find((*iter)->GetObjectId()))
 			{
-				if (((RenderCache.mRayContext.m_RequestFlags!=RequestLighting)||(!(*iter)->GetIgnoreWhileLighting())))
+				if ((((RenderCache.mRayContext.m_RequestFlags&RequestLighting)!=RequestLighting)||(!(*iter)->GetIgnoreWhileLighting())))
 				{
 					mIntersections++;
-					if ((*iter)->Intersect(DRayContext(NULL, RenderCache.mRayContext.m_Ray, RequestDistance, 0, RenderCache.mRayContext.m_RefractiveIndex, RenderCache.mRayContext.mPixelIndex), tempResponse)
+					if ((*iter)->Intersect(DRayContext(NULL, RenderCache.mRayContext.m_Ray, RequestDistance, 0, RenderCache.mRayContext.m_RefractiveIndex, RenderCache.mRayContext.mPixelIndex, RenderCache.mRayContext.mSubFrame), tempResponse)
 						&& (*iter)->GetObjectId()!=RenderCache.m_IgnoreObjectId)
 					{
 						RenderCache.m_HitPoints.push_back(hit(tempResponse.mDistance, iter));

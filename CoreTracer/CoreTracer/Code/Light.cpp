@@ -114,7 +114,7 @@ DVector3 ortho(DVector3 v) {
     return abs(v[0]) > abs(v[2]) ? DVector3(-v[1], v[0], 0.0)  : DVector3(0.0, -v[2], v[1]);
 }
  
-DVector3 getSampleBiased(const DScene& scene, DVector3 dir, float power)
+DVector3 getSampleBiased(const DRayContext &rayContext, const DScene& scene, DVector3 dir, float power)
 {
 	dir.Normalise();
 	DVector3 o1 = ortho(dir);
@@ -122,8 +122,9 @@ DVector3 getSampleBiased(const DScene& scene, DVector3 dir, float power)
 	DVector3 o2 = dir.Cross(o1);
 	o2.Normalise();
 
-	float rx = scene.GetRandom();
-	float ry = scene.GetRandom();
+	DVector2 randVec = scene.GetRandom2D(rayContext.mPixelIndex, rayContext.mSampleIndex, rayContext.mSubFrame);
+	float rx = randVec.x;
+	float ry = randVec.y;
 	rx = rx * 2.0f * 3.14159265f;
 	ry = powf(ry, 1.0f/(power+1.0f));
 	float oneminus = sqrtf(1.0f-ry*ry);
@@ -143,7 +144,7 @@ bool DWorldLight::GetLighting(const DScene& scene, const DRayContext &rayContext
 		
 		DRay lightHit;
 		float diffuse;
-		DVector3 direction = getSampleBiased(scene, ray.GetDirection(), 1);
+		DVector3 direction = getSampleBiased(rayContext, scene, ray.GetDirection(), 1);
 	
 		// build ray for shadow detection
 		lightHit.SetDirection(direction);
@@ -181,7 +182,7 @@ bool DDirectionalLight::GetLighting(const DScene& scene, const DRayContext &rayC
 	const DRay& ray = rayContext.m_Ray;
 	DRay lightHit;
 	DVector3 direction = mDirection;
-	DVector3 jitter = DVector3(scene.GetRandom()*2-1, scene.GetRandom()*2-1, scene.GetRandom()*2-1);
+	DVector3 jitter = getSampleBiased(rayContext, scene, direction, 0);
 	jitter *= mArea;
 	direction += jitter;
 	direction.Normalise();
@@ -243,23 +244,15 @@ bool DSphereLight::GetLighting(const DScene& scene, const DRayContext &rayContex
 	for (int i=0; (i<mSamples) && (totalSamples<100+(mSamples*mSamples)); i++)
 	{
 		// get random position in sphere
-		DVector3 randVec;
-		float mag;
-		do
-		{
-			randVec[0] = scene.GetRandom()*2 - 1;
-			randVec[1] = scene.GetRandom()*2 - 1;
-			randVec[2] = scene.GetRandom()*2 - 1;
-			mag = randVec.Magnitude();
-		}
-		while (mag>1);
-		randVec /= mag;
+		DVector3 randVec = scene.GetRandomDirection3d(rayContext);
+
 		DVector3 lightPos = randVec;
 		lightPos *= mRadius;
 		lightPos += mPosition;
 		direction = lightPos - ray.GetStart();
-			// cache this for attenuation
-			float lightDistanceSquared = direction.MagnitudeSquared();
+		
+		// cache this for attenuation
+		float lightDistanceSquared = direction.MagnitudeSquared();
 		direction.Normalise();
 
 		//if (direction.Dot(randVec)<0)

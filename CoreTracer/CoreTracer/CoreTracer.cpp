@@ -90,13 +90,13 @@ void DCoreTracer::BuildFromXml(const char* const description)
 
 	mScene.PrepareRender();
 }
-
+/*
 void DCoreTracer::RenderPatch(int x, int y)
 {
 	Log().Print("Coretracer.RenderPatch");
 	mViewport.RenderPatch(x, y);
 }
-
+*/
 float DCoreTracer::GetDepth(int width, int height)
 {
 	Log().Print("Coretracer.GetDepth");
@@ -113,7 +113,7 @@ DWORD WINAPI CTRender(LPVOID arg)
 {
 	((DCoreTracer*)arg)->Render(false);
 	return 1;
-}
+}		
 
 HANDLE threadHandle;
 
@@ -329,7 +329,7 @@ __int64 GetPatchSamples()
 	else
 		return 0;
 }
-
+/*
 bool RenderPatch(float* buffer, const char* description, int x, int y)
 {
 	Log().Print("DLL.RenderPatch");
@@ -340,7 +340,7 @@ bool RenderPatch(float* buffer, const char* description, int x, int y)
 	CoreTracer.RenderPatch(x, y);
 
 	return true;
-}
+}*/
 
 LARGE_INTEGER gStart, gFreq;
 
@@ -377,8 +377,8 @@ void StartRayTracer()
 	std::wstringstream ss;
 	
 	ss << my_documents << L"\\Wooscripter\\XML\\simplebox.xml";
-//	ss << my_documents << L"\\Wooscripter\\XML\\distance.xml";
-//	ss << my_documents << L"\\Wooscripter\\XML\\perlincube.xml";
+//	ss << my_documents << L"\\Wooscripter\\XML\\antialiasTest.xml";
+//	ss << my_documents << L"\\Wooscripter\\XML\\perlinboxcheck.xml";
 //	ss << my_documents << L"\\Wooscripter\\XML\\diffuseFunction2.xml";
 
 	std::ifstream sceneDesc;
@@ -636,7 +636,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			__int64 intersectionCount = GetIntersectionCount();
 			__int64 pixelCount = GetPixels();
 			__int64 patchSamples = GetPatchSamples();
-			if (patchSamples>10000000)
+			if (patchSamples>3000000)
 			{
 				bStopRender = true;
 				StopRender();

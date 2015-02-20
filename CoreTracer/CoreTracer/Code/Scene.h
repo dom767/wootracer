@@ -3,6 +3,8 @@
 #include "Colour.h"
 #include "Background.h"
 #include "Random.h"
+#include "Vector2.h"
+#include "RandomSequence.h"
 
 class DRenderSphere;
 class DRenderCircle;
@@ -33,8 +35,8 @@ enum ERequestType
 
 struct DRayContext
 {
-	DRayContext(const DScene* scene, DRay ray, int requestType, int maxRecursion, const float refractionIndex, int pixelIndex) :
-m_Scene(scene), m_RecursionRemaining(maxRecursion), m_RefractiveIndex(refractionIndex), m_RequestFlags(requestType), m_Ray(ray), mPixelIndex(pixelIndex), mSampleIndex(0) {}
+	DRayContext(const DScene* scene, DRay ray, int requestType, int maxRecursion, const float refractionIndex, int pixelIndex, int subFrame) :
+m_Scene(scene), m_RecursionRemaining(maxRecursion), m_RefractiveIndex(refractionIndex), m_RequestFlags(requestType), m_Ray(ray), mPixelIndex(pixelIndex), mSampleIndex(4), mSubFrame(subFrame) {}
 
 	const static float AirRefractionIndex;
 	DRay m_Ray;
@@ -42,8 +44,9 @@ m_Scene(scene), m_RecursionRemaining(maxRecursion), m_RefractiveIndex(refraction
 	float m_RefractiveIndex;
 	int m_RecursionRemaining;
 	const DScene* m_Scene;
-	int mSampleIndex;
+	mutable int mSampleIndex;
 	int mPixelIndex;
+	int mSubFrame;
 };
 
 class DScene
@@ -67,6 +70,9 @@ public:
 	int GetMaximumRecursion() const {return mMaximumRecursion;}
 	void SetRandomSeed(int seed) const;
 	float GetRandom() const {return float(mRandom.GetRandom()&0xFFFF) / float(0xFFFF);}
+	DVector2 GetRandom2D(int pixelIndex, int sampleIndex, int subFrame) const;
+	DVector2 GetRandom2D(const DRayContext& ray) const;
+	DVector3 GetRandomDirection3d(const DRayContext &rayContext) const;
 	bool IsPathTracer() const {return mPathTracer>0;}
 
 	mutable __int64 mRayCount;
@@ -81,5 +87,6 @@ private:
 	int mCanvasHeight;
 	DBackground mBackground;
 	DRandom mRandom;
+	DRandomSequence mRandomSequence;
 	int mPathTracer;
 };

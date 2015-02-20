@@ -29,13 +29,13 @@ void DViewport::CopyBuffer(DColour* buffer)
 {
 	mCamera.CopyBuffer(buffer);
 }
-
+/*
 void DViewport::RenderPatch(int x, int y)
 {
 	mScene.PrepareRender();
 	mCamera.RenderPatch(mScene, mWidth, mHeight, (DColour*)mBuffer, x, y);
 }
-
+*/
 float DViewport::GetDepth(int width, int height)
 {
 	if (width>mWidth || height>mHeight)

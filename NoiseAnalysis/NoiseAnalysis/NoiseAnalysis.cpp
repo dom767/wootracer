@@ -171,7 +171,7 @@ public:
 
 			int val = int(averageError*255.99f);
 			if (val>255) val=255;
-			bits[((511-val) * 1024) + 256+s] = colour;
+			bits[((256+val) * 1024) + 256+s] = colour;
 		}
 	}
 
@@ -194,17 +194,23 @@ DWORD MakeRGB(int red, int green, int blue)
 class DNoiseAnalysis
 {
 public:
-	static const int mToTest = 256;
+	static const int mToTest = 1024;
 	DNoiseAnalysis()
 	{
 		mGeneratorAnalysis.push_back(new DGeneratorAnalysis(DRandomSequence::Random, mToTest));
-		mGeneratorAnalysis.push_back(new DGeneratorAnalysis(DRandomSequence::MostDistant2, mToTest));
 		mGeneratorAnalysis.push_back(new DGeneratorAnalysis(DRandomSequence::MostDistant4, mToTest));
-		mGeneratorAnalysis.push_back(new DGeneratorAnalysis(DRandomSequence::Jitter, mToTest));
-		mGeneratorAnalysis.push_back(new DGeneratorAnalysis(DRandomSequence::Poisson, mToTest));
-		mGeneratorAnalysis.push_back(new DGeneratorAnalysis(DRandomSequence::PoissonJitter, mToTest));
-		mGeneratorAnalysis.push_back(new DGeneratorAnalysis(DRandomSequence::HeirarchicalJitter, mToTest));
-		mGeneratorAnalysis.push_back(new DGeneratorAnalysis(DRandomSequence::GridJitter, mToTest));
+		mGeneratorAnalysis.push_back(new DGeneratorAnalysis(DRandomSequence::RelaxingPoisson, mToTest));
+		mGeneratorAnalysis.push_back(new DGeneratorAnalysis(DRandomSequence::IterativeJitter, mToTest));
+//		mGeneratorAnalysis.push_back(new DGeneratorAnalysis(DRandomSequence::Jitter, mToTest));
+//		mGeneratorAnalysis.push_back(new DGeneratorAnalysis(DRandomSequence::HeirarchicalJitter, mToTest));
+//		mGeneratorAnalysis.push_back(new DGeneratorAnalysis(DRandomSequence::GridJitter, mToTest));
+//		mGeneratorAnalysis.push_back(new DGeneratorAnalysis(DRandomSequence::Jitter, mToTest));
+		//mGeneratorAnalysis.push_back(new DGeneratorAnalysis(DRandomSequence::Poisson, mToTest));
+//		mGeneratorAnalysis.push_back(new DGeneratorAnalysis(DRandomSequence::PoissonJitter, mToTest));
+		//mGeneratorAnalysis.push_back(new DGeneratorAnalysis(DRandomSequence::HeirarchicalJitter, mToTest));
+		//mGeneratorAnalysis.push_back(new DGeneratorAnalysis(DRandomSequence::GridJitter, mToTest));
+		//mGeneratorAnalysis.push_back(new DGeneratorAnalysis(DRandomSequence::IterativeJitter, mToTest));
+		//mGeneratorAnalysis.push_back(new DGeneratorAnalysis(DRandomSequence::IterativePoissonJitter, mToTest));
 	}
 	~DNoiseAnalysis()
 	{
@@ -242,14 +248,15 @@ public:
 		for (int y=0; y<256; y++)
 			for (int x=0; x<256; x++)
 			{
-//				float value = float(int(int(7.f*float(x)/256.f)%2 + int(7.f*float(y)/256.f)%2)%2);
-/*				float fx = float(x)/256;
+				float value = float(int(int(7.f*float(x)/256.f)%2 + int(7.f*float(y)/256.f)%2)%2);
+			
+		/*		float fx = float(x)/256;
 				float fy = float(y)/256;
-				float value = cosf(sqrtf((fx-0.7f)*(fx-0.7f) + (fy-0.65f)*(fy-0.65f))*10)+1;
-				*/
-				float fx = float(x)/256;
+				float value = cosf(sqrtf((fx-0.7f)*(fx-0.7f) + (fy-0.65f)*(fy-0.65f))*10)+1;*/
+				
+			/*	float fx = float(x)/256;
 				float fy = float(y)/256;
-				float value = (fx*0.3 + fy*0.8) - 0.4 <0 ? 0 : 1;
+				float value = (fx*0.3f + fy*0.8f) - 0.4f <0 ? 0 : 1;*/
 				mAliasTest[x+y*256] = value;
 				total += value;
 				if (value<min) min=value;

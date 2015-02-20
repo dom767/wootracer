@@ -153,6 +153,12 @@
     <ClInclude Include="Code\WorkQueue.h">
       <Filter>Core\RenderUtils</Filter>
     </ClInclude>
+    <ClInclude Include="Code\Vector2.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\RandomSequence.h">
+      <Filter>Core</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -244,6 +250,9 @@
     </ClCompile>
     <ClCompile Include="Code\WorkQueue.cpp">
       <Filter>Core\RenderUtils</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\RandomSequence.cpp">
+      <Filter>Core</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

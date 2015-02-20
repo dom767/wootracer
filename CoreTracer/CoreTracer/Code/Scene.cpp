@@ -14,11 +14,13 @@
 #include "Light.h"
 
 const float DRayContext::AirRefractionIndex = 1.003f;
+const int numRandomSequences = 1024;
 	
-DScene::DScene() : mMaximumRecursion(10), mCurrentId(1), mCanvasWidth(400), mCanvasHeight(300)
+DScene::DScene() : mMaximumRecursion(10), mCurrentId(1), mCanvasWidth(400), mCanvasHeight(300), mRandomSequence(DRandomSequence::RelaxingPoisson, numRandomSequences, 753)
 {
 	mPathTracer = false;
 	mRayCount=0;
+	mRandomSequence.GenerateSequences();
 }
 
 DScene::~DScene()
@@ -246,4 +248,30 @@ void DScene::RegisterSceneObjects()
 //	REGISTER_SCENE_OBJECT(DRenderSphere);
 //	REGISTER_SCENE_OBJECT(DRenderCircle);
 //	REGISTER_SCENE_OBJECT(DGlobalLighting);
+}
+
+DVector2 DScene::GetRandom2D(const DRayContext& ray) const
+{
+	DVector2 ret = GetRandom2D(ray.mPixelIndex, ray.mSampleIndex, ray.mSubFrame);
+	ray.mSampleIndex += 2;
+	return ret;
+}
+
+DVector2 DScene::GetRandom2D(int pixelIndex, int sampleIndex, int subFrame) const
+{
+//	return DVector2(mRandom.GetNextFloat(), mRandom.GetNextFloat());
+	int sequence = int(subFrame/256)*4801 + (pixelIndex%47)*pixelIndex*21 + sampleIndex;
+	sequence = (sequence*2654435761)%(2^32);
+
+	return mRandomSequence.GetValue(sequence%numRandomSequences, subFrame%256);
+}
+
+DVector3 DScene::GetRandomDirection3d(const DRayContext &rayContext) const
+{
+	DVector2 random2d = GetRandom2D(rayContext);
+	float azimuth = random2d.x * 2 * 3.14159265f;
+	DVector2 dir2d = DVector2(cosf(azimuth), sinf(azimuth));
+	float z = (2*random2d.y) - 1;
+	DVector2 planar = dir2d * sqrt(1-z*z);
+	return DVector3(planar.x, planar.y, z);
 }

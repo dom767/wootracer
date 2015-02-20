@@ -13,7 +13,7 @@ public:
 	/// Render forever
 	void Render(bool singleFrame);
 	/// Render me a patch please
-	void RenderPatch(int x, int y);
+	//void RenderPatch(int x, int y);
 	/// get scene depth at specific pixel
 	float GetDepth(int width, int height);
 

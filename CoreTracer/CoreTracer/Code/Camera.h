@@ -58,10 +58,10 @@ public:
 
 	void Render(const DScene& scene, const int width, const int height, DColour *renderBuffer, bool singleFrame);
 	float GetDepth(const DScene& scene, const int width, const int height, const int x, const int y);
-	void RenderPatch(const DScene& scene, const int width, const int height, DColour *renderBuffer, int x, int y);
+//	void RenderPatch(const DScene& scene, const int width, const int height, DColour *renderBuffer, int x, int y);
 
 	void RenderRow(const DScene& scene, const int width, const int height, const int row, DColour *renderBuffer);
-	void RenderFragment(const DScene& scene, const int width, const int height, const int left, const int top, DColour *renderBuffer);
+	void RenderFragment(const DScene& scene, const int subframe, const int width, const int height, const int left, const int top, DColour *renderBuffer);
 	void CalculateCameraMatrix();
 	void SetProgressMonitor(DProgressMonitor* progressMonitor) {mProgressMonitor=progressMonitor;}
 	bool DCamera::GetRay(DRay& out_ray, const DVector3 from, const int width, const int height, const float x, const float y, const DVector3& jitter);

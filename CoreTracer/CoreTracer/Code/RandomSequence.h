@@ -21,7 +21,10 @@ public:
 		Poisson,
 		PoissonJitter,
 		HeirarchicalJitter,
-		GridJitter
+		GridJitter,
+		IterativeJitter,
+		IterativePoissonJitter,
+		RelaxingPoisson
 	};
 
 	DRandomSequence(EGenerator generator, int totalSequences, int seed) : mRandom(seed)
@@ -32,7 +35,7 @@ public:
 
 	void GenerateSequences();
 
-	DVector2 GetValue(int sequence, int index)
+	DVector2 GetValue(int sequence, int index) const
 	{
 		return mSequences[sequence].mValues[index];
 	}

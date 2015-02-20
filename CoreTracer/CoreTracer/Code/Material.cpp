@@ -75,38 +75,13 @@ namespace
 	}
 }
 
-DVector3 GetRandomVector(const DScene* scene, const DVector3& normal)
-{
-	DVector3 randomInter;
-	float mag;
-	do
-	{
-		randomInter[0] = scene->GetRandom()*2 - 1;
-		randomInter[1] = scene->GetRandom()*2 - 1;
-		randomInter[2] = scene->GetRandom()*2 - 1;
-		mag = randomInter.MagnitudeSquared();
-	}
-	while (mag > 1);
-	mag = sqrtf(mag);
-	randomInter /= mag;
-
-	// flip if wrong direction
-	if (randomInter.Dot(normal)<0)
-	{
-		randomInter[0] = -randomInter[0];
-		randomInter[1] = -randomInter[1];
-		randomInter[2] = -randomInter[2];
-	}
-	return randomInter;
-}
-
 DVector3 diortho(DVector3 v)
 {
     //  See : http://lolengine.net/blog/2013/09/21/picking-orthogonal-vector-combing-coconuts
     return abs(v[0]) > abs(v[2]) ? DVector3(-v[1], v[0], 0.0)  : DVector3(0.0, -v[2], v[1]);
 }
  
-DVector3 digetSampleBiased(const DScene* scene, DVector3 dir, float power)
+DVector3 digetSampleBiased(const DScene* scene, const DRayContext& rayContext, DVector3 dir, float power)
 {
 	dir.Normalise();
 	DVector3 o1 = diortho(dir);
@@ -114,8 +89,9 @@ DVector3 digetSampleBiased(const DScene* scene, DVector3 dir, float power)
 	DVector3 o2 = dir.Cross(o1);
 	o2.Normalise();
 
-	float rx = scene->GetRandom();
-	float ry = scene->GetRandom();
+	DVector2 randVec = scene->GetRandom2D(rayContext.mPixelIndex, rayContext.mSampleIndex, rayContext.mSubFrame);
+	float rx = randVec.x;
+	float ry = randVec.y;
 	rx = rx * 2.0f * 3.14159265f;
 	ry = powf(ry, 1.0f/(power+1.0f));
 	float oneminus = sqrtf(1.0f-ry*ry);
@@ -138,7 +114,7 @@ void DMaterial::CalculateColour(DColour &out_colour,
 	DVector3 reflection = eyeVector - normal*(normal.Dot(eyeVector)*2.f);
 
 	// shininess perturb
-	DVector3 perturb = DVector3(scene->GetRandom()*2-1, scene->GetRandom()*2-1, scene->GetRandom()*2-1);
+	DVector3 perturb = scene->GetRandomDirection3d(rRayContext);//DVector3(scene->GetRandom()*2-1, scene->GetRandom()*2-1, scene->GetRandom()*2-1);
 	perturb *= 1.0f - m_Shininess;
 	reflection += perturb;
 	reflection.Normalise();
@@ -191,11 +167,12 @@ void DMaterial::CalculateColour(DColour &out_colour,
 	// calculate diffuse interreflection
 	if (scene->IsPathTracer())
 	{		
-		DVector3 randomInter = digetSampleBiased(scene, normal, 1);
+		DVector3 randomInter = digetSampleBiased(scene, rRayContext, normal, 1);
 
 		DRayContext pathTrace(rRayContext);
 		pathTrace.m_Ray = DRay(hitPos, randomInter);
 		pathTrace.m_RecursionRemaining = recursionRemaining==0 ? -1 : (recursionRemaining==1 ? 0 : 1);
+		pathTrace.m_RequestFlags |= RequestLighting;
 		scene->Intersect(pathTrace, response);
 			
 		DColour addition = response.mColour;

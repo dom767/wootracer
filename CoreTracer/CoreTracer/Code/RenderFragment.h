@@ -15,7 +15,7 @@ class DRenderFragment
 public: int mLeft;
 public: 	int mTop;
 	float mVariance;
-	int mSamples;
+	int mSubFrame;
 
 public:
 	DRenderFragment(const DScene* scene, int width, int height, DCamera* camera, int left, int top);

@@ -129,7 +129,7 @@ void Shuffle(std::vector<DGridOfSamples*> &sampleGrids, DRandom* random)
 	for (unsigned int i=0; i<sampleGrids.size(); i++)
 	{
 		DGridOfSamples* tmp = sampleGrids[i];
-		int randomIdx = int( random->GetNextFloat()*sampleGrids.size());
+		int randomIdx = int( random->GetNextFloat()*0.999999f*sampleGrids.size());
 		sampleGrids[i] = sampleGrids[randomIdx];
 		sampleGrids[randomIdx] = tmp;
 	}
@@ -169,8 +169,8 @@ void DRandomSequence::GenerateSequence(DSingleSequence& sequence)
 	case MostDistant4:
 		for (int i=0; i<256; i++)
 		{
-			int randVals = 4;
-			DVector2* randVal = new DVector2[4];
+			int randVals = 64;
+			DVector2* randVal = new DVector2[64];
 
 			for (int r=0; r<randVals; r++)
 			{
@@ -281,24 +281,132 @@ void DRandomSequence::GenerateSequence(DSingleSequence& sequence)
 		}
 		break;
 	case GridJitter:
-		DVector2 sample(mRandom.GetNextFloat(), mRandom.GetNextFloat());
-		DGridOfSamples sampleGrid(sample, DVector2(0,0), DVector2(1,1), &mRandom);
-
-		int idx=0;
-		sequence.mValues[idx++] = sample;
-		sampleGrid.SubSample(sequence.mValues, &idx);
-
-		std::vector<DGridOfSamples*> sampleGrids;
-
-		for (int g=0; g<3; g++)
 		{
-			sampleGrids.clear();
-			sampleGrid.GetLeaves(sampleGrids);
-		
-			Shuffle(sampleGrids, &mRandom);
-			for (unsigned int i=0; i<sampleGrids.size(); i++)
+			DVector2 sample(mRandom.GetNextFloat(), mRandom.GetNextFloat());
+			DGridOfSamples sampleGrid(sample, DVector2(0,0), DVector2(1,1), &mRandom);
+
+			int idx=0;
+			sequence.mValues[idx++] = sample;
+			sampleGrid.SubSample(sequence.mValues, &idx);
+
+			std::vector<DGridOfSamples*> sampleGrids;
+
+			for (int g=0; g<3; g++)
 			{
-				sampleGrids[i]->SubSample(sequence.mValues, &idx);
+				sampleGrids.clear();
+				sampleGrid.GetLeaves(sampleGrids);
+		
+				Shuffle(sampleGrids, &mRandom);
+				for (unsigned int i=0; i<sampleGrids.size(); i++)
+				{
+					sampleGrids[i]->SubSample(sequence.mValues, &idx);
+				}
+			}
+		}
+		break;
+	case IterativeJitter:
+		for (int i=0; i<256; i++)
+		{
+			if (i%4==0)
+			{	for (int i=0; i<4; i++)
+			points1[i]=0;}
+			if (i%16==0)
+				{for (int i=0; i<16; i++)
+					points2[i]=0;}
+			if (i%64==0)
+				{for (int i=0; i<64; i++)
+				points3[i]=0;}
+			if (i%256==0)
+				{for (int i=0; i<256; i++)
+				points4[i]=0;}
+			int idx1, idx2, idx3, idx4;
+			float randx;
+			float randy;
+			do
+			{
+				randx = mRandom.GetNextFloat();
+				randy = mRandom.GetNextFloat();
+				idx1 = int(1.99999f*randx) + 2*int(1.99999f*randy);
+				idx2 = int(3.99999f*randx) + 4*int(3.99999f*randy);
+				idx3 = int(7.99999f*randx) + 8*int(7.99999f*randy);
+				idx4 = int(15.99999f*randx) + 16*int(15.99999f*randy);
+			}
+			while (points1[idx1]==1
+				|| points2[idx2]==1
+				|| points3[idx3]==1
+				|| points4[idx4]==1);
+			points1[idx1]=1;
+			points2[idx2]=1;
+			points3[idx3]=1;
+			points4[idx4]=1;
+			sequence.mValues[i] = DVector2(randx, randy);
+		}
+		break;
+	case IterativePoissonJitter:
+		for (int i=0; i<256; i++)
+		{
+			if (i%4==0)
+			{	for (int i=0; i<4; i++)
+			points1[i]=0;}
+			if (i%16==0)
+				{for (int i=0; i<16; i++)
+					points2[i]=0;}
+			if (i%64==0)
+				{for (int i=0; i<64; i++)
+				points3[i]=0;}
+			if (i%256==0)
+				{for (int i=0; i<256; i++)
+				points4[i]=0;}
+			int idx1, idx2, idx3, idx4;
+			float randx;
+			float randy;
+			do
+			{
+				randx = mRandom.GetNextFloat();
+				randy = mRandom.GetNextFloat();
+				idx1 = int(1.99999f*randx) + 2*int(1.99999f*randy);
+				idx2 = int(3.99999f*randx) + 4*int(3.99999f*randy);
+				idx3 = int(7.99999f*randx) + 8*int(7.99999f*randy);
+				idx4 = int(15.99999f*randx) + 16*int(15.99999f*randy);
+			}
+			while (points1[idx1]==1
+				|| points2[idx2]==1
+				|| points3[idx3]==1
+				|| points4[idx4]==1
+				|| within(sequence.mValues, i, randx, randy, 0.032f));
+			points1[idx1]=1;
+			points2[idx2]=1;
+			points3[idx3]=1;
+			points4[idx4]=1;
+			sequence.mValues[i] = DVector2(randx, randy);
+		}
+		break;
+	case RelaxingPoisson:
+		{
+			float discSize = 0.5f;
+			for (int i=0; i<256; i++)
+				points[i]=0;
+			for (int i=0; i<256; i++)
+			{
+				float randx, randy;
+				int idx;
+				int iterations = 0;
+				do
+				{
+					randx = mRandom.GetNextFloat();
+					randy = mRandom.GetNextFloat();
+					idx = int(15.99f*randx) + 16*int(15.99f*randy);
+					iterations++;
+					if (iterations>100)
+					{
+						iterations = 0;
+						discSize *= 0.98f;
+					}
+				}
+				while (points[idx]==1 || within(sequence.mValues, i, randx, randy, discSize));
+				points[idx] = 1;
+
+				sequence.mValues[i] = DVector2(randx, randy);
 			}
 		}
 		break;

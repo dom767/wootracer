@@ -21,7 +21,7 @@ extern "C" __declspec(dllexport) int GetDistanceSchemaLength();
 extern "C" __declspec(dllexport) void GetDistanceSchema(char* schema);
 extern "C" __declspec(dllexport) void PostProcess(float* targetBuffer, float* sourceBuffer, double maxValue, int iterations, float* kernel, float boostPower, float targetweighting, float sourceweighting, int width, int height);
 
-bool RenderPatch(float* buffer, const char* description, int x, int y);
+//bool RenderPatch(float* buffer, const char* description, int x, int y);
 
 class DCoreTracer
 {
@@ -34,7 +34,7 @@ public:
 	void BuildViewport(const char* const description);
 	void SetBuffer(float* buffer) {mViewport.SetBuffer(buffer);}
 	//void Render();
-	void RenderPatch(int x, int y);
+//	void RenderPatch(int x, int y);
 	float GetDepth(int width, int height);
 	int GetWidth() {return mViewport.GetWidth();}
 	int GetHeight() {return mViewport.GetHeight();}

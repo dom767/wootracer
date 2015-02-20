@@ -6,6 +6,7 @@
 #include "SceneIO.h"
 #include "tinyxml.h"
 #include "convert.h"
+#include "Vector2.h"
 #include <tchar.h>
 #include <list>
 #include <windows.h>
@@ -42,6 +43,7 @@ struct ThreadArgs
 	DWorkQueue& mWorkQueue;
 	bool mSingleFrame;
 	int mThread;
+	int mSubFrame;
 
 	void Render()
 	{
@@ -286,7 +288,7 @@ float DCamera::GetDepth(const DScene& scene, const int width, const int height, 
 
 	if (success)
 	{
-		hit = scene.Intersect(DRayContext(&scene, ray, RequestColour, scene.GetMaximumRecursion(), DRayContext::AirRefractionIndex, width*y+x), response);
+		hit = scene.Intersect(DRayContext(&scene, ray, RequestColour, scene.GetMaximumRecursion(), DRayContext::AirRefractionIndex, width*y+x, 0), response);
 	}
 
 	if (hit)
@@ -312,15 +314,17 @@ struct Patch
 	{
 	}
 
-	void Sample(DCamera& camera, float apertureSize, DVector3& from, int width, int height, int x, int y)
+	void Sample(DCamera& camera, int subframe, float apertureSize, DVector3& from, int width, int height, int x, int y)
 	{
 		DVector3 dofJitter;
 		float aax=0.0f, aay=0.0f;
+		int pixelIndex = x+y*width;
 
 		if (mDOFEnabled)
 		{
-			float randx = mScene.GetRandom();
-			float randy = mScene.GetRandom();
+			DVector2 randView = mScene.GetRandom2D(0, pixelIndex, subframe);
+			float randx = randView.x;
+			float randy = randView.y;
 
 			dofJitter.mComponent[0] = apertureSize * (mLeft + (mRight-mLeft) * randx);
 			dofJitter.mComponent[1] = apertureSize * (mBottom + (mTop-mBottom) * randy);
@@ -330,13 +334,15 @@ struct Patch
 		{
 			if (mDOFEnabled)
 			{
-				aax = mScene.GetRandom();
-				aay = mScene.GetRandom();
+				DVector2 randDOF = mScene.GetRandom2D(2, pixelIndex, subframe);
+				aax = randDOF.x;
+				aay = randDOF.y;
 			}
 			else
 			{
-				aax = mLeft + (mRight-mLeft) * (mScene.GetRandom());
-				aay = mBottom + (mTop-mBottom) * (mScene.GetRandom());
+				DVector2 randAA = mScene.GetRandom2D(0, pixelIndex, subframe);
+				aax = mLeft + (mRight-mLeft) * (randAA.x);
+				aay = mBottom + (mTop-mBottom) * (randAA.y);
 			}
 			mSamplePosX = aax;
 			mSamplePosY = aay;
@@ -361,7 +367,7 @@ struct Patch
 				debugInfo = true;
 			}
 			DCollisionResponse response;
-			hit = mScene.Intersect(DRayContext(&mScene, ray, RequestColour, mScene.GetMaximumRecursion(), DRayContext::AirRefractionIndex, x+y*width), response, debugInfo);
+			hit = mScene.Intersect(DRayContext(&mScene, ray, RequestColour, mScene.GetMaximumRecursion(), DRayContext::AirRefractionIndex, pixelIndex, subframe), response, debugInfo);
 			mColour = response.mColour;
 		}
 		else
@@ -372,7 +378,7 @@ struct Patch
 		mCalculated = true;
 	}
 
-	void SampleChildren(DCamera& camera, float apertureSize, DVector3& from, int width, int height, int x, int y)
+	void SampleChildren(DCamera& camera, int subframe, float apertureSize, DVector3& from, int width, int height, int x, int y)
 	{
 		float halfHeight = 0.5f * (mTop + mBottom) ;
 		float halfWidth = 0.5f * (mRight + mLeft);
@@ -393,7 +399,7 @@ struct Patch
 			if (i==idx)
 				mChild[idx]->SetColour(mColour);
 			else
-				mChild[i]->Sample(camera, apertureSize, from, width, height, x, y);
+				mChild[i]->Sample(camera, subframe, apertureSize, from, width, height, x, y);
 		}
 
 		mColour = DColour(0,0,0);
@@ -498,15 +504,15 @@ public:
 			return true;
 	}
 
-	void Render(DCamera& camera, float apertureSize, DVector3& from, int width, int height, int x, int y)
+	void Render(DCamera& camera, int subFrame, float apertureSize, DVector3& from, int width, int height, int x, int y)
 	{
-		(*mPatch.begin())->Sample(camera, apertureSize, from, width, height, x, y);
+		(*mPatch.begin())->Sample(camera, subFrame, apertureSize, from, width, height, x, y);
 		mSamples = 1;
 
 		while (((*mPatch.begin())->mSignificance>0.0000000001 || mSamples<mMinSamples) && mSamples<mMaxSamples)
 		{
 			mSamples += 3;
-			(*mPatch.begin())->SampleChildren(camera, apertureSize, from, width, height, x, y);
+			(*mPatch.begin())->SampleChildren(camera, subFrame, apertureSize, from, width, height, x, y);
 			mPatch.push_back((*mPatch.begin())->mChild[0].get());
 			mPatch.push_back((*mPatch.begin())->mChild[1].get());
 			mPatch.push_back((*mPatch.begin())->mChild[2].get());
@@ -525,7 +531,7 @@ public:
 	bool mDOFEnabled;
 	bool mAAEnabled;
 };
-
+/*
 void DCamera::RenderRow(const DScene& scene, const int width, const int height, const int row, DColour *renderBuffer)
 {
 	int x,nrow=row;
@@ -555,8 +561,8 @@ void DCamera::RenderRow(const DScene& scene, const int width, const int height, 
 		renderBuffer[nrow*width+x] = parent.GetColour();
 	}
 }
-
-void DCamera::RenderFragment(const DScene& scene, const int width, const int height, const int left, const int top, DColour *renderBuffer)
+*/
+void DCamera::RenderFragment(const DScene& scene, const int subframe, const int width, const int height, const int left, const int top, DColour *renderBuffer)
 {
 	int x, y;
 
@@ -577,12 +583,12 @@ void DCamera::RenderFragment(const DScene& scene, const int width, const int hei
 			if (mDOFEnabled || mAAEnabled)
 			{
 				PatchRenderer patchRenderer(parent, mDOFEnabled, mAAEnabled, mMinSamples, mMaxSamples);
-				patchRenderer.Render(*this, mApertureSize, mFrom, width, height, left+x, top+y);
+				patchRenderer.Render(*this, subframe, mApertureSize, mFrom, width, height, left+x, top+y);
 				samples = patchRenderer.mSamples;
 			}
 			else
 			{
-				parent.Sample(*this, 0, mFrom, width, height, left+x, top+y);
+				parent.Sample(*this, subframe, 0, mFrom, width, height, left+x, top+y);
 			}
 
 	//		DColour avg = parent.GetColour();
@@ -643,7 +649,7 @@ void TransferPatch(Patch& patch, DColour* renderBuffer, int width, int height)
 		TransferPatch(*(patch.mChild[3]), renderBuffer, width, height);
 	}
 }
-
+/*
 void DCamera::RenderPatch(const DScene& scene, const int width, const int height, DColour *renderBuffer, int x, int y)
 {
 	CalculateCameraMatrix();
@@ -655,3 +661,4 @@ void DCamera::RenderPatch(const DScene& scene, const int width, const int height
 
 	TransferPatch(parent, renderBuffer, width, height);
 }
+*/
