@@ -11,6 +11,8 @@ enum EAxis
 };
 
 #define MAX(a,b) ((a>b) ? a : b)
+#define clamp(val, min, max) (val<min) ? min : (val>max) ? max : val
+#define PI 3.14159265f
 
 class DVector3
 {

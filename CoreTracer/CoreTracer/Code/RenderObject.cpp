@@ -61,10 +61,13 @@ bool DRenderObject::Intersect(const DRayContext& rRayContext, DCollisionResponse
 		out_Response.mNormal.Normalise();
 		out_Response.mDistance = (out_Response.mHitPosition - rRayContext.m_Ray.GetStart()).Magnitude();
 
-		// colour requsted (expensive!)
-		if (rRayContext.m_RequestFlags&RequestColour)
+		if (rRayContext.m_RequestFlags&RequestZeroLighting && GetIgnoreWhileLighting()) // pathtracing ignores lightsources as light contributions (lighting is directly sampled)
 		{
-			mMaterial.CalculateColour(out_Response.mColour, out_Response.mHitPosition, GetObjectId(), out_Response.mNormal, out_Response.mColour, rRayContext, mIgnoreWhileLighting);
+			out_Response.mColour = DColour(0,0,0);
+		}
+		else if (rRayContext.m_RequestFlags&RequestColour) // colour requsted (expensive!)
+		{
+			mMaterial.CalculateColour(out_Response.mColour, out_Response.mHitPosition, GetObjectId(), out_Response.mNormal, rRayContext, mIgnoreWhileLighting);
 		}
 	}
 

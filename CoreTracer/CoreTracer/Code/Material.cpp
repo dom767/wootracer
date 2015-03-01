@@ -102,7 +102,6 @@ void DMaterial::CalculateColour(DColour &out_colour,
 	const DVector3& hitPos,
 	const int hitId,
 	const DVector3& normal,
-	const DColour& colour,
 	const DRayContext &rRayContext,
 	const bool ignoreLighting) const
 {
@@ -121,7 +120,7 @@ void DMaterial::CalculateColour(DColour &out_colour,
 
 	DFunctionState funcState;
 	funcState.mPosition = hitPos;
-	funcState.mDiffuse = mDiffuseColour->GetColour(hitPos);
+	funcState.mDiffuse = mDiffuseColour->GetColour(hitPos) * out_colour;
 	funcState.mSpecular = mSpecularColour->GetColour(hitPos);
 	funcState.mReflectivity = mReflectivity->GetColour(hitPos);
 	funcState.mEmissive = mEmissiveColour->GetColour(hitPos);
@@ -155,7 +154,7 @@ void DMaterial::CalculateColour(DColour &out_colour,
 			recursionRemaining);
 
 	// multiply the diffuse colour by the surface colour
-	diffuseLight *= /*(mDiffuseFunction.get() ? DColour(mDiffuseFunction->Evaluate(hitPos)) : */funcState.mDiffuse/*)*/ * colour;
+	diffuseLight *= funcState.mDiffuse;
 
 	// calculate the colour of the surface
 	out_colour = diffuseLight + specularLight + funcState.mEmissive;
@@ -172,7 +171,7 @@ void DMaterial::CalculateColour(DColour &out_colour,
 		DRayContext pathTrace(rRayContext);
 		pathTrace.m_Ray = DRay(hitPos, randomInter);
 		pathTrace.m_RecursionRemaining = recursionRemaining==0 ? -1 : (recursionRemaining==1 ? 0 : 1);
-		pathTrace.m_RequestFlags |= RequestLighting;
+		pathTrace.m_RequestFlags |= RequestZeroLighting;
 		scene->Intersect(pathTrace, response);
 			
 		DColour addition = response.mColour;
@@ -185,6 +184,8 @@ void DMaterial::CalculateColour(DColour &out_colour,
 	{
 		DRayContext reflectionContext(rRayContext);
 		reflectionContext.m_Ray = DRay(hitPos, reflection);
+		if (scene->IsCaustics())
+			reflectionContext.m_RequestFlags &= ~RequestZeroLighting;
 		reflectionContext.m_RecursionRemaining = recursionRemaining-1;
 
 		scene->Intersect(reflectionContext, response);

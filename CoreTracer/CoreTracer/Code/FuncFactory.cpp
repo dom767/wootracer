@@ -9,6 +9,8 @@
 DFuncFactory::DFuncFactory()
 {
 	mFuncList.push_back(new DDistSphere());
+	mFuncList.push_back(new DDistCapsule());
+	mFuncList.push_back(new DDistCylinder());
 	mFuncList.push_back(new DDistMin());
 	mFuncList.push_back(new DDistSMin());
 	mFuncList.push_back(new DDistSMin3());
@@ -33,6 +35,7 @@ DFuncFactory::DFuncFactory()
 	mFuncList.push_back(new DMad());
 	mFuncList.push_back(new DFloor());
 	mFuncList.push_back(new DDistPerlinXYZ());
+	mFuncList.push_back(new DDistTurb3d());
 
 	mFuncList.push_back(new DDistPos());
 	mFuncList.push_back(new DDistVec());
@@ -48,6 +51,7 @@ DFuncFactory::DFuncFactory()
 	mFuncList.push_back(new DDistPerlinX());
 	mFuncList.push_back(new DDistPerlinXZ());
 	mFuncList.push_back(new DDistFold());
+	mFuncList.push_back(new DDistRotateFold());
 	mFuncList.push_back(new DDistFoldX());
 	mFuncList.push_back(new DDistBoxFold());
 	mFuncList.push_back(new DDistSphereFold());
@@ -59,6 +63,11 @@ DFuncFactory::DFuncFactory()
 	mFuncList.push_back(new DDistDivVec());
 	mFuncList.push_back(new DLerp());
 	mFuncList.push_back(new DDistNormalise());
+	mFuncList.push_back(new DSqrt());
+	mFuncList.push_back(new DCos());
+	mFuncList.push_back(new DSin());
+	mFuncList.push_back(new DTan());
+	mFuncList.push_back(new DPow());
 
 	mFuncList.push_back(new DSet());
 	mFuncList.push_back(new DSetV());

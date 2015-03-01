@@ -22,6 +22,46 @@ BEGIN_FUNC(DDistSphere, "sphere");
 	}
 END_FUNC
 
+BEGIN_FUNC(DDistCapsule, "capsule");
+	DDistCapsule()
+	{
+		mParam.push_back(new DFuncParam("mPos", Vec));
+		mParam.push_back(new DFuncParam("mLength", Float));
+		mParam.push_back(new DFuncParam("mRadius", Float));
+	}
+
+	virtual float Evaluate(DFunctionState& state)
+	{
+		DVector3 pos = mParam[0]->EvaluateVec(state);
+		float length = mParam[1]->Evaluate(state);
+		float rad = mParam[2]->Evaluate(state);
+		DVector3 pa = pos - DVector3(0, -length+rad, 0);
+		DVector3 ba = DVector3(0, length*2 - rad*2, 0);
+		float h = clamp(pa.Dot(ba)/ba.Dot(ba), 0.0f, 1.0f);
+		return (pa - ba*h).Magnitude() - rad;
+	}
+END_FUNC
+
+BEGIN_FUNC(DDistCylinder, "cylinder");
+	DDistCylinder()
+	{
+		mParam.push_back(new DFuncParam("mPos", Vec));
+		mParam.push_back(new DFuncParam("mLength", Float));
+		mParam.push_back(new DFuncParam("mRadius", Float));
+	}
+
+	virtual float Evaluate(DFunctionState& state)
+	{
+		DVector3 pos = mParam[0]->EvaluateVec(state);
+		float length = mParam[1]->Evaluate(state);
+		float rad = mParam[2]->Evaluate(state);
+
+		float px = (pos[0] - rad);
+		float pz = (pos[2] - rad);
+		return sqrtf(px*px+pz*pz) - length;
+	}
+END_FUNC
+
 BEGIN_FUNC(DDistMin, "min");
 	DDistMin()
 	{
@@ -479,6 +519,73 @@ BEGIN_FUNC(DMod, "mod");
 	}
 END_FUNC
 
+BEGIN_FUNC(DSqrt, "sqrt");
+	DSqrt()
+	{
+		mParam.push_back(new DFuncParam("mVal1", Float));
+	}
+	
+	virtual float Evaluate(DFunctionState& state)
+	{
+		float val1 = mParam[0]->Evaluate(state);
+		return sqrt(val1);
+	}
+END_FUNC
+
+BEGIN_FUNC(DCos, "cos");
+	DCos()
+	{
+		mParam.push_back(new DFuncParam("mVal1", Float));
+	}
+	
+	virtual float Evaluate(DFunctionState& state)
+	{
+		float val1 = mParam[0]->Evaluate(state);
+		return cosf(val1);
+	}
+END_FUNC
+
+BEGIN_FUNC(DSin, "sin");
+	DSin()
+	{
+		mParam.push_back(new DFuncParam("mVal1", Float));
+	}
+	
+	virtual float Evaluate(DFunctionState& state)
+	{
+		float val1 = mParam[0]->Evaluate(state);
+		return sinf(val1);
+	}
+END_FUNC
+
+BEGIN_FUNC(DTan, "tan");
+	DTan()
+	{
+		mParam.push_back(new DFuncParam("mVal1", Float));
+	}
+	
+	virtual float Evaluate(DFunctionState& state)
+	{
+		float val1 = mParam[0]->Evaluate(state);
+		return tanf(val1);
+	}
+END_FUNC
+
+BEGIN_FUNC(DPow, "pow");
+	DPow()
+	{
+		mParam.push_back(new DFuncParam("mVal1", Float));
+		mParam.push_back(new DFuncParam("mPower", Float));
+	}
+	
+	virtual float Evaluate(DFunctionState& state)
+	{
+		float val1 = mParam[0]->Evaluate(state);
+		float power = mParam[1]->Evaluate(state);
+		return powf(val1, power);
+	}
+END_FUNC
+
 BEGIN_FUNC(DRound, "round");
 	DRound()
 	{
@@ -606,6 +713,63 @@ public:
 			sum += ((fx0y0*(1-fx) + fx1y0*fx) * (1-fy)
 				+ (fx0y1*(1-fx) + fx1y1*fx) * fy)
 				* weighting;
+			weighting *= weightingMultiplier;
+		}
+
+		if (sum<-1) sum=-1;
+		if (sum>1) sum=1;
+
+		return sum;
+	}
+
+	float GetTurb3d(float posx, float posy, float posz, float rep, float scale, int seed, int octaves, float weightingMultiplier)
+	{
+		float normalX = posx*rep;
+		float normalY = posy*rep;
+		float normalZ = posz*rep;
+		float sum=0;
+		float weighting = scale;
+		float val;
+
+		for (int i=0; i<octaves; i++)
+		{
+			int perlinScale = 2<<(i+1);
+
+			// calculate x axis position and y axis position
+			int x0 = imod(rounddown(normalX*float(perlinScale)), perlinScale);
+			float remainder = normalX*float(perlinScale) - float(rounddown(normalX*float(perlinScale)));
+			int x1 = imod(x0+1, perlinScale);
+
+			int y0 = imod(rounddown(normalY*float(perlinScale)), perlinScale);
+			float remaindery = normalY*float(perlinScale) - float(rounddown(normalY*float(perlinScale)));
+			int y1 = imod(y0+1, perlinScale);
+
+			int z0 = imod(rounddown(normalZ*float(perlinScale)), perlinScale);
+			float remainderz = normalZ*float(perlinScale) - float(rounddown(normalZ*float(perlinScale)));
+			int z1 = imod(z0+1, perlinScale);
+
+			float fx0y0z0 = GetValue(x0 + perlinScale*y0 + perlinScale*perlinScale*z0, seed, 0, i);
+			float fx1y0z0 = GetValue(x1 + perlinScale*y0 + perlinScale*perlinScale*z0, seed, 0, i);
+			float fx0y1z0 = GetValue(x0 + perlinScale*y1 + perlinScale*perlinScale*z0, seed, 0, i);
+			float fx1y1z0 = GetValue(x1 + perlinScale*y1 + perlinScale*perlinScale*z0, seed, 0, i);
+			float fx0y0z1 = GetValue(x0 + perlinScale*y0 + perlinScale*perlinScale*z1, seed, 0, i);
+			float fx1y0z1 = GetValue(x1 + perlinScale*y0 + perlinScale*perlinScale*z1, seed, 0, i);
+			float fx0y1z1 = GetValue(x0 + perlinScale*y1 + perlinScale*perlinScale*z1, seed, 0, i);
+			float fx1y1z1 = GetValue(x1 + perlinScale*y1 + perlinScale*perlinScale*z1, seed, 0, i);
+
+			float ftx = remainder * 3.1415927f;
+			float fx = (1 - cosf(ftx)) * .5f;
+			float fty = remaindery * 3.1415927f;
+			float fy = (1 - cosf(fty)) * .5f;
+			float ftz = remainderz * 3.1415927f;
+			float fz = (1 - cosf(ftz)) * .5f;
+
+			val = ((((fx0y0z0*(1-fx) + fx1y0z0*fx) * (1-fy)
+				+ (fx0y1z0*(1-fx) + fx1y1z0*fx) * fy) * (1-fz))
+				+ (((fx0y0z1*(1-fx) + fx1y0z1*fx) * (1-fy)
+				+ (fx0y1z1*(1-fx) + fx1y1z1*fx) * fy) * fz))
+				* weighting;
+			sum += fabsf(val);
 			weighting *= weightingMultiplier;
 		}
 
@@ -777,6 +941,31 @@ BEGIN_FUNC(DDistPerlinXYZ, "perlinxyz");
 	DPerlin mPerlin;
 END_FUNC
 
+BEGIN_FUNC(DDistTurb3d, "turb3d");
+	DDistTurb3d()
+	{
+		mParam.push_back(new DFuncParam("mPos", Vec));
+		mParam.push_back(new DFuncParam("mRep", Float));
+		mParam.push_back(new DFuncParam("mInitialWeight", Float));
+		mParam.push_back(new DFuncParam("mSeed", Float));
+		mParam.push_back(new DFuncParam("mOctaves", Float));
+		mParam.push_back(new DFuncParam("mWeightingMultiplier", Float));
+	}
+
+	virtual float Evaluate(DFunctionState& state)
+	{
+		DVector3 rPos = mParam[0]->EvaluateVec(state);
+		float repX = mParam[1]->Evaluate(state);
+		float weight = mParam[2]->Evaluate(state);
+		int seed = (int)mParam[3]->Evaluate(state);
+		int octaves = (int)mParam[4]->Evaluate(state);
+		float weightingMultiplier = mParam[5]->Evaluate(state);
+		return mPerlin.GetTurb3d(0.5f*(rPos[0]+1), 0.5f*(rPos[1]+1), 0.5f*(rPos[2]+1), repX, weight, seed, octaves, weightingMultiplier);
+	}
+	
+	DPerlin mPerlin;
+END_FUNC
+
 BEGIN_VECFUNC(DAddVec, "add");
 	DAddVec()
 	{
@@ -925,6 +1114,29 @@ BEGIN_FUNC(DDistFold, "fold");
 		float rep = mParam[1]->Evaluate(state);
 		val = abs(smod((val+rep),rep*4)-rep*2)-rep;
 		return val;
+	}
+END_FUNC
+
+BEGIN_VECFUNC(DDistRotateFold, "rotatefold");
+	DDistRotateFold()
+	{
+		mParam.push_back(new DFuncParam("mPos", Vec));
+		mParam.push_back(new DFuncParam("mDegrees", Float));
+	}
+
+	virtual DVector3 Evaluate(DFunctionState& state)
+	{
+		DVector3 pos = mParam[0]->EvaluateVec(state);
+		float rep = mParam[1]->Evaluate(state);
+
+		float length = sqrtf(pos[0]*pos[0] + pos[2]*pos[2]);
+		float angle = acosf(pos[2]/length)*180/PI;
+		if (pos[0]<0) angle = -angle;
+
+		float newangle = abs(smod((angle+rep*1.5f),rep*2)-rep)-rep*0.5f;
+		newangle = newangle*PI/180;
+		
+		return DVector3(length*sin(newangle), pos[1], length*cos(newangle));
 	}
 END_FUNC
 

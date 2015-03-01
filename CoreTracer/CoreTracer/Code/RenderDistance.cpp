@@ -27,6 +27,7 @@ void DRenderDistance::InternalRead(TiXmlElement* element)
 	Convert::StrToFloat(element->Attribute("distancescale"), mDEScale);
 	Convert::StrToVec3(element->Attribute("distanceoffset"), mDEOffset);
 	Convert::StrToInt(element->Attribute("distanceiterations"), mDEIterations);
+	Convert::StrToVec3(element->Attribute("distanceextents"), mDEExtents);
 	Convert::StrToFloat(element->Attribute("stepsize"), mStepSize);
 
 // two spheres	std::string de = "min(sphere(vec(-0.5,0,0),0.5), sphere(vec(0.5,0,0),0.5))";
@@ -273,7 +274,7 @@ bool DRenderDistance::InternalIntersect(const DRayContext& rRayContext, DCollisi
 //	const DVector3& start = rRayContext.m_Ray.GetStart();
 	const DVector3& direction = rRayContext.m_Ray.GetDirection();
 	DVector3 AAstart, AAend;
-	DAABoundingBox aaBoundingBox(DVector3(0,0,0),1,1,1);
+	DAABoundingBox aaBoundingBox(DVector3(0,0,0),mDEExtents[0],mDEExtents[1],mDEExtents[2]);
 	if (!aaBoundingBox.Intersects(rRayContext.m_Ray, AAstart, AAend))
 		return false;
 	const DVector3 start = (AAstart - mDEOffset) / mDEScale;
@@ -316,6 +317,10 @@ bool DRenderDistance::InternalIntersect(const DRayContext& rRayContext, DCollisi
 			if (totalDistance < endT)
 			{
 				out_Response.mHitPosition = p;
+				if (steps==0)
+				{
+				out_Response.mHitPosition = start;
+				}
 				const float normalTweak=mMinimumDistance*0.1f;
 				out_Response.mNormal = DVector3(DistanceEstimator(p+DVector3(normalTweak,0,0)) - DistanceEstimator(p-DVector3(normalTweak,0,0)),
 					DistanceEstimator(p+DVector3(0,normalTweak,0)) - DistanceEstimator(p-DVector3(0,normalTweak,0)),

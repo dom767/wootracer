@@ -19,6 +19,7 @@ const int numRandomSequences = 1024;
 DScene::DScene() : mMaximumRecursion(10), mCurrentId(1), mCanvasWidth(400), mCanvasHeight(300), mRandomSequence(DRandomSequence::RelaxingPoisson, numRandomSequences, 753)
 {
 	mPathTracer = false;
+	mCaustics = false;
 	mRayCount=0;
 	mRandomSequence.GenerateSequences();
 }
@@ -59,6 +60,8 @@ void DScene::operator=(const DScene& scene)
 void DScene::Read(TiXmlElement* element)
 {
     Convert::StrToInt(element->Attribute("pathTracer"), mPathTracer);
+	
+	Convert::StrToBool(element->Attribute("caustics"), mCaustics);
 
 	TiXmlElement* backgroundXml = (TiXmlElement*) element->FirstChildElement("BACKGROUND");
 	if (backgroundXml)
@@ -257,11 +260,17 @@ DVector2 DScene::GetRandom2D(const DRayContext& ray) const
 	return ret;
 }
 
-DVector2 DScene::GetRandom2D(int pixelIndex, int sampleIndex, int subFrame) const
+DVector2 DScene::GetRandom2D(unsigned int pixelIndex, unsigned int sampleIndex, unsigned int subFrame) const
 {
 //	return DVector2(mRandom.GetNextFloat(), mRandom.GetNextFloat());
-	int sequence = int(subFrame/256)*4801 + (pixelIndex%47)*pixelIndex*21 + sampleIndex;
-	sequence = (sequence*2654435761)%(2^32);
+	unsigned int clamppixel = pixelIndex%3592;
+	unsigned int sequence = unsigned int(subFrame/256)*4801 + pixelIndex*pixelIndex + sampleIndex;
+	
+	sequence = ((sequence >> 16) ^ sequence) * 0x45d9f3b;
+    sequence = ((sequence >> 16) ^ sequence) * 0x45d9f3b;
+    sequence = ((sequence >> 16) ^ sequence);
+	
+//	sequence = (sequence*2654435761)%(2^32);
 
 	return mRandomSequence.GetValue(sequence%numRandomSequences, subFrame%256);
 }

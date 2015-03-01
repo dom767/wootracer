@@ -56,7 +56,6 @@ public:
 		const DVector3& hitPos,
 		const int hitId,
 		const DVector3& normal,
-		const DColour& colour,
 		const DRayContext& rRayContext,
 		const bool ignoreLighting) const;
 

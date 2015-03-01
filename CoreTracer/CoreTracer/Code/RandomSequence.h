@@ -31,6 +31,7 @@ public:
 	{
 		mGenerator = generator;
 		mTotalSequences = totalSequences;
+		mStartSeed = seed;
 	}
 
 	void GenerateSequences();
@@ -42,10 +43,13 @@ public:
 
 private:
 	void GenerateSequence(DSingleSequence& sequence);
+	void WriteSequences(FILE *file);
+	void ReadSequences(FILE *file);
 
 	EGenerator mGenerator;
 	int mTotalSequences;
 	std::vector<DSingleSequence> mSequences;
 	DRandom mRandom;
+	int mStartSeed;
 
 };

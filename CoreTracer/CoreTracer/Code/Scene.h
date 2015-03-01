@@ -30,6 +30,7 @@ enum ERequestType
 	RequestDistance=0x2,
 	RequestBackface=0x4,
 	RequestLighting=0x8,
+	RequestZeroLighting=0x10,
 	RequestNoSpecular=0x01,
 };
 
@@ -70,10 +71,11 @@ public:
 	int GetMaximumRecursion() const {return mMaximumRecursion;}
 	void SetRandomSeed(int seed) const;
 	float GetRandom() const {return float(mRandom.GetRandom()&0xFFFF) / float(0xFFFF);}
-	DVector2 GetRandom2D(int pixelIndex, int sampleIndex, int subFrame) const;
+	DVector2 GetRandom2D(unsigned int pixelIndex, unsigned int sampleIndex, unsigned int subFrame) const;
 	DVector2 GetRandom2D(const DRayContext& ray) const;
 	DVector3 GetRandomDirection3d(const DRayContext &rayContext) const;
 	bool IsPathTracer() const {return mPathTracer>0;}
+	bool IsCaustics() const {return mCaustics;}
 
 	mutable __int64 mRayCount;
 	DKDTree mKDTree;
@@ -89,4 +91,5 @@ private:
 	DRandom mRandom;
 	DRandomSequence mRandomSequence;
 	int mPathTracer;
+	bool mCaustics;
 };

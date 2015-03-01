@@ -376,9 +376,9 @@ void StartRayTracer()
 
 	std::wstringstream ss;
 	
-	ss << my_documents << L"\\Wooscripter\\XML\\simplebox.xml";
-//	ss << my_documents << L"\\Wooscripter\\XML\\antialiasTest.xml";
-//	ss << my_documents << L"\\Wooscripter\\XML\\perlinboxcheck.xml";
+//	ss << my_documents << L"\\Wooscripter\\XML\\simplebox.xml";
+//	ss << my_documents << L"\\Wooscripter\\XML\\pedestal.xml";
+	ss << my_documents << L"\\Wooscripter\\XML\\distancerotatefold.xml";
 //	ss << my_documents << L"\\Wooscripter\\XML\\diffuseFunction2.xml";
 
 	std::ifstream sceneDesc;

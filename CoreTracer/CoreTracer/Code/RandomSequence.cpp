@@ -1,14 +1,53 @@
 #include "stdafx.h"
 #include "RandomSequence.h"
+#include <sstream>
 
-void DRandomSequence::GenerateSequences()
+void DRandomSequence::WriteSequences(FILE *file)
+{
+	for (int i=0; i<mTotalSequences; i++)
+	{
+		fwrite(&(mSequences[i].mValues[0]), sizeof(DVector2)*256, 1, file);
+	}
+}
+
+void DRandomSequence::ReadSequences(FILE *file)
 {
 	for (int i=0; i<mTotalSequences; i++)
 	{
 		DSingleSequence sequence;
-		GenerateSequence(sequence);
+		fread(&(sequence.mValues[0]), sizeof(DVector2)*256, 1, file);
 		mSequences.push_back(sequence);
 	}
+}
+
+void DRandomSequence::GenerateSequences()
+{
+	std::string name;
+	std::ostringstream sstr;
+	sstr << "sequence" << mGenerator << mTotalSequences << mStartSeed;
+	name = sstr.str();
+
+	FILE *file;
+	fopen_s(&file, name.c_str(), "rb");
+	if (file == NULL)
+	{
+		// WRITE IT
+		for (int i=0; i<mTotalSequences; i++)
+		{
+			DSingleSequence sequence;
+			GenerateSequence(sequence);
+			mSequences.push_back(sequence);
+		}
+		fopen_s(&file, name.c_str(), "wb");
+		if (file)
+			WriteSequences(file);
+	}
+	else
+	{
+		// READ IT
+		ReadSequences(file);
+	}
+	fclose(file);
 }
 
 int GetFurthest(DVector2* samples, int pointIdx, DVector2* randVals, int numRandVals)
@@ -40,17 +79,18 @@ int GetFurthest(DVector2* samples, int pointIdx, DVector2* randVals, int numRand
 	return maxMinIdx;
 }
 
-bool within(DVector2* samples, int sampleSize, float randx, float randy, float tolerance)
+bool within(DVector2* samples, int sampleSize, float randx, float randy, float tolerance2)
 {
+	float dx, dy, dist2;
 	for (int p=0; p<sampleSize; p++)
 	{
-		float dx = fabsf(samples[p].x - randx);
+		dx = fabsf(samples[p].x - randx);
 		if (dx>0.5) dx = 1-dx;
-		float dy = fabsf(samples[p].y - randy);
+		dy = fabsf(samples[p].y - randy);
 		if (dy>0.5) dy = 1-dy;
 
-		float dist = sqrtf(dx*dx + dy*dy);
-		if (dist<tolerance) return true;
+		dist2 = dx*dx + dy*dy;
+		if (dist2<tolerance2) return true;
 	}
 	return false;
 }
@@ -384,13 +424,14 @@ void DRandomSequence::GenerateSequence(DSingleSequence& sequence)
 	case RelaxingPoisson:
 		{
 			float discSize = 0.5f;
-			for (int i=0; i<256; i++)
-				points[i]=0;
+			float discSize2 = discSize*discSize;
 			for (int i=0; i<256; i++)
 			{
 				float randx, randy;
 				int idx;
 				int iterations = 0;
+				float dx, dy, dist2;
+				bool within;
 				do
 				{
 					randx = mRandom.GetNextFloat();
@@ -400,11 +441,23 @@ void DRandomSequence::GenerateSequence(DSingleSequence& sequence)
 					if (iterations>100)
 					{
 						iterations = 0;
-						discSize *= 0.98f;
+						discSize *= 0.96f;
+						discSize2 = discSize*discSize;
+					}
+
+					within = false;
+					for (int p=0; p<i; p++)
+					{
+						dx = fabsf(sequence.mValues[p].x - randx);
+						if (dx>0.5) dx = 1-dx;
+						dy = fabsf(sequence.mValues[p].y - randy);
+						if (dy>0.5) dy = 1-dy;
+
+						dist2 = dx*dx + dy*dy;
+						if (dist2<discSize2) {within=true;p=i;}
 					}
 				}
-				while (points[idx]==1 || within(sequence.mValues, i, randx, randy, discSize));
-				points[idx] = 1;
+				while (within);
 
 				sequence.mValues[i] = DVector2(randx, randy);
 			}

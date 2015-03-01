@@ -64,3 +64,6 @@ Temporary Items
 *.txt
 *.opensdf
 CoreTracer/CoreTracer/log.txt
+CoreTracer/CoreTracer/sequence101024753
+*.txt
+*.unsuccessfulbuild

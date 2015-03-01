@@ -248,15 +248,15 @@ public:
 		for (int y=0; y<256; y++)
 			for (int x=0; x<256; x++)
 			{
-				float value = float(int(int(7.f*float(x)/256.f)%2 + int(7.f*float(y)/256.f)%2)%2);
+			//	float value = float(int(int(7.f*float(x)/256.f)%2 + int(7.f*float(y)/256.f)%2)%2);
 			
-		/*		float fx = float(x)/256;
-				float fy = float(y)/256;
-				float value = cosf(sqrtf((fx-0.7f)*(fx-0.7f) + (fy-0.65f)*(fy-0.65f))*10)+1;*/
-				
 			/*	float fx = float(x)/256;
 				float fy = float(y)/256;
-				float value = (fx*0.3f + fy*0.8f) - 0.4f <0 ? 0 : 1;*/
+				float value = cosf(sqrtf((fx-0.7f)*(fx-0.7f) + (fy-0.65f)*(fy-0.65f))*10)+1;
+				*/
+				float fx = float(x)/256;
+				float fy = float(y)/256;
+				float value = (fx*0.3f + fy*0.8f) - 0.4f <0 ? 0 : 1;
 				mAliasTest[x+y*256] = value;
 				total += value;
 				if (value<min) min=value;
