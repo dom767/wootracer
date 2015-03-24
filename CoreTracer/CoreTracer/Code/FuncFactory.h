@@ -50,6 +50,7 @@ public:
 		return factory;
 	}
 	DFuncFactory();
+	~DFuncFactory();
 
 	void BuildSchema();
 

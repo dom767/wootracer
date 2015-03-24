@@ -8,6 +8,7 @@ class DWorkQueue
 {
 public:
 	DWorkQueue();
+	~DWorkQueue();
 
 	void Add(DRenderFragment* fragment);
 	void Update(DRenderFragment* fragment);

@@ -319,7 +319,7 @@ public:
 	int m_WithinObjectId;
 };
 
-bool DKDTree::Intersect(const DRayContext& rRayContext, DCollisionResponse& out_Response, bool debuginfo) const
+int DKDTree::Intersect(const DRayContext& rRayContext, DCollisionResponse& out_Response, bool debuginfo) const
 {
 	DVector3 start, end;
 	if (mRootBoundingBox.Intersects(rRayContext.m_Ray, start, end))
@@ -353,7 +353,8 @@ bool DKDTree::Intersect(const DRayContext& rRayContext, DCollisionResponse& out_
 			hitIter++;
 		}
 
-		if (debuginfo)
+		out_Response.mDistance = nearestDistance;
+		if (Log().mErrorLevel==Info)
 		{
 			std::string kdDebug;
 			std::stringstream ss;
@@ -374,15 +375,14 @@ bool DKDTree::Intersect(const DRayContext& rRayContext, DCollisionResponse& out_
 			ss<<"\r\nRay AirRefractionIndex : "<<rRayContext.AirRefractionIndex;
 			ss<<"\r\nRay RefractiveIndex : "<<rRayContext.m_RefractiveIndex;
 			ss<<"\r\nRay m_RequestFlags : "<<rRayContext.m_RequestFlags;
+			ss<<"\r\nCollision point : "<<out_Response.mHitPosition[0]<<", "<<out_Response.mHitPosition[1]<<", "<<out_Response.mHitPosition[2];
+			ss<<"\r\nCollision colour : "<<out_Response.mColour.mRed<<", "<<out_Response.mColour.mGreen<<", "<<out_Response.mColour.mBlue;
 			ss<<"\r\n";
 			kdDebug = ss.str();
-			Log().Print(kdDebug.c_str());
+			LOG(Info, kdDebug.c_str());
 		}
 
-		// recalculate interestion against the nearest object, calculating the colour + lighting etc.
-		(*nearestObject)->Intersect(rRayContext, out_Response);
-
-		return true;
+		return (*nearestObject)->GetObjectId();
 	}
 	return false;
 }

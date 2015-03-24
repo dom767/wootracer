@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "PostProcess.h"
 #include <math.h>
+#include "Code\Colour.h"
 /*
 class DThreadArgs
 {
@@ -227,4 +228,97 @@ void DPostProcess::PostProcess(float* targetBuffer, float* sourceBuffer, double 
 
 	int finishedThread = WaitForMultipleObjects(NumThreads, threadHandle, true, INFINITE);
 */
+}
+
+std::vector<int> boxesForGauss(float sigma, int n)  // standard deviation, number of boxes
+{
+	float wIdeal = sqrtf((12*sigma*sigma/n)+1);  // Ideal averaging filter width 
+	int wl = int(wIdeal);
+	if(wl%2==0) wl--;
+	int wu = wl+2;
+			
+	float mIdeal = (12*sigma*sigma - n*wl*wl - 4*n*wl - 3*n)/(-4*wl - 4);
+	int m = int(0.5f+mIdeal);
+				
+	std::vector<int> sizes;
+	for(int i=0; i<n; i++) sizes.push_back(i<m?wl:wu);
+	return sizes;
+}
+
+void boxBlurH_4 (DColour* scl, DColour* tcl, int w, int h, int r)
+{
+	float iarr = 1.f / (r+r+1);
+	for(int i=0; i<h; i++)
+	{
+		int ti = i*w, li = ti, ri = ti+r;
+		DColour fv = scl[ti], lv = scl[ti+w-1], val = fv*(r+1);
+		for(int j=0; j<r; j++)
+			val +=  scl[ti+j];
+		for(int j=0  ; j<=r ; j++)
+		{
+			val += scl[ri++] - fv;
+			tcl[ti++] = val*iarr;
+		}
+		for(int j=r+1; j<w-r; j++)
+		{
+			val += scl[ri++] - scl[li++];
+			tcl[ti++] = val*iarr;
+		}
+		for(int j=w-r; j<w  ; j++)
+		{
+			val += lv - scl[li++];
+			tcl[ti++] = val*iarr;
+		}
+	}
+}
+
+void boxBlurT_4 (DColour* scl, DColour* tcl, int w, int h, int r)
+{
+	float iarr = 1.f / (r+r+1);
+	for(int i=0; i<w; i++)
+	{
+		int ti = i, li = ti, ri = ti+r*w;
+		DColour fv = scl[ti], lv = scl[ti+w*(h-1)], val = fv*(r+1);
+		for(int j=0; j<r; j++) val += scl[ti+j*w];
+		for(int j=0  ; j<=r ; j++) { val += scl[ri] - fv     ;  tcl[ti] = val*iarr;  ri+=w; ti+=w; }
+		for(int j=r+1; j<h-r; j++) { val += scl[ri] - scl[li];  tcl[ti] = val*iarr;  li+=w; ri+=w; ti+=w; }
+		for(int j=h-r; j<h  ; j++) { val += lv      - scl[li];  tcl[ti] = val*iarr;  li+=w; ti+=w; }
+	}
+}
+
+void boxBlur_4 (float* scl, float* tcl, int w, int h, int r)
+{
+	for(int i=0; i<w*h*3; i++) tcl[i] = scl[i];
+	boxBlurH_4((DColour*)tcl, (DColour*)scl, w, h, r);
+	boxBlurT_4((DColour*)scl, (DColour*)tcl, w, h, r);
+}
+
+void gaussBlur_4 (float* scl, float* tcl, int w, int h, int r)
+{
+	std::vector<int> bxs = boxesForGauss(r, 3);
+	boxBlur_4 (scl, tcl, w, h, (bxs[0]-1)/2);
+	boxBlur_4 (tcl, scl, w, h, (bxs[1]-1)/2);
+	boxBlur_4 (scl, tcl, w, h, (bxs[2]-1)/2);
+}
+
+void DPostProcess::GaussianBlur(float* targetBuffer, float* sourceBuffer, double maxValue, int size, float boostPower, float targetWeighting, float sourceWeighting, int width, int height)
+{
+	float* boostBuffer = new float[width*height*3];
+
+    double maxV = maxValue<0.001f ? 1 : maxValue;
+    double boostP = boostPower;
+    for (int i = 0; i < width * height * 3; i++)
+    {
+        boostBuffer[i] = (float)pow(sourceBuffer[i] / maxV, boostP);
+    }
+
+	gaussBlur_4(boostBuffer, targetBuffer, width, height, size);
+
+    // divide through
+    for (int i = 0; i < height * width * 3; i++)
+    {
+        targetBuffer[i] = targetWeighting * targetBuffer[i] + sourceWeighting * sourceBuffer[i];
+    }
+
+	delete [] boostBuffer;
 }

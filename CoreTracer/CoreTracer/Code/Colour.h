@@ -60,6 +60,12 @@ public:
 			mGreen+rhs.mGreen,
 			mBlue+rhs.mBlue);
 	}
+	DColour operator-(const DColour& rhs)
+	{
+		return DColour(mRed-rhs.mRed,
+			mGreen-rhs.mGreen,
+			mBlue-rhs.mBlue);
+	}
 	float Max()
 	{
 		float max = mRed>mGreen ? mRed : mGreen;

@@ -7,9 +7,9 @@ public:
 
 	DVector3 operator*(const DVector3& rhs) const
 	{
-		return DVector3(mVal[0][0] * rhs[0] + mVal[1][0] * rhs[1]  + mVal[2][0] * rhs[2] + mVal[3][0],
-			mVal[0][1] * rhs[0] + mVal[1][1] * rhs[1]  + mVal[2][1] * rhs[2] + mVal[3][1],
-			mVal[0][2] * rhs[0] + mVal[1][2] * rhs[1]  + mVal[2][2] * rhs[2] + mVal[3][2]);
+		return DVector3(mVal[0][0] * rhs.mComponent[0] + mVal[1][0] * rhs.mComponent[1]  + mVal[2][0] * rhs.mComponent[2] + mVal[3][0],
+			mVal[0][1] * rhs.mComponent[0] + mVal[1][1] * rhs.mComponent[1]  + mVal[2][1] * rhs.mComponent[2] + mVal[3][1],
+			mVal[0][2] * rhs.mComponent[0] + mVal[1][2] * rhs.mComponent[1]  + mVal[2][2] * rhs.mComponent[2] + mVal[3][2]);
 	}
 	void operator*=(const DMatrix4& rhs)
 	{

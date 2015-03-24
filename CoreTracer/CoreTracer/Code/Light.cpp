@@ -165,7 +165,7 @@ bool DWorldLight::GetLighting(const DScene& scene, const DRayContext &rayContext
 		}
 	}
 	
-	out_Diffuse /= float(mSamples);
+	out_Diffuse *= 1.f/float(mSamples);
 	return ret;
 }
 

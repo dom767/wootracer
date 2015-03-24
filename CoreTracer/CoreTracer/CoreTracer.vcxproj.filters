@@ -159,6 +159,18 @@
     <ClInclude Include="Code\RandomSequence.h">
       <Filter>Core</Filter>
     </ClInclude>
+    <ClInclude Include="Code\StaticCentres.h">
+      <Filter>Core\Functions</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\RenderSVO.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\TextureCache.h">
+      <Filter>Core\Functions</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\FFT.h">
+      <Filter>Core\Helper</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -253,6 +265,18 @@
     </ClCompile>
     <ClCompile Include="Code\RandomSequence.cpp">
       <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\StaticCentres.cpp">
+      <Filter>Core\Functions</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\RenderSVO.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\TextureCache.cpp">
+      <Filter>Core\Functions</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\FFT.cpp">
+      <Filter>Core\Helper</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

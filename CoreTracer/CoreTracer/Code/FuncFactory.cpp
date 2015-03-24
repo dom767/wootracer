@@ -36,6 +36,8 @@ DFuncFactory::DFuncFactory()
 	mFuncList.push_back(new DFloor());
 	mFuncList.push_back(new DDistPerlinXYZ());
 	mFuncList.push_back(new DDistTurb3d());
+	mFuncList.push_back(new DDistVoronoi());
+	mFuncList.push_back(new DDistWaves());
 
 	mFuncList.push_back(new DDistPos());
 	mFuncList.push_back(new DDistVec());
@@ -83,11 +85,23 @@ DFuncFactory::DFuncFactory()
 	BuildSchema();
 }
 
+DFuncFactory::~DFuncFactory()
+{
+	for (unsigned int i=0; i<mFuncList.size(); i++)
+	{
+		delete mFuncList[i];
+	}
+	for (unsigned int i=0; i<mVariableList.size(); i++)
+	{
+		delete mVariableList[i];
+	}
+}
+
 float DFuncFactory::GetFloatValue(DFunctionState& state, DVariable* var)
 {
 	if (var->GetType() == Vec)
 	{
-		Log().Print("Wrong variable type to GetFloatValue");
+		LOG(Error, "Wrong variable type to GetFloatValue");
 		throw 1;
 	}
 
@@ -97,7 +111,7 @@ float DFuncFactory::GetFloatValue(DFunctionState& state, DVariable* var)
 		return state.mDistance;
 	}
 
-	Log().Print("Missing variable in GetFloatValue");
+	LOG(Error, "Missing variable in GetFloatValue");
 	throw;
 }
 
@@ -105,7 +119,7 @@ DVector3 DFuncFactory::GetVectorValue(DFunctionState& state, DVariable* var)
 {
 	if (var->GetType() == Float)
 	{
-		Log().Print("Wrong variable type to GetVectorValue");
+		LOG(Error, "Wrong variable type to GetVectorValue");
 		throw;
 	}
 
@@ -125,7 +139,7 @@ DVector3 DFuncFactory::GetVectorValue(DFunctionState& state, DVariable* var)
 		return state.mAbsorption.GetVector();
 	}
 
-	Log().Print("Missing variable in GetVectorValue");
+	LOG(Error, "Missing variable in GetVectorValue");
 	throw;
 }
 
@@ -133,7 +147,7 @@ void DFuncFactory::SetFloatValue(DFunctionState& state, DVariable* var, float va
 {
 	if (var->GetType() == Vec)
 	{
-		Log().Print("Wrong variable type to SetFloatValue");
+		LOG(Error, "Wrong variable type to SetFloatValue");
 		throw;
 	}
 
@@ -144,7 +158,7 @@ void DFuncFactory::SetFloatValue(DFunctionState& state, DVariable* var, float va
 		return;
 	}
 
-	Log().Print("Missing variable in SetFloatValue");
+	LOG(Error, "Missing variable in SetFloatValue");
 	throw;
 }
 
@@ -152,7 +166,7 @@ void DFuncFactory::SetVectorValue(DFunctionState& state, DVariable* var, DVector
 {
 	if (var->GetType() == Float)
 	{
-		Log().Print("Wrong variable type to SetVectorValue");
+		LOG(Error, "Wrong variable type to SetVectorValue");
 		throw;
 	}
 
@@ -178,7 +192,7 @@ void DFuncFactory::SetVectorValue(DFunctionState& state, DVariable* var, DVector
 		return;
 	}
 
-	Log().Print("Missing variable in SetVectorValue");
+	LOG(Error, "Missing variable in SetVectorValue");
 	throw;
 }
 
@@ -342,7 +356,7 @@ DDistFunc* DFuncFactory::CreateFunction(std::string& arg)
 		}
 	}
 
-	if (!ret) {Log().Print("Missing Function Name");throw 1;}
+	if (!ret) {LOG(Error, "Missing Function Name");throw 1;}
 	return ret;
 }
 

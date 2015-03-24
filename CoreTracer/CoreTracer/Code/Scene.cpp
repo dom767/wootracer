@@ -7,6 +7,7 @@
 #include "RenderManger.h"
 #include "RenderCylinder.h"
 #include "RenderDistance.h"
+#include "RenderSVO.h"
 #include "ColourFunction.h"
 #include <stdlib.h>
 #include "tinyxml.h"
@@ -16,7 +17,7 @@
 const float DRayContext::AirRefractionIndex = 1.003f;
 const int numRandomSequences = 1024;
 	
-DScene::DScene() : mMaximumRecursion(10), mCurrentId(1), mCanvasWidth(400), mCanvasHeight(300), mRandomSequence(DRandomSequence::RelaxingPoisson, numRandomSequences, 753)
+DScene::DScene() : mMaximumRecursion(2), mCanvasWidth(400), mCanvasHeight(300), mRandomSequence(DRandomSequence::RelaxingPoisson, numRandomSequences, 753)
 {
 	mPathTracer = false;
 	mCaustics = false;
@@ -25,6 +26,11 @@ DScene::DScene() : mMaximumRecursion(10), mCurrentId(1), mCanvasWidth(400), mCan
 }
 
 DScene::~DScene()
+{
+	Cleanup();
+}
+
+void DScene::Cleanup()
 {
 	for (unsigned int i=0; i<mRenderObjects.size(); ++i)
 	{
@@ -53,15 +59,18 @@ void DScene::operator=(const DScene& scene)
 	mRenderBuffer = scene.mRenderBuffer;
 	mMaximumRecursion = scene.mMaximumRecursion;
 	mGlobalLighting = scene.mGlobalLighting;
-	mCurrentId = scene.mCurrentId;
 	mKDTree = scene.mKDTree;*/
 }
 
 void DScene::Read(TiXmlElement* element)
 {
+	Cleanup();
+
     Convert::StrToInt(element->Attribute("pathTracer"), mPathTracer);
 	
 	Convert::StrToBool(element->Attribute("caustics"), mCaustics);
+
+	Convert::StrToInt(element->Attribute("recursions"), mMaximumRecursion);
 
 	TiXmlElement* backgroundXml = (TiXmlElement*) element->FirstChildElement("BACKGROUND");
 	if (backgroundXml)
@@ -121,10 +130,21 @@ void DScene::CreateRenderObject(TiXmlElement* objectXml)
 		object = new DRenderDistance();
 		object->Read(objectXml);
 		break;
+	case 7:
+		object = new DRenderSVO();
+		object->Read(objectXml);
+		break;
 	};
 
-	object->SetObjectId(mCurrentId++);
+	object->SetObjectId(mRenderObjects.size()+1);
 	mRenderObjects.push_back(object);
+}
+
+DRenderObject* DScene::GetObject(int idx) const
+{
+	if (idx<1) return NULL;
+
+	return mRenderObjects[idx-1];
 }
 
 void DScene::Render(int width, int height, DColour *renderBuffer)
@@ -153,15 +173,66 @@ bool DScene::Intersect(DRayContext& RayContext, DCollisionResponse& out_Response
 		return false;
 
 	bool hit = true;
-	if (!mKDTree.Intersect(RayContext, out_Response, debuginfo))
+	int hitId = mKDTree.Intersect(RayContext, out_Response, debuginfo);
+	if (hitId == 0)
 	{
-		if (RayContext.m_RequestFlags&RequestColour)
+		if ((RayContext.m_RequestFlags&RequestColour)>0 && (RayContext.m_RequestFlags&RequestZeroLighting)==0)
 		{
 			mBackground.GetSceneryColour(RayContext.m_Ray, out_Response.mColour);
 		}
 
 		hit = false;
 	}
+
+	// within an object, so factor in the colour
+	int numWithin = RayContext.mWithinIdx.size();
+	if (numWithin>0)
+	{
+		float distance = out_Response.mDistance;
+		std::vector<int> within;
+		for (int i=0; i<numWithin; i++)
+		{
+			DRenderObject* object = RayContext.m_Scene->GetObject(RayContext.mWithinIdx[i]);
+			int oldFlags = RayContext.m_RequestFlags;
+			RayContext.m_RequestFlags = RequestBackface|RequestDistance;
+			DCollisionResponse within_Response;
+			object->Intersect(RayContext, within_Response);
+
+			if (i==0)
+			{
+				if (hitId==0 || within_Response.mDistance<out_Response.mDistance)
+				{
+					distance = within_Response.mDistance;
+					RayContext.m_RequestFlags = oldFlags|RequestBackface|RequestDistance;
+//					RayContext.mWithinIdx.erase(RayContext.mWithinIdx.begin()); 
+					object->Intersect(RayContext, out_Response);
+//					out_Response = within_Response;
+				}
+				else
+				{
+					if (hitId>0)
+						RayContext.m_Scene->GetObject(hitId)->Intersect(RayContext, out_Response);
+				}
+
+				float density = 0;//1 - exp(-distance);
+				out_Response.mColour = object->GetAbsorptionColour(RayContext.m_Ray.GetStart()) * density + out_Response.mColour * (1-density);
+			}
+
+			RayContext.m_RequestFlags = oldFlags;
+
+			if (within_Response.mDistance > distance)
+			{
+				within.push_back(RayContext.mWithinIdx[i]);
+			}
+		}
+		RayContext.mWithinIdx = within;
+	}
+	else
+	{
+		if (hitId>0)
+			RayContext.m_Scene->GetObject(hitId)->Intersect(RayContext, out_Response);
+	}
+
 	/*
 	DVector3 hitPos;
 	

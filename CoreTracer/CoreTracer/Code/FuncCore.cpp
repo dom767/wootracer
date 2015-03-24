@@ -28,7 +28,7 @@ void DProgram::Create(std::string& program)
 	}
 	catch (int /*e*/)
 	{
-		Log().Print("Invalid Program");
+		LOG(Error, "Invalid Program");
 		mStatements.clear();
 		mCompiled = false;
 	}

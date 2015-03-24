@@ -4,7 +4,10 @@
 #include "FuncCore.h"
 #include "FuncFactory.h"
 #include "Vector3.h"
+#include "Vector2.h"
 #include "Matrix4.h"
+#include "StaticCentres.h"
+#include "TextureCache.h"
 //#include <string>
 #include <sstream>
 
@@ -303,22 +306,26 @@ BEGIN_FUNC(DDistMandelBulb, "mandelbulb");
 		DVector3 z = pos;
 		float dr = 1.0;
 		float r = 0.0;
+		float theta, phi, zr;
 		for (int i = 0; i < Iterations ; i++) {
 			r = z.Magnitude();
 			if (r>Bailout) break;
 
 			// convert to polar coordinates
-			float theta = acos(z[2]/r);
-			float phi = atan2(z[1],z[0]);
+			theta = acos(z[2]/r);
+			phi = atan2(z[1],z[0]);
 			dr =  pow( r, Power-1.0f)*Power*dr + 1.0f;
 
 			// scale and rotate the point
-			float zr = pow( r,Power);
+			zr = pow( r,Power);
 			theta = theta*Power;
 			phi = phi*Power;
 
 			// convert back to cartesian coordinates
-			z = DVector3(sin(theta)*cos(phi), sin(phi)*sin(theta), cos(theta))*zr + pos;
+//			z = DVector3(sin(theta)*cos(phi), sin(phi)*sin(theta), cos(theta))*zr + pos;
+			z.mComponent[0] = sinf(theta)*cosf(phi)*zr + pos.mComponent[0];
+			z.mComponent[1] = sinf(phi)*sinf(theta)*zr + pos.mComponent[1];
+			z.mComponent[2] = cosf(theta)*zr + pos.mComponent[2];
 		}
 		return 0.5f*log(r)*r/dr;
 	}
@@ -428,15 +435,22 @@ BEGIN_FUNC(DDistKaleido, "kaleido");
 		mParam.push_back(new DFuncParam("mOffset", Vec));
 		mParam.push_back(new DFuncParam("mIterations", Float));
 		mParam.push_back(new DFuncParam("mScale", Float));
+		mRot1 = mRot2 = DVector3(0,0,0);
+		matRot1.MakeIdentity();
+		matRot2.MakeIdentity();
 	}
 
-	void rotate1(DVector3& pos, const DVector3& rot)
+	DMatrix4 rotate1(const DVector3& rot)
 	{
 		DMatrix4 mat;
 		mat.MakeFromRPY(rot[0],rot[1],rot[2]);
-		pos = mat * pos;
-	
+		return mat;
 	}
+
+	DVector3 mRot1;
+	DVector3 mRot2;
+	DMatrix4 matRot1;
+	DMatrix4 matRot2;
 
 	virtual float Evaluate(DFunctionState& state)
 	{
@@ -447,6 +461,17 @@ BEGIN_FUNC(DDistKaleido, "kaleido");
 		int iterations = int(0.5f + mParam[4]->Evaluate(state));
 		float scale = mParam[5]->Evaluate(state);
 
+		if (mRot1[0]!=rot1[0] || mRot1[1]!=rot1[1] || mRot1[2]!=rot1[2])
+		{
+			matRot1 = rotate1(rot1);
+			mRot1 = rot1;
+		}
+		if (mRot2[0]!=rot2[0] || mRot2[1]!=rot2[1] || mRot2[2]!=rot2[2])
+		{
+			matRot2 = rotate1(rot2);
+			mRot2 = rot2;
+		}
+
 		float bailout = 1000;
 		float r=pos.MagnitudeSquared();
 		int i;
@@ -454,13 +479,13 @@ BEGIN_FUNC(DDistKaleido, "kaleido");
 			//Folding... These are some of the symmetry planes of the tetrahedron
 			float tmp;
 
-			rotate1(pos, rot1);
+			pos = matRot1 * pos;
 
 			if(pos[0]+pos[1]<0){tmp=-pos[1];pos[1]=-pos[0];pos[0]=tmp;}
 			if(pos[0]+pos[2]<0){tmp=-pos[2];pos[2]=-pos[0];pos[0]=tmp;}
 			if(pos[1]+pos[2]<0){tmp=-pos[2];pos[2]=-pos[1];pos[1]=tmp;}
       
-			rotate1(pos, rot2);
+			pos = matRot2 * pos;
 
 			//Stretche about the point [1,1,1]*(scale-1)/scale; The "(scale-1)/scale" is here in order to keep the size of the fractal constant wrt scale
 			pos[0]=scale*pos[0]-offset[0]*(scale-1);//equivalent to: x=scale*(x-cx); where cx=(scale-1)/scale;
@@ -1025,6 +1050,121 @@ BEGIN_VECFUNC(DDistRepX, "repx");
 		float repX = mParam[1]->Evaluate(state);
 		rPos[0] = smod((rPos[0]+repX),repX*2)-repX;
 		return rPos;
+	}
+END_FUNC
+
+BEGIN_FUNC(DDistVoronoi, "voronoi");
+	DDistVoronoi()
+	{
+		mParam.push_back(new DFuncParam("mPos", Vec));
+		mParam.push_back(new DFuncParam("mSeed", Float));
+		mParam.push_back(new DFuncParam("mNum", Float));
+		mParam.push_back(new DFuncParam("mScale", Float));
+	}
+
+	virtual float Evaluate(DFunctionState& state)
+	{
+		unsigned int num = unsigned int(mParam[2]->Evaluate(state));
+		DVector3 *centres = DStaticCentres::Get().GetCentres(unsigned int(mParam[1]->Evaluate(state)), num);
+
+		DVector3 pos = mParam[0]->EvaluateVec(state);
+		pos[0] = smod(pos[0]+1,2)-1;
+		pos[1] = smod(pos[1]+1,2)-1;
+		pos[2] = smod(pos[2]+1,2)-1;
+
+		float dist = 2;
+		float dist2 = 2;
+		for (unsigned int i=0; i<num; i++)
+		{
+			float tempdistx = fabsf(centres[i][0] - pos[0]);
+			if (tempdistx>1) tempdistx = 2 - tempdistx;
+			float tempdisty = fabsf(centres[i][1] - pos[1]);
+			if (tempdisty>1) tempdisty = 2 - tempdisty;
+			float tempdistz = fabsf(centres[i][2] - pos[2]);
+			if (tempdistz>1) tempdistz = 2 - tempdistz;
+			float tempdist = sqrtf(tempdistx*tempdistx + tempdisty*tempdisty + tempdistz*tempdistz);
+			if (tempdist<dist) {dist2=dist;dist=tempdist;}
+			else if (tempdist<dist2) {dist2=tempdist;}
+		}
+		dist = clamp((dist2-dist)*0.5f*mParam[3]->Evaluate(state), 0, 1);
+		return dist;
+	}
+END_FUNC
+
+BEGIN_FUNC(DDistWaves, "waves");
+	DDistWaves()
+	{
+		mParam.push_back(new DFuncParam("mPos", Vec));
+		mParam.push_back(new DFuncParam("mSeed", Float));
+		mParam.push_back(new DFuncParam("mWind", Vec));
+		mParam.push_back(new DFuncParam("mResolution", Float));
+	}
+
+	float CubicInterpolate (float v0, float v1, float v2, float v3, float x)
+	{
+		return v1 + 0.5f * x*(v2 - v0 + x*(2.0f*v0 - 5.0f*v1 + 4.0f*v2 - v3 + x*(3.0f*(v1 - v2) + v3 - v0)));
+	}
+
+	virtual float Evaluate(DFunctionState& state)
+	{
+		unsigned int seed = unsigned int(mParam[1]->Evaluate(state));
+		DVector3 wind = mParam[2]->EvaluateVec(state);
+		int resolution = int(powf(2.0f, log(mParam[3]->Evaluate(state))/log(2.f)));
+
+		float* mData = DTextureCache::Get().GetTexture(seed, DVector2(wind[0], wind[1]), resolution);
+
+		DVector3 pos = mParam[0]->EvaluateVec(state);
+		pos *= float(resolution);
+		pos[0] = fmodf(pos[0], float(resolution));
+		if (pos[0]<0) pos[0] += resolution;
+		pos[2] = fmodf(pos[2], float(resolution));
+		if (pos[2]<0) pos[2] += resolution;
+
+		int x = int(pos[0])%resolution; // very very rarely fmodf(1023.9999,1024)+1024 == 1024
+		int y = int(pos[2])%resolution;
+		int xm1 = (x-1)%resolution;
+		if (xm1<0) xm1 += resolution;
+		int ym1 = (y-1)%resolution;
+		if (ym1<0) ym1 += resolution;
+		int xp1 = (x+1)%resolution;
+		int yp1 = (y+1)%resolution;
+		int xp2 = (x+2)%resolution;
+		int yp2 = (y+2)%resolution;
+		float remainderx = pos[0] - float(x);
+		float remaindery = pos[2] - float(y);
+
+		float fxmym = mData[xm1 + ym1*resolution];
+		float fx0ym = mData[x + ym1*resolution];
+		float fx1ym = mData[xp1 + ym1*resolution];
+		float fx2ym = mData[xp2 + ym1*resolution];
+		float fxmy0 = mData[xm1 + y*resolution];
+		float fx0y0 = mData[x + y*resolution];
+		float fx1y0 = mData[xp1 + y*resolution];
+		float fx2y0 = mData[xp2 + y*resolution];
+		float fxmy1 = mData[xm1 + yp1*resolution];
+		float fx0y1 = mData[x + yp1*resolution];
+		float fx1y1 = mData[xp1 + yp1*resolution];
+		float fx2y1 = mData[xp2 + yp1*resolution];
+		float fxmy2 = mData[xm1 + yp2*resolution];
+		float fx0y2 = mData[x + yp2*resolution];
+		float fx1y2 = mData[xp1 + yp2*resolution];
+		float fx2y2 = mData[xp2 + yp2*resolution];
+
+		float v0 = CubicInterpolate(fxmym, fx0ym, fx1ym, fx2ym, remainderx);
+		float v1 = CubicInterpolate(fxmy0, fx0y0, fx1y0, fx2y0, remainderx);
+		float v2 = CubicInterpolate(fxmy1, fx0y1, fx1y1, fx2y1, remainderx);
+		float v3 = CubicInterpolate(fxmy2, fx0y2, fx1y2, fx2y2, remainderx);
+
+		return CubicInterpolate(v0, v1, v2, v3, remaindery);
+/*
+
+		float fx = remainderx;// * 3.1415927f;
+//		float fx = (1 - cosf(ftx)) * .5f;
+		float fy = remaindery;// * 3.1415927f;
+	//	float fy = (1 - cosf(fty)) * .5f;
+
+		return ((fx0y0*(1-fx) + fx1y0*fx) * (1-fy)
+				+ (fx0y1*(1-fx) + fx1y1*fx) * fy);*/
 	}
 END_FUNC
 

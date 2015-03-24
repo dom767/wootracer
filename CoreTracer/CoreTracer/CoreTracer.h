@@ -20,6 +20,7 @@ extern "C" __declspec(dllexport) void GetDepth(float& depth, int x, int y);
 extern "C" __declspec(dllexport) int GetDistanceSchemaLength();
 extern "C" __declspec(dllexport) void GetDistanceSchema(char* schema);
 extern "C" __declspec(dllexport) void PostProcess(float* targetBuffer, float* sourceBuffer, double maxValue, int iterations, float* kernel, float boostPower, float targetweighting, float sourceweighting, int width, int height);
+extern "C" __declspec(dllexport) void GaussianBlur(float* targetBuffer, float* sourceBuffer, double maxValue, int size, float boostPower, float targetWeighting, float sourceWeighting, int width, int height);
 
 //bool RenderPatch(float* buffer, const char* description, int x, int y);
 
@@ -45,6 +46,10 @@ public:
 	void PostProcess(float* targetBuffer, float* sourceBuffer, double maxValue, int iterations, float* kernel, float boostPower, float targetWeighting, float sourceWeighting, int width, int height)
 	{
 		mPostProcess.PostProcess(targetBuffer, sourceBuffer, maxValue, iterations, kernel, boostPower, targetWeighting, sourceWeighting, width, height);
+	}
+	void GaussianBlur(float* targetBuffer, float* sourceBuffer, double maxValue, int size, float boostPower, float targetWeighting, float sourceWeighting, int width, int height)
+	{
+		mPostProcess.GaussianBlur(targetBuffer, sourceBuffer, maxValue, size, boostPower, targetWeighting, sourceWeighting, width, height);
 	}
 	__int64 GetRayCount();
 	__int64 GetKDCount();

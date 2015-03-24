@@ -49,4 +49,6 @@ class DPostProcess
 public:
 	void PostProcess(float* targetBuffer, float* sourceBuffer, double maxValue, int iterations, float* kernel, float boostPower, float targetweighting, float sourceweighting, int width, int height);
 
+	void GaussianBlur(float* targetBuffer, float* sourceBuffer, double maxValue, int size, float boostPower, float targetweighting, float sourceweighting, int width, int height);
+
 };

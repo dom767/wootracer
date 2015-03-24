@@ -12,6 +12,7 @@ class DRenderObject : public DSceneObject
 {
 public:
 	DRenderObject() : mScale(1.f, 1.f, 1.f) {mRotation.MakeIdentity();}
+	virtual ~DRenderObject() {}
 	/*DRenderObject(const DVector3& Centre, const DMaterial& Material, const DAABoundingBox& BoundingBox)
 		: mScale(1.f,1.f,1.f),
 		mCentre(Centre),
@@ -39,6 +40,8 @@ public:
 	const DAABoundingBox& GetAABoundingBox() {return mAABoundingBox;}
 	void SetIgnoreWhileLighting(bool IgnoreWhileLighting) {mIgnoreWhileLighting=IgnoreWhileLighting;}
 	bool GetIgnoreWhileLighting() const {return mIgnoreWhileLighting;} 
+	DColour GetAbsorptionColour(DVector3 pos) const {return mMaterial.GetAbsorptionColour(pos);}
+	float GetRefractiveIndex() const {return mMaterial.GetRefractiveIndex();}
 	DRenderObject* Clone();
 
 protected:

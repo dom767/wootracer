@@ -76,6 +76,8 @@ enum EVectorStateVar
 class DProgram
 {
 public:
+	~DProgram() {Reset();}
+
 	void Create(std::string& program);
 	void Run(DFunctionState& state) const;
 	bool Compiled() const {return mCompiled;}
@@ -121,7 +123,7 @@ public:
 class DDistFunc
 {
 public:
-	~DDistFunc();
+	virtual ~DDistFunc();
 	virtual void Read(std::string& arg);
 	virtual EType GetType()=0;
 	virtual std::string GetName()=0;

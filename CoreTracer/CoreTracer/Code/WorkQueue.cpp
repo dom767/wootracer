@@ -1,11 +1,21 @@
 #include "stdafx.h"
 #include "WorkQueue.h"
+#include "RenderFragment.h"
 #include <windows.h>
 
 
 DWorkQueue::DWorkQueue() : mStop(false)
 {
 	InitializeCriticalSection(&mWQCS);
+}
+
+DWorkQueue::~DWorkQueue()
+{
+	while (mFragments.size()>0)
+	{
+		delete mFragments.front();
+		mFragments.pop_front();
+	}
 }
 
 void DWorkQueue::Add(DRenderFragment* fragment)

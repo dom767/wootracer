@@ -10,6 +10,7 @@ DLog& Log()
 DLog::DLog()
 {
 	fopen_s(&mFile, "log.txt", "wb");
+	mErrorLevel = Error;
 }
 
 DLog::~DLog()

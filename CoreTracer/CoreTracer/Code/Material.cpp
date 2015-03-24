@@ -7,6 +7,7 @@
 #include "FuncFactory.h"
 #include "Functions.h"
 #include "Log.h"
+#include "RenderObject.h"
 
 DVecFunc* GetFunction(const TiXmlElement* element, const char* function)
 {
@@ -59,6 +60,7 @@ void DMaterial::Read(TiXmlElement* element)
 	Convert::StrToFloat(element->Attribute("density"), m_Density);
 	mAbsorptionColour = DCF::CreateFromXML((TiXmlElement*) element->FirstChildElement("ABSORPTIONCOLOUR"));
 	Convert::StrToFloat(element->Attribute("shininess"), m_Shininess);
+	Convert::StrToFloat(element->Attribute("refractiveIndex"), m_RefractiveIndex);
 	const char* materialFunction = element->Attribute("materialFunction");
 	if (materialFunction)
 	{
@@ -118,11 +120,37 @@ void DMaterial::CalculateColour(DColour &out_colour,
 	reflection += perturb;
 	reflection.Normalise();
 
+	DColour reflectivity = mReflectivity->GetColour(hitPos);
+	float refractiveIndex;
+	float n;
+	bool exiting;
+
+	if (m_Opacity!=1)
+	{
+		exiting = rRayContext.Within(hitId);
+		
+		if (exiting)
+		{
+			refractiveIndex = rRayContext.mWithinIdx.size()>1 ? rRayContext.m_Scene->GetObject(rRayContext.mWithinIdx[1])->GetRefractiveIndex() : 1.003f;
+		}
+		else
+			refractiveIndex = m_RefractiveIndex;
+
+		n = rRayContext.m_RefractiveIndex / refractiveIndex;
+		float n2 = rRayContext.m_RefractiveIndex;
+		float n1 = refractiveIndex;
+		float r0 = (n1-n2) / (n1+n2);
+		r0 = r0 * r0;
+
+		float reflectance = r0 + (1-r0) * (1-powf(cosf(1 + rRayContext.m_Ray.GetDirection().Dot(normal)), 5));
+		reflectivity = DColour(reflectance, reflectance, reflectance);
+	}
+
 	DFunctionState funcState;
 	funcState.mPosition = hitPos;
 	funcState.mDiffuse = mDiffuseColour->GetColour(hitPos) * out_colour;
 	funcState.mSpecular = mSpecularColour->GetColour(hitPos);
-	funcState.mReflectivity = mReflectivity->GetColour(hitPos);
+	funcState.mReflectivity = reflectivity;
 	funcState.mEmissive = mEmissiveColour->GetColour(hitPos);
 	funcState.mAbsorption = mAbsorptionColour->GetColour(hitPos);
 
@@ -143,6 +171,7 @@ void DMaterial::CalculateColour(DColour &out_colour,
 	DRayContext colourContext(rRayContext);
 	colourContext.m_Ray = DRay(hitPos, normal);
 
+	LOG(Info, "Shadow test ray");
 	if (scene && !ignoreLighting)
 		scene->CalculateLighting(colourContext,
 			hitId,
@@ -170,12 +199,14 @@ void DMaterial::CalculateColour(DColour &out_colour,
 
 		DRayContext pathTrace(rRayContext);
 		pathTrace.m_Ray = DRay(hitPos, randomInter);
-		pathTrace.m_RecursionRemaining = recursionRemaining==0 ? -1 : (recursionRemaining==1 ? 0 : 1);
+		pathTrace.m_RecursionRemaining = recursionRemaining==0 ? -1 : recursionRemaining-1;
 		pathTrace.m_RequestFlags |= RequestZeroLighting;
+		LOG(Info, "Pathtracing test ray");
 		scene->Intersect(pathTrace, response);
 			
 		DColour addition = response.mColour;
 		addition *= funcState.mDiffuse;
+//		addition *= 1.f/(2*PI);
 		out_colour += addition;
 	}
 
@@ -188,6 +219,7 @@ void DMaterial::CalculateColour(DColour &out_colour,
 			reflectionContext.m_RequestFlags &= ~RequestZeroLighting;
 		reflectionContext.m_RecursionRemaining = recursionRemaining-1;
 
+		LOG(Info, "Reflection ray");
 		scene->Intersect(reflectionContext, response);
 		out_colour.mRed += response.mColour.mRed*reflectivityCol.mRed;
 		out_colour.mGreen += response.mColour.mGreen*reflectivityCol.mGreen;
@@ -195,8 +227,8 @@ void DMaterial::CalculateColour(DColour &out_colour,
 	}
 
 	if (m_Opacity!=1)
-	{/*
-		const double n = rRayContext.m_RefractiveIndex / m_RefractiveIndex;
+	{
+/*		const double n = rRayContext.m_RefractiveIndex / m_RefractiveIndex;
 		const double cosI = normal.Dot(eyeVector);
 		double sinT2 = n*n*(1.0 - cosI*cosI);
 		if (sinT2 > 1)
@@ -206,12 +238,16 @@ void DMaterial::CalculateColour(DColour &out_colour,
 		DVector3 refractionVector = (eyeVector * n) - (normal * (n + sqrtf(1 - sinT2)));
 		refractionVector.Normalise();
 */
-		const float n = rRayContext.m_RefractiveIndex / m_RefractiveIndex;
-		const float cos1 = -normal.Dot(eyeVector);
+
+
+		float cos1 = -normal.Dot(eyeVector);
 		const float cos2 = sqrtf(1 - ((n * n) * (1 - (cos1 * cos1))));
 		DVector3 refractionVector;
 		if (cos1<0)
-			refractionVector = (eyeVector * n) + (normal * ((n*cos1) + cos2));
+			return;
+
+		if (exiting)
+			refractionVector = (eyeVector * n) - (normal * ((n*cos1) + cos2));
 		else
 			refractionVector = (eyeVector * n) + (normal * ((n*cos1) - cos2));
 		refractionVector.Normalise();
@@ -219,15 +255,23 @@ void DMaterial::CalculateColour(DColour &out_colour,
 		// calculate passthrough
 		DCollisionResponse RefractionResponse;
 		DRayContext refractionContext(rRayContext);
+		if (scene->IsCaustics())
+			refractionContext.m_RequestFlags &= ~RequestZeroLighting;
+		if (exiting)
+			refractionContext.mWithinIdx.erase(refractionContext.mWithinIdx.begin());
+		else
+			refractionContext.mWithinIdx.push_back(hitId);
 		refractionContext.m_Ray = DRay(hitPos, refractionVector);
 		refractionContext.m_RecursionRemaining--;
-		refractionContext.m_RefractiveIndex = m_RefractiveIndex;
+		refractionContext.m_RefractiveIndex = refractiveIndex;
 		
 //		RefractionResponse.mIgnoreObjectId = hitId;
-		RefractionResponse.m_WithinObjectId = hitId;
+//		RefractionResponse.m_WithinObjectId = hitId;
 		if (scene)
 			scene->Intersect(refractionContext, RefractionResponse);
-
-		out_colour = (out_colour*m_Opacity) + (RefractionResponse.mColour*(1-m_Opacity));
+	
+		float refractivity = funcState.mReflectivity.mRed;
+	
+		out_colour = (out_colour*refractivity) + (RefractionResponse.mColour*(1-refractivity));
 	}
 }

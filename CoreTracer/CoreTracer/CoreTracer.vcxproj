@@ -163,6 +163,7 @@
     <ClInclude Include="Code\ColourFunction.h" />
     <ClInclude Include="Code\convert.h" />
     <ClInclude Include="Code\Background.h" />
+    <ClInclude Include="Code\FFT.h" />
     <ClInclude Include="Code\FuncCore.h" />
     <ClInclude Include="Code\FuncFactory.h" />
     <ClInclude Include="Code\Functions.h" />
@@ -184,9 +185,12 @@
     <ClInclude Include="Code\RenderObject.h" />
     <ClInclude Include="Code\RenderSphere.h" />
     <ClInclude Include="Code\RenderSquare.h" />
+    <ClInclude Include="Code\RenderSVO.h" />
     <ClInclude Include="Code\Scene.h" />
     <ClInclude Include="Code\SceneIO.h" />
     <ClInclude Include="Code\SceneObject.h" />
+    <ClInclude Include="Code\StaticCentres.h" />
+    <ClInclude Include="Code\TextureCache.h" />
     <ClInclude Include="Code\Timer.h" />
     <ClInclude Include="Code\Vector2.h" />
     <ClInclude Include="Code\Vector3.h" />
@@ -204,6 +208,7 @@
     <ClCompile Include="Code\ColourFunction.cpp" />
     <ClCompile Include="Code\convert.cpp" />
     <ClCompile Include="Code\Background.cpp" />
+    <ClCompile Include="Code\FFT.cpp" />
     <ClCompile Include="Code\FuncCore.cpp" />
     <ClCompile Include="Code\FuncFactory.cpp" />
     <ClCompile Include="Code\KDTree.cpp" />
@@ -221,8 +226,11 @@
     <ClCompile Include="Code\RenderObject.cpp" />
     <ClCompile Include="Code\RenderSphere.cpp" />
     <ClCompile Include="Code\RenderSquare.cpp" />
+    <ClCompile Include="Code\RenderSVO.cpp" />
     <ClCompile Include="Code\Scene.cpp" />
     <ClCompile Include="Code\SceneIO.cpp" />
+    <ClCompile Include="Code\StaticCentres.cpp" />
+    <ClCompile Include="Code\TextureCache.cpp" />
     <ClCompile Include="Code\Timer.cpp" />
     <ClCompile Include="Code\Viewport.cpp" />
     <ClCompile Include="Code\WorkQueue.cpp" />

@@ -55,7 +55,7 @@ struct ThreadArgs
 
 		static char bdest[256];
 		sprintf_s(bdest, "Thread %i rendered square at %i, %i\n", mThread, mRenderFragment->mLeft, mRenderFragment->mTop);
-		Log().Print(&bdest[0]);
+		LOG(Error, &bdest[0]);
 	}
 
 	bool GetNext()
@@ -107,7 +107,7 @@ DCamera::DCamera() : mProgressMonitor(0),
 
 void DCamera::Render(const DScene& scene, const int width, const int height, DColour *renderBuffer, bool singleFrame)
 {
-	Log().Print("Camera.Render");
+	LOG(Error, "Camera.Render");
 	DWORD result = WaitForSingleObject(mRenderHandle,1);
 	if (result==WAIT_TIMEOUT)
 		return;
@@ -119,7 +119,7 @@ void DCamera::Render(const DScene& scene, const int width, const int height, DCo
 	mWidth = width;
 	mHeight = height;
 
-	Log().Print("Camera.Render InitialiseRenderQueue");
+	LOG(Error, "Camera.Render InitialiseRenderQueue");
 	for (int y=0; y<=height/16; y++)
 	{
 		for (int x=0; x<=width/16; x++)
@@ -128,7 +128,7 @@ void DCamera::Render(const DScene& scene, const int width, const int height, DCo
 		}
 	}
 
-	Log().Print("Camera.Render InitialiseThreads");
+	LOG(Error, "Camera.Render InitialiseThreads");
 #ifdef _DEBUG
 	const int NumThreads = 1;
 #else
@@ -145,7 +145,7 @@ void DCamera::Render(const DScene& scene, const int width, const int height, DCo
 	{
 		static char bdest[256];
 		sprintf_s(bdest, "Camera.Render Initialise Thread %i", i);
-		Log().Print(&bdest[0]);
+		LOG(Error, &bdest[0]);
 
 //		sceneClones[i] = scene;
 		scene.SetRandomSeed((rand()<<16)|rand());
@@ -154,24 +154,24 @@ void DCamera::Render(const DScene& scene, const int width, const int height, DCo
 		threadHandle[i] = CreateThread(NULL, 0, RenderRow_Thread, args[i], 0, &threadId[i]);
 		if (threadHandle[i] == 0)
 		{
-			Log().Print("Camera.Render CreateThread failed");
+			LOG(Error, "Camera.Render CreateThread failed");
 			DWORD lastError = GetLastError();
 			static char bdest[256];
 			sprintf_s(bdest, "WaitFailed with error %i", lastError);
-			Log().Print(&bdest[0]);
+			LOG(Error, &bdest[0]);
 		}
 	}
 
 	int finishedThread = WaitForMultipleObjects(NumThreads, threadHandle, true, INFINITE);
 	if (finishedThread==-1)
 	{
-		Log().Print("Camera.Render WaitFailed");
+		LOG(Error, "Camera.Render WaitFailed");
 		DWORD lastError = GetLastError();
 		static char bdest[256];
 		sprintf_s(bdest, "WaitFailed with erorr %i", lastError);
-		Log().Print(&bdest[0]);
+		LOG(Error, &bdest[0]);
 	}
-	Log().Print("Camera.Render ThreadsComplete");
+	LOG(Error, "Camera.Render ThreadsComplete");
 
 	SetEvent(mRenderHandle);
 	mRenderHandle = NULL;
@@ -181,7 +181,8 @@ void DCamera::Render(const DScene& scene, const int width, const int height, DCo
 		CloseHandle(threadHandle[i]);
 		delete args[i];
 	}
-	Log().Print("Camera.Render ClearedHandles");
+
+	LOG(Error, "Camera.Render ClearedHandles");
 }
 
 void DCamera::StopRender()
@@ -362,13 +363,25 @@ struct Patch
 		if (success)
 		{
 			bool debugInfo = false;
-			if (x==318 && y == 58)
+/*			if (x==318 && y == 58)
 			{
 				debugInfo = true;
 			}
-			DCollisionResponse response;
+	*/		DCollisionResponse response;
+			LOG(Info, "Sample ray");
 			hit = mScene.Intersect(DRayContext(&mScene, ray, RequestColour, mScene.GetMaximumRecursion(), DRayContext::AirRefractionIndex, pixelIndex, subframe), response, debugInfo);
 			mColour = response.mColour;
+			if (mColour.mRed!=mColour.mRed)
+			{
+				Log().SetErrorLevel(Info);
+				static char bdest[256];
+				sprintf_s(bdest, "NaN Detected (%i, %i)", x, y);
+				LOG(Error, &bdest[0]);
+				LOG(Info, "Resample ray following NaN detection");
+				hit = mScene.Intersect(DRayContext(&mScene, ray, RequestColour, mScene.GetMaximumRecursion(), DRayContext::AirRefractionIndex, pixelIndex, subframe), response, true);
+				Log().SetErrorLevel(Error);
+				
+			}
 		}
 		else
 		{

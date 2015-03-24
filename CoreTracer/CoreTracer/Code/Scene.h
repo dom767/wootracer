@@ -30,14 +30,24 @@ enum ERequestType
 	RequestDistance=0x2,
 	RequestBackface=0x4,
 	RequestLighting=0x8,
-	RequestZeroLighting=0x10,
-	RequestNoSpecular=0x01,
+	RequestZeroLighting=0x10
 };
 
 struct DRayContext
 {
 	DRayContext(const DScene* scene, DRay ray, int requestType, int maxRecursion, const float refractionIndex, int pixelIndex, int subFrame) :
 m_Scene(scene), m_RecursionRemaining(maxRecursion), m_RefractiveIndex(refractionIndex), m_RequestFlags(requestType), m_Ray(ray), mPixelIndex(pixelIndex), mSampleIndex(4), mSubFrame(subFrame) {}
+
+	bool Within(int idx) const
+	{
+		for (unsigned int i=0; i<mWithinIdx.size(); i++)
+		{
+			if (mWithinIdx[i]==idx)
+				return true;
+		}
+
+		return false;
+	}
 
 	const static float AirRefractionIndex;
 	DRay m_Ray;
@@ -48,6 +58,7 @@ m_Scene(scene), m_RecursionRemaining(maxRecursion), m_RefractiveIndex(refraction
 	mutable int mSampleIndex;
 	int mPixelIndex;
 	int mSubFrame;
+	std::vector<int> mWithinIdx;
 };
 
 class DScene
@@ -55,6 +66,8 @@ class DScene
 public:
 	DScene();
 	~DScene();
+
+	void Cleanup();
 
 	void operator=(const DScene& scene);
 	bool Intersect(DRayContext& RayContext, DCollisionResponse& out_Response, bool debuginfo=false) const;
@@ -76,6 +89,7 @@ public:
 	DVector3 GetRandomDirection3d(const DRayContext &rayContext) const;
 	bool IsPathTracer() const {return mPathTracer>0;}
 	bool IsCaustics() const {return mCaustics;}
+	DRenderObject* GetObject(int idx) const;
 
 	mutable __int64 mRayCount;
 	DKDTree mKDTree;
@@ -84,7 +98,6 @@ public:
 
 private:
 	int mMaximumRecursion;
-	int mCurrentId;
 	int mCanvasWidth;
 	int mCanvasHeight;
 	DBackground mBackground;

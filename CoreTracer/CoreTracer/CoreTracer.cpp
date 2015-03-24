@@ -22,6 +22,7 @@ TCHAR szWindowClass[MAX_LOADSTRING];			// the main window class name
 int gWidth;
 int gHeight;
 float* gBuffer;
+float* gDestBuffer;
 
 // Forward declarations of functions included in this code module:
 ATOM				MyRegisterClass(HINSTANCE hInstance);
@@ -57,7 +58,7 @@ bool gDone = false;
 
 void DCoreTracer::BuildCamera(const char* const description)
 {
-	Log().Print("Coretracer.BuildCamera");
+	LOG(Error, "Coretracer.BuildCamera");
 	TiXmlDocument xml;
 	xml.Parse(description);
 	TiXmlElement* first = (TiXmlElement*)xml.FirstChildElement("CAMERA");
@@ -66,7 +67,7 @@ void DCoreTracer::BuildCamera(const char* const description)
 
 void DCoreTracer::BuildViewport(const char* const description)
 {
-	Log().Print("Coretracer.BuildViewport");
+	LOG(Error, "Coretracer.BuildViewport");
 	TiXmlDocument xml;
 	xml.Parse(description);
 	TiXmlElement* first = (TiXmlElement*)xml.FirstChildElement("VIEWPORT");
@@ -78,7 +79,7 @@ void DCoreTracer::BuildViewport(const char* const description)
 
 void DCoreTracer::BuildFromXml(const char* const description)
 {
-	Log().Print("Coretracer.BuildFromXml");
+	LOG(Error, "Coretracer.BuildFromXml");
 	TiXmlDocument xml;
 	xml.Parse(description);
 	TiXmlElement* first = (TiXmlElement*) xml.FirstChildElement("VIEWPORT");
@@ -93,19 +94,19 @@ void DCoreTracer::BuildFromXml(const char* const description)
 /*
 void DCoreTracer::RenderPatch(int x, int y)
 {
-	Log().Print("Coretracer.RenderPatch");
+	LOG(Error, "Coretracer.RenderPatch");
 	mViewport.RenderPatch(x, y);
 }
 */
 float DCoreTracer::GetDepth(int width, int height)
 {
-	Log().Print("Coretracer.GetDepth");
+	LOG(Error, "Coretracer.GetDepth");
 	return mViewport.GetDepth(width, height);
 }
 
 void DCoreTracer::CopyBuffer(float* buffer)
 {
-	Log().Print("Coretracer.CopyBuffer");
+	LOG(Error, "Coretracer.CopyBuffer");
 	mViewport.CopyBuffer((DColour*)buffer);
 }
 
@@ -121,7 +122,7 @@ DCoreTracer* g_CoreTracer=NULL;
 
 void DCoreTracer::StartRender(bool singleFrame)
 {
-	Log().Print("Coretracer.StartRender");
+	LOG(Error, "Coretracer.StartRender");
 	DWORD threadId;
 	
 	if (singleFrame)
@@ -144,7 +145,7 @@ void DCoreTracer::StartRender(bool singleFrame)
 
 void DCoreTracer::StopRender()
 {
-	Log().Print("Coretracer.StopRender");
+	LOG(Error, "Coretracer.StopRender");
 	mCamera.StopRender();
 	if (threadHandle)
 	{
@@ -155,31 +156,31 @@ void DCoreTracer::StopRender()
 
 __int64 DCoreTracer::GetRayCount()
 {
-	Log().Print("Coretracer.GetRayCount");
+	LOG(Error, "Coretracer.GetRayCount");
 	return mScene.mRayCount;
 }
 
 __int64 DCoreTracer::GetKDCount()
 {
-	Log().Print("Coretracer.GetKDCount");
+	LOG(Error, "Coretracer.GetKDCount");
 	return mScene.mKDTree.mRecursions;
 }
 
 __int64 DCoreTracer::GetIntersectionCount()
 {
-	Log().Print("Coretracer.GetIntersectionCount");
+	LOG(Error, "Coretracer.GetIntersectionCount");
 	return mScene.mKDTree.mIntersections;
 }
 
 __int64 DCoreTracer::GetPixelCount()
 {
-	Log().Print("Coretracer.GetPixelCount");
+	LOG(Error, "Coretracer.GetPixelCount");
 	return mCamera.mPixelCount;
 }
 
 __int64 DCoreTracer::GetPatchSamples()
 {
-	Log().Print("Coretracer.GetPatchSamples");
+	LOG(Error, "Coretracer.GetPatchSamples");
 	return mCamera.mPatchSampleCount;
 }
 volatile unsigned int g_StartedRender=0;
@@ -189,7 +190,7 @@ volatile unsigned int g_StartedRender=0;
 ****************************/
 void InitialiseRender(const char* description)
 {
-	Log().Print("DLL.InitialiseRender");
+	LOG(Error, "DLL.InitialiseRender");
 	if (g_StartedRender==1)
 		return;
 
@@ -203,7 +204,7 @@ void InitialiseRender(const char* description)
 
 void SetCamera(const char* description)
 {
-	Log().Print("DLL.SetCamera");
+	LOG(Error, "DLL.SetCamera");
 	if (g_StartedRender==1)
 		return;
 
@@ -212,7 +213,7 @@ void SetCamera(const char* description)
 
 void SetViewport(const char* description)
 {
-	Log().Print("DLL.SetViewport");
+	LOG(Error, "DLL.SetViewport");
 	if (g_StartedRender==1)
 		return;
 
@@ -221,7 +222,7 @@ void SetViewport(const char* description)
 
 void StartRender()
 {
-	Log().Print("DLL.StartRender");
+	LOG(Error, "DLL.StartRender");
 	int val = InterlockedCompareExchange(&g_StartedRender, 1, 0);
 	if (val==1)
 		return;
@@ -231,7 +232,7 @@ void StartRender()
 
 void StopRender()
 {
-	Log().Print("DLL.StopRender");
+	LOG(Error, "DLL.StopRender");
 	if (g_CoreTracer)
 		g_CoreTracer->StopRender();
 
@@ -240,14 +241,14 @@ void StopRender()
 
 void CopyBuffer(float* buffer)
 {
-	Log().Print("DLL.CopyBuffer");
+	LOG(Error, "DLL.CopyBuffer");
 	if (g_CoreTracer)
 		g_CoreTracer->CopyBuffer(buffer);
 }
 
 void SyncRender(float* buffer)
 {
-	Log().Print("DLL.SyncRender");
+	LOG(Error, "DLL.SyncRender");
 	int val = InterlockedCompareExchange(&g_StartedRender, 1, 0);
 	if (val==1)
 		return;
@@ -262,7 +263,7 @@ void SyncRender(float* buffer)
 
 void GetDepth(float& depth, int x, int y)
 {
-	Log().Print("DLL.GetDepth");
+	LOG(Error, "DLL.GetDepth");
 	if (g_StartedRender==1)
 		return;
 
@@ -279,15 +280,20 @@ void GetDistanceSchema(char* schema)
 	memcpy(schema, DFuncFactory::Get().GetSchema(), DFuncFactory::Get().GetSchemaLength());
 }
 
-void PostProcess(float* targetBuffer, float* sourceBuffer, double maxValue, int iterations, float* kernel, float boostPower, float targetWeighting, float sourceweighting, int width, int height)
+void PostProcess(float* targetBuffer, float* sourceBuffer, double maxValue, int iterations, float* kernel, float boostPower, float targetWeighting, float sourceWeighting, int width, int height)
 {
-	g_CoreTracer->PostProcess(targetBuffer, sourceBuffer, maxValue, iterations, kernel, boostPower, targetWeighting, sourceweighting, width, height);
+	g_CoreTracer->PostProcess(targetBuffer, sourceBuffer, maxValue, iterations, kernel, boostPower, targetWeighting, sourceWeighting, width, height);
+}
+
+void GaussianBlur(float* targetBuffer, float* sourceBuffer, double maxValue, int size, float boostPower, float targetWeighting, float sourceWeighting, int width, int height)
+{
+	g_CoreTracer->GaussianBlur(targetBuffer, sourceBuffer, maxValue, size, boostPower, targetWeighting, sourceWeighting, width, height);
 }
 
 
 __int64 GetRayCount()
 {
-	Log().Print("DLL.GetRayCount");
+	LOG(Error, "DLL.GetRayCount");
 	if (g_CoreTracer)
 		return g_CoreTracer->GetRayCount();
 	else
@@ -296,7 +302,7 @@ __int64 GetRayCount()
 
 __int64 GetKDCount()
 {
-	Log().Print("DLL.GetKDCount");
+	LOG(Error, "DLL.GetKDCount");
 	if (g_CoreTracer)
 		return g_CoreTracer->GetKDCount();
 	else
@@ -305,7 +311,7 @@ __int64 GetKDCount()
 
 __int64 GetIntersectionCount()
 {
-	Log().Print("DLL.GetIntersectionCount");
+	LOG(Error, "DLL.GetIntersectionCount");
 	if (g_CoreTracer)
 		return g_CoreTracer->GetIntersectionCount();
 	else
@@ -314,7 +320,7 @@ __int64 GetIntersectionCount()
 
 __int64 GetPixels()
 {
-	Log().Print("DLL.GetPixels");
+	LOG(Error, "DLL.GetPixels");
 	if (g_CoreTracer)
 		return g_CoreTracer->GetPixelCount();
 	else
@@ -323,7 +329,7 @@ __int64 GetPixels()
 
 __int64 GetPatchSamples()
 {
-	Log().Print("DLL.GetPatchSamples");
+	LOG(Error, "DLL.GetPatchSamples");
 	if (g_CoreTracer)
 		return g_CoreTracer->GetPatchSamples();
 	else
@@ -332,7 +338,7 @@ __int64 GetPatchSamples()
 /*
 bool RenderPatch(float* buffer, const char* description, int x, int y)
 {
-	Log().Print("DLL.RenderPatch");
+	LOG(Error, "DLL.RenderPatch");
 	DCoreTracer CoreTracer;
 
 	CoreTracer.BuildFromXml(description);
@@ -346,7 +352,7 @@ LARGE_INTEGER gStart, gFreq;
 
 void StartRayTracer()
 {
-	Log().Print("DLL.StartRayTracer");
+	LOG(Error, "DLL.StartRayTracer");
 	std::string scene;
 //				scene = "\r\n<VIEWPORT width=470 height=300/><CAMERA from=\"-9.25, 10, -10.5\" target=\"0, 0, 0\" up=\"0, 1, 0\" fov=\"40\" dofEnabled=\"false\" aaEnabled=\"false\" focusDepth=\"15\" apertureSize=\"1\" minSamples=\"32\" maxSamples=\"128\" /><SCENE>\r\n  <LIGHT type=\"0\" position=\"-23, 20, -22.25\" colour=\"500.1, 500.1, 500.1\" />\r\n  <OBJECT type=\"4\" transform=\"0, 0, 0, 10, 10, 10, 0, 0, 0\" ignoreWhileLighting=\"false\">\r\n    <MATERIAL specularPower=\"5\" opacity=\"1\" density=\"1\">\r\n      <DIFFUSECOLOUR type=\"0\" colour=\"1, 0.5, 0\" />\r\n      <SPECULARCOLOUR type=\"0\" colour=\"1, 1, 1\" />\r\n      <EMISSIVECOLOUR type=\"0\" colour=\"0, 0, 0\" />\r\n      <REFLECTIVITYCOLOUR type=\"0\" colour=\"0.3, 0.3, 0.3\" />\r\n      <ABSORPTIONCOLOUR type=\"0\" colour=\"0, 0, 0\" />\r\n    </MATERIAL>\r\n  </OBJECT>\r\n</SCENE>";
 //				scene = "\r\n<VIEWPORT width=470 height=300/><CAMERA from=\"0.75, 20, -14.25\" target=\"0, 0, -1.25\" up=\"0, 1, 0\" fov=\"40\" dofEnabled=\"false\" aaEnabled=\"false\" focusDepth=\"1\" apertureSize=\"1\" minSamples=\"32\" maxSamples=\"128\" /><SCENE>\r\n  <LIGHT type=\"0\" colour=\"1000.1, 1000.1, 1000.1\" position=\"100,100,100\" />\r\n  <OBJECT type=\"1\" transform=\"0, 0, 0, 40, 40, 40, 0, 0, 0\" ignoreWhileLighting=\"false\">\r\n    <MATERIAL specularPower=\"5\" opacity=\"1\" density=\"1\">\r\n      <DIFFUSECOLOUR type=\"0\" colour=\"1, 1, 1\" />\r\n      <SPECULARCOLOUR type=\"0\" colour=\"1, 1, 1\" />\r\n      <EMISSIVECOLOUR type=\"0\" colour=\"0, 0, 0\" />\r\n      <REFLECTIVITYCOLOUR type=\"0\" colour=\"0.3, 0.3, 0.3\" />\r\n      <ABSORPTIONCOLOUR type=\"0\" colour=\"0, 0, 0\" />\r\n    </MATERIAL>\r\n  </OBJECT>\r\n  <OBJECT type=\"0\" transform=\"0, 4, 13.5, 3.6, 3.6, 3.6, 0, 0, 0\" ignoreWhileLighting=\"false\">\r\n    <MATERIAL specularPower=\"5\" opacity=\"1\" density=\"1\">\r\n      <DIFFUSECOLOUR type=\"0\" colour=\"1, 1, 1\" />\r\n      <SPECULARCOLOUR type=\"0\" colour=\"1, 1, 1\" />\r\n      <EMISSIVECOLOUR type=\"0\" colour=\"0, 0, 0\" />\r\n      <REFLECTIVITYCOLOUR type=\"0\" colour=\"0.3, 0.3, 0.3\" />\r\n      <ABSORPTIONCOLOUR type=\"0\" colour=\"0, 0, 0\" />\r\n    </MATERIAL>\r\n  </OBJECT>\r\n  <OBJECT type=\"0\" transform=\"7.93510090594839, 4, 10.9217294240618, 3.6, 3.6, 3.6, 0, 0, 0\" ignoreWhileLighting=\"false\">\r\n    <MATERIAL specularPower=\"5\" opacity=\"1\" density=\"1\">\r\n      <DIFFUSECOLOUR type=\"0\" colour=\"1, 1, 1\" />\r\n      <SPECULARCOLOUR type=\"0\" colour=\"1, 1, 1\" />\r\n      <EMISSIVECOLOUR type=\"0\" colour=\"0, 0, 0\" />\r\n      <REFLECTIVITYCOLOUR type=\"0\" colour=\"0.3, 0.3, 0.3\" />\r\n      <ABSORPTIONCOLOUR type=\"0\" colour=\"0, 0, 0\" />\r\n    </MATERIAL>\r\n  </OBJECT>\r\n  <OBJECT type=\"0\" transform=\"12.8392629699846, 4, 4.17172942406179, 3.6, 3.6, 3.6, 0, 0, 0\" ignoreWhileLighting=\"false\">\r\n    <MATERIAL specularPower=\"5\" opacity=\"1\" density=\"1\">\r\n      <DIFFUSECOLOUR type=\"0\" colour=\"1, 1, 1\" />\r\n      <SPECULARCOLOUR type=\"0\" colour=\"1, 1, 1\" />\r\n      <EMISSIVECOLOUR type=\"0\" colour=\"0, 0, 0\" />\r\n      <REFLECTIVITYCOLOUR type=\"0\" colour=\"0.3, 0.3, 0.3\" />\r\n      <ABSORPTIONCOLOUR type=\"0\" colour=\"0, 0, 0\" />\r\n    </MATERIAL>\r\n  </OBJECT>\r\n  <OBJECT type=\"0\" transform=\"12.8392629699846, 4, -4.17172942406179, 3.6, 3.6, 3.6, 0, 0, 0\" ignoreWhileLighting=\"false\">\r\n    <MATERIAL specularPower=\"5\" opacity=\"1\" density=\"1\">\r\n      <DIFFUSECOLOUR type=\"0\" colour=\"1, 1, 1\" />\r\n      <SPECULARCOLOUR type=\"0\" colour=\"1, 1, 1\" />\r\n      <EMISSIVECOLOUR type=\"0\" colour=\"0, 0, 0\" />\r\n      <REFLECTIVITYCOLOUR type=\"0\" colour=\"0.3, 0.3, 0.3\" />\r\n      <ABSORPTIONCOLOUR type=\"0\" colour=\"0, 0, 0\" />\r\n    </MATERIAL>\r\n  </OBJECT>\r\n  <OBJECT type=\"0\" transform=\"7.93510090594839, 4, -10.9217294240618, 3.6, 3.6, 3.6, 0, 0, 0\" ignoreWhileLighting=\"false\">\r\n    <MATERIAL specularPower=\"5\" opacity=\"1\" density=\"1\">\r\n      <DIFFUSECOLOUR type=\"0\" colour=\"1, 1, 1\" />\r\n      <SPECULARCOLOUR type=\"0\" colour=\"1, 1, 1\" />\r\n      <EMISSIVECOLOUR type=\"0\" colour=\"0, 0, 0\" />\r\n      <REFLECTIVITYCOLOUR type=\"0\" colour=\"0.3, 0.3, 0.3\" />\r\n      <ABSORPTIONCOLOUR type=\"0\" colour=\"0, 0, 0\" />\r\n    </MATERIAL>\r\n  </OBJECT>\r\n  <OBJECT type=\"0\" transform=\"1.65321857766021E-15, 4, -13.5, 3.6, 3.6, 3.6, 0, 0, 0\" ignoreWhileLighting=\"false\">\r\n    <MATERIAL specularPower=\"5\" opacity=\"1\" density=\"1\">\r\n      <DIFFUSECOLOUR type=\"0\" colour=\"1, 1, 1\" />\r\n      <SPECULARCOLOUR type=\"0\" colour=\"1, 1, 1\" />\r\n      <EMISSIVECOLOUR type=\"0\" colour=\"0, 0, 0\" />\r\n      <REFLECTIVITYCOLOUR type=\"0\" colour=\"0.3, 0.3, 0.3\" />\r\n      <ABSORPTIONCOLOUR type=\"0\" colour=\"0, 0, 0\" />\r\n    </MATERIAL>\r\n  </OBJECT>\r\n  <OBJECT type=\"0\" transform=\"-7.93510090594839, 4, -10.9217294240618, 3.6, 3.6, 3.6, 0, 0, 0\" ignoreWhileLighting=\"false\">\r\n    <MATERIAL specularPower=\"5\" opacity=\"1\" density=\"1\">\r\n      <DIFFUSECOLOUR type=\"0\" colour=\"1, 1, 1\" />\r\n      <SPECULARCOLOUR type=\"0\" colour=\"1, 1, 1\" />\r\n      <EMISSIVECOLOUR type=\"0\" colour=\"0, 0, 0\" />\r\n      <REFLECTIVITYCOLOUR type=\"0\" colour=\"0.3, 0.3, 0.3\" />\r\n      <ABSORPTIONCOLOUR type=\"0\" colour=\"0, 0, 0\" />\r\n    </MATERIAL>\r\n  </OBJECT>\r\n  <OBJECT type=\"0\" transform=\"-12.8392629699846, 4, -4.17172942406179, 3.6, 3.6, 3.6, 0, 0, 0\" ignoreWhileLighting=\"false\">\r\n    <MATERIAL specularPower=\"5\" opacity=\"1\" density=\"1\">\r\n      <DIFFUSECOLOUR type=\"0\" colour=\"1, 1, 1\" />\r\n      <SPECULARCOLOUR type=\"0\" colour=\"1, 1, 1\" />\r\n      <EMISSIVECOLOUR type=\"0\" colour=\"0, 0, 0\" />\r\n      <REFLECTIVITYCOLOUR type=\"0\" colour=\"0.3, 0.3, 0.3\" />\r\n      <ABSORPTIONCOLOUR type=\"0\" colour=\"0, 0, 0\" />\r\n    </MATERIAL>\r\n  </OBJECT>\r\n  <OBJECT type=\"0\" transform=\"-12.8392629699846, 4, 4.17172942406179, 3.6, 3.6, 3.6, 0, 0, 0\" ignoreWhileLighting=\"false\">\r\n    <MATERIAL specularPower=\"5\" opacity=\"1\" density=\"1\">\r\n      <DIFFUSECOLOUR type=\"0\" colour=\"1, 1, 1\" />\r\n      <SPECULARCOLOUR type=\"0\" colour=\"1, 1, 1\" />\r\n      <EMISSIVECOLOUR type=\"0\" colour=\"0, 0, 0\" />\r\n      <REFLECTIVITYCOLOUR type=\"0\" colour=\"0.3, 0.3, 0.3\" />\r\n      <ABSORPTIONCOLOUR type=\"0\" colour=\"0, 0, 0\" />\r\n    </MATERIAL>\r\n  </OBJECT>\r\n  <OBJECT type=\"0\" transform=\"-7.9351009059484, 4, 10.9217294240618, 3.6, 3.6, 3.6, 0, 0, 0\" ignoreWhileLighting=\"false\">\r\n    <MATERIAL specularPower=\"5\" opacity=\"1\" density=\"1\">\r\n      <DIFFUSECOLOUR type=\"0\" colour=\"1, 1, 1\" />\r\n      <SPECULARCOLOUR type=\"0\" colour=\"1, 1, 1\" />\r\n      <EMISSIVECOLOUR type=\"0\" colour=\"0, 0, 0\" />\r\n      <REFLECTIVITYCOLOUR type=\"0\" colour=\"0.3, 0.3, 0.3\" />\r\n      <ABSORPTIONCOLOUR type=\"0\" colour=\"0, 0, 0\" />\r\n    </MATERIAL>\r\n  </OBJECT>\r\n  <OBJECT type=\"2\" transform=\"0, 5, 0, 10, 10, 10, 0, 0, 0\" ignoreWhileLighting=\"false\">\r\n    <MATERIAL specularPower=\"5\" opacity=\"1\" density=\"1\">\r\n      <DIFFUSECOLOUR type=\"0\" colour=\"1, 1, 1\" />\r\n      <SPECULARCOLOUR type=\"0\" colour=\"1, 1, 1\" />\r\n      <EMISSIVECOLOUR type=\"0\" colour=\"0, 0, 0\" />\r\n      <REFLECTIVITYCOLOUR type=\"0\" colour=\"0.3, 0.3, 0.3\" />\r\n      <ABSORPTIONCOLOUR type=\"0\" colour=\"0, 0, 0\" />\r\n    </MATERIAL>\r\n  </OBJECT>\r\n</SCENE>";
@@ -378,7 +384,7 @@ void StartRayTracer()
 	
 //	ss << my_documents << L"\\Wooscripter\\XML\\simplebox.xml";
 //	ss << my_documents << L"\\Wooscripter\\XML\\pedestal.xml";
-	ss << my_documents << L"\\Wooscripter\\XML\\distancerotatefold.xml";
+	ss << my_documents << L"\\Wooscripter\\XML\\opacity.xml";
 //	ss << my_documents << L"\\Wooscripter\\XML\\diffuseFunction2.xml";
 
 	std::ifstream sceneDesc;
@@ -401,6 +407,7 @@ void StartRayTracer()
 //	scene = "\r\n<VIEWPORT width=450 height=300/><CAMERA from=\"-10, 10, -20\" target=\"0, 0, 0\" up=\"0, 1, 0\" fov=\"40\" dofEnabled=\"false\" aaEnabled=\"false\" focusDepth=\"1\" apertureSize=\"1\" minSamples=\"32\" maxSamples=\"128\" /><SCENE pathTracer=\"0\">\r\n  <LIGHT type=\"0\" position=\"0, 20, 0\" colour=\"100.099998474121, 100.099998474121, 100.099998474121\" />\r\n  <OBJECT type=\"2\" position=\"0, 5, 0\" scale=\"10, 10, 10\" rotation=\"1, 0, 0, 0, 1, 0, 0, 0, 1\" ignoreWhileLighting=\"false\">\r\n    <MATERIAL specularPower=\"5\" opacity=\"1\" density=\"1\" shininess=\"1\">\r\n      <DIFFUSECOLOUR type=\"0\" colour=\"1, 0.5, 0\" />\r\n      <SPECULARCOLOUR type=\"0\" colour=\"1, 1, 1\" />\r\n      <EMISSIVECOLOUR type=\"0\" colour=\"0, 0, 0\" />\r\n      <REFLECTIVITYCOLOUR type=\"0\" colour=\"0.300000011920929, 0.300000011920929, 0.300000011920929\" />\r\n      <ABSORPTIONCOLOUR type=\"0\" colour=\"0, 0, 0\" />\r\n    </MATERIAL>\r\n  </OBJECT>\r\n  <BACKGROUND type=\"0\" backgroundColour=\"0.06, 0.05, 0.04\" />\r\n</SCENE>";
 
 	gBuffer = new float[gWidth*gHeight*3];
+	gDestBuffer = new float[gWidth*gHeight*3];
 
 //				scene = "\r\n<VIEWPORT width=470 height=300/><CAMERA from=\"9.25, 5, 6\" target=\"-7, 0, 0.75\" up=\"0, 1, 0\" fov=\"40\" dofEnabled=\"false\" aaEnabled=\"false\" focusDepth=\"5\" apertureSize=\"0.1\" minSamples=\"32\" maxSamples=\"128\" /><SCENE pathTracer=\"0\">\r\n  <LIGHT type=\"3\" colour=\"0.1, 0.09, 0.06\" direction=\"1, 1, 1\" area=\"0.05\" />\r\n  <OBJECT type=\"1\" position=\"0, 0, 0\" scale=\"25, 25, 25\" rotation=\"1, 0, 0, 0, 1, 0, 0, 0, 1\" ignoreWhileLighting=\"false\">\r\n    <MATERIAL specularPower=\"5\" opacity=\"1\" density=\"1\" shininess=\"1.0\">\r\n      <DIFFUSECOLOUR type=\"1\" colour1=\"0.00999999977648258, 0.00999999977648258, 0.00999999977648258\" colour2=\"1, 1, 1\" scale=\"1\" ratio=\"0.5\" checkerboard=\"true\" />\r\n      <SPECULARCOLOUR type=\"0\" colour=\"1, 1, 1\" />\r\n      <EMISSIVECOLOUR type=\"0\" colour=\"0, 0, 0\" />\r\n      <REFLECTIVITYCOLOUR type=\"0\" colour=\"0.300000011920929, 0.300000011920929, 0.300000011920929\" />\r\n      <ABSORPTIONCOLOUR type=\"0\" colour=\"0, 0, 0\" />\r\n    </MATERIAL>\r\n  </OBJECT>\r\n  <OBJECT type=\"0\" position=\"-11.5, 5, 3\" scale=\"5, 5, 5\" rotation=\"1, 0, 0, 0, 1, 0, 0, 0, 1\" ignoreWhileLighting=\"false\">\r\n    <MATERIAL specularPower=\"50\" opacity=\"1\" density=\"1\" shininess=\"1.0\">\r\n      <DIFFUSECOLOUR type=\"0\" colour=\"1, 1, 1\" />\r\n      <SPECULARCOLOUR type=\"0\" colour=\"0.5, 0.5, 0.5\" />\r\n      <EMISSIVECOLOUR type=\"0\" colour=\"0, 0, 0\" />\r\n      <REFLECTIVITYCOLOUR type=\"0\" colour=\"0.300000011920929, 0.300000011920929, 0.300000011920929\" />\r\n      <ABSORPTIONCOLOUR type=\"0\" colour=\"0, 0, 0\" />\r\n    </MATERIAL>\r\n  </OBJECT>\r\n  <BACKGROUND type=\"0\" backgroundColour=\"0.07, 0.09, 01\" />\r\n</SCENE>";
 
@@ -456,7 +463,10 @@ _CrtSetDbgFlag ( _CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF );
 		}
 	}
 
+	StopRender();
 	delete g_CoreTracer;
+	delete [] gBuffer;
+	delete [] gDestBuffer;
 
 	return (int) msg.wParam;
 }
@@ -587,6 +597,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		{
 //			SyncRender(gBuffer);
 			CopyBuffer(gBuffer);
+			GaussianBlur(gDestBuffer, gBuffer, 2, 10, 10, 0.5, 0.5, gWidth, gHeight);
+			memcpy(gBuffer, gDestBuffer, sizeof(float)*3*gWidth*gHeight);
 			if (pBits)
 			{
 				for (int y = 0; y < gHeight; ++y)
@@ -636,11 +648,12 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			__int64 intersectionCount = GetIntersectionCount();
 			__int64 pixelCount = GetPixels();
 			__int64 patchSamples = GetPatchSamples();
-			if (patchSamples>3000000)
-			{
-				bStopRender = true;
-				StopRender();
-			}			__int64 pixels = (gWidth*gHeight);
+//			if (patchSamples>3000000)
+//			{
+//				bStopRender = true;
+//				StopRender();
+//			}
+			__int64 pixels = (gWidth*gHeight);
 
 			int y=20;
 			swprintf(dest, 256, L"Time : %f\r\n", time);
