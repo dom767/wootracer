@@ -29,7 +29,10 @@ bool DRenderCircle::InternalIntersect(const DRayContext& rRayContext, DCollision
 	if (mNormal.Dot(rRayContext.m_Ray.GetDirection())>0)
 		return false;
 
-	float a = -mNormal.Dot(rRayContext.m_Ray.GetStart())/mNormal.Dot(rRayContext.m_Ray.GetDirection());
+	float divisor = mNormal.Dot(rRayContext.m_Ray.GetDirection());
+	if (divisor==0) return false; // parallel to plane
+
+	float a = -mNormal.Dot(rRayContext.m_Ray.GetStart())/divisor;
 	out_Response.mHitPosition = rRayContext.m_Ray.GetStart() + rRayContext.m_Ray.GetDirection() * a;
 
 	// circle test
