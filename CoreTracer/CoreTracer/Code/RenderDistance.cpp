@@ -267,9 +267,7 @@ bool DRenderDistance::InternalIntersect(const DRayContext& rRayContext, DCollisi
 {
 	// parse failed
 	if (!mDistanceProgram.Compiled())
-	{
 		return false;
-	}
 
 //	const DVector3& start = rRayContext.m_Ray.GetStart();
 	const DVector3& direction = rRayContext.m_Ray.GetDirection();
