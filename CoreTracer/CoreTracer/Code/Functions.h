@@ -1280,6 +1280,39 @@ BEGIN_VECFUNC(DDistRotateFold, "rotatefold");
 	}
 END_FUNC
 
+BEGIN_VECFUNC(DDistCylinderFold, "cylinderfold");
+	DDistCylinderFold()
+	{
+		mParam.push_back(new DFuncParam("mPos", Vec));
+		mParam.push_back(new DFuncParam("mCentreLine", Vec));
+		mParam.push_back(new DFuncParam("mDistance", Float));
+	}
+
+	virtual DVector3 Evaluate(DFunctionState& state)
+	{
+		DVector3 pos = mParam[0]->EvaluateVec(state);
+		DVector3 centreLine = mParam[1]->EvaluateVec(state);
+		float foldDistance = mParam[2]->Evaluate(state);
+
+		// http://mathworld.wolfram.com/Point-LineDistance3-Dimensional.html
+		float t = pos.Dot(centreLine) / centreLine.MagnitudeSquared();
+
+		DVector3 reflectPos = centreLine * t;
+		float distance = (pos - reflectPos).Magnitude();
+
+		if (distance < foldDistance)
+		{
+			DVector3 toVector = (pos-reflectPos) * 2 * (foldDistance-distance)/distance;
+			DVector3 newPos = pos + toVector;
+			return newPos;
+		}
+		else
+		{
+			return pos;
+		}
+	}
+END_FUNC
+
 BEGIN_VECFUNC(DDistFoldX, "foldx");
 	DDistFoldX()
 	{

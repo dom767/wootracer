@@ -58,6 +58,7 @@ DFuncFactory::DFuncFactory()
 	mFuncList.push_back(new DDistBoxFold());
 	mFuncList.push_back(new DDistSphereFold());
 	mFuncList.push_back(new DDistOuterSphereFold());
+	mFuncList.push_back(new DDistCylinderFold());
 	mFuncList.push_back(new DAddVec());
 	mFuncList.push_back(new DDistSubVec());
 	mFuncList.push_back(new DDistMulVec());
