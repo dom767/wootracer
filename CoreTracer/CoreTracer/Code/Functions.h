@@ -1257,6 +1257,22 @@ BEGIN_FUNC(DDistFold, "fold");
 	}
 END_FUNC
 
+BEGIN_FUNC(DDistSingleFold, "singlefold");
+	DDistSingleFold()
+	{
+		mParam.push_back(new DFuncParam("mVal", Float));
+		mParam.push_back(new DFuncParam("mFold", Float));
+	}
+
+	virtual float Evaluate(DFunctionState& state)
+	{
+		float val = mParam[0]->Evaluate(state);
+		float fold = mParam[1]->Evaluate(state);
+		if (val>fold) val = fold*2 - val;
+		return val;
+	}
+END_FUNC
+
 BEGIN_VECFUNC(DDistRotateFold, "rotatefold");
 	DDistRotateFold()
 	{

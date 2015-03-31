@@ -53,6 +53,7 @@ DFuncFactory::DFuncFactory()
 	mFuncList.push_back(new DDistPerlinX());
 	mFuncList.push_back(new DDistPerlinXZ());
 	mFuncList.push_back(new DDistFold());
+	mFuncList.push_back(new DDistSingleFold());
 	mFuncList.push_back(new DDistRotateFold());
 	mFuncList.push_back(new DDistFoldX());
 	mFuncList.push_back(new DDistBoxFold());
