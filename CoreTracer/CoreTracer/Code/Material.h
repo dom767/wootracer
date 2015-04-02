@@ -49,6 +49,7 @@ public:
 	void SetDensity(const float Density) {m_Density = Density;}
 	void SetShininess(const float shininess) {m_Shininess = shininess;}
 	DColour GetAbsorptionColour(DVector3 pos) const {return mAbsorptionColour->GetColour(pos);}
+	float GetDensity() const {return m_Density;}
 	float GetRefractiveIndex() const {return m_RefractiveIndex;}
 
 	void Cleanup();

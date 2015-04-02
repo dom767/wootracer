@@ -251,7 +251,7 @@ void boxBlurH_4 (DColour* scl, DColour* tcl, int w, int h, int r)
 	for(int i=0; i<h; i++)
 	{
 		int ti = i*w, li = ti, ri = ti+r;
-		DColour fv = scl[ti], lv = scl[ti+w-1], val = fv*(r+1);
+		DColour fv = scl[ti], lv = scl[ti+w-1], val = fv*(r+1.f);
 		for(int j=0; j<r; j++)
 			val +=  scl[ti+j];
 		for(int j=0  ; j<=r ; j++)
@@ -278,7 +278,7 @@ void boxBlurT_4 (DColour* scl, DColour* tcl, int w, int h, int r)
 	for(int i=0; i<w; i++)
 	{
 		int ti = i, li = ti, ri = ti+r*w;
-		DColour fv = scl[ti], lv = scl[ti+w*(h-1)], val = fv*(r+1);
+		DColour fv = scl[ti], lv = scl[ti+w*(h-1)], val = fv*(r+1.f);
 		for(int j=0; j<r; j++) val += scl[ti+j*w];
 		for(int j=0  ; j<=r ; j++) { val += scl[ri] - fv     ;  tcl[ti] = val*iarr;  ri+=w; ti+=w; }
 		for(int j=r+1; j<h-r; j++) { val += scl[ri] - scl[li];  tcl[ti] = val*iarr;  li+=w; ri+=w; ti+=w; }
@@ -295,7 +295,7 @@ void boxBlur_4 (float* scl, float* tcl, int w, int h, int r)
 
 void gaussBlur_4 (float* scl, float* tcl, int w, int h, int r)
 {
-	std::vector<int> bxs = boxesForGauss(r, 3);
+	std::vector<int> bxs = boxesForGauss(float(r), 3);
 	boxBlur_4 (scl, tcl, w, h, (bxs[0]-1)/2);
 	boxBlur_4 (tcl, scl, w, h, (bxs[1]-1)/2);
 	boxBlur_4 (scl, tcl, w, h, (bxs[2]-1)/2);

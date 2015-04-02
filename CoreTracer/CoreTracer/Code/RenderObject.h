@@ -41,6 +41,7 @@ public:
 	void SetIgnoreWhileLighting(bool IgnoreWhileLighting) {mIgnoreWhileLighting=IgnoreWhileLighting;}
 	bool GetIgnoreWhileLighting() const {return mIgnoreWhileLighting;} 
 	DColour GetAbsorptionColour(DVector3 pos) const {return mMaterial.GetAbsorptionColour(pos);}
+	float GetDensity() const {return mMaterial.GetDensity();}
 	float GetRefractiveIndex() const {return mMaterial.GetRefractiveIndex();}
 	DRenderObject* Clone();
 

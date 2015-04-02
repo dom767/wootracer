@@ -13,6 +13,7 @@
 #include "tinyxml.h"
 #include "convert.h"
 #include "Light.h"
+#include "Log.h"
 
 const float DRayContext::AirRefractionIndex = 1.003f;
 const int numRandomSequences = 1024;
@@ -170,7 +171,10 @@ bool DScene::Intersect(DRayContext& RayContext, DCollisionResponse& out_Response
 {
 	mRayCount++;
 	if (RayContext.m_RecursionRemaining<0)
+	{
+		LOG(Info, "Recursion limit reached, bailout");
 		return false;
+	}
 
 	bool hit = true;
 	int hitId = mKDTree.Intersect(RayContext, out_Response, debuginfo);
@@ -196,7 +200,24 @@ bool DScene::Intersect(DRayContext& RayContext, DCollisionResponse& out_Response
 			int oldFlags = RayContext.m_RequestFlags;
 			RayContext.m_RequestFlags = RequestBackface|RequestDistance;
 			DCollisionResponse within_Response;
+			LOG(Info, "Checking for intersection with containing object");
 			object->Intersect(RayContext, within_Response);
+			if (Log().mErrorLevel==Info)
+			{
+				std::string kdDebug;
+				std::stringstream ss;
+				ss<<"Containing Object intersection result : "<<object->GetObjectId();
+				ss<<"\r\nRay start : "<<RayContext.m_Ray.GetStart()[0]<<", "<<RayContext.m_Ray.GetStart()[1]<<", "<<RayContext.m_Ray.GetStart()[2];
+				ss<<"\r\nRay direction : "<<RayContext.m_Ray.GetDirection()[0]<<", "<<RayContext.m_Ray.GetDirection()[1]<<", "<<RayContext.m_Ray.GetDirection()[2];
+				ss<<"\r\nRay recursionRemaining : "<<RayContext.m_RecursionRemaining;
+				ss<<"\r\nRay AirRefractionIndex : "<<RayContext.AirRefractionIndex;
+				ss<<"\r\nRay RefractiveIndex : "<<RayContext.m_RefractiveIndex;
+				ss<<"\r\nRay m_RequestFlags : "<<RayContext.m_RequestFlags;
+				ss<<"\r\nCollision point : "<<within_Response.mDistance;
+				ss<<"\r\n";
+				kdDebug = ss.str();
+				LOG(Info, kdDebug.c_str());
+			}
 
 			if (i==0)
 			{
@@ -210,11 +231,12 @@ bool DScene::Intersect(DRayContext& RayContext, DCollisionResponse& out_Response
 				}
 				else
 				{
+					RayContext.m_RequestFlags = oldFlags;
 					if (hitId>0)
 						RayContext.m_Scene->GetObject(hitId)->Intersect(RayContext, out_Response);
 				}
 
-				float density = 0;//1 - exp(-distance);
+				float density = 1 - exp(-distance * object->GetDensity());
 				out_Response.mColour = object->GetAbsorptionColour(RayContext.m_Ray.GetStart()) * density + out_Response.mColour * (1-density);
 			}
 

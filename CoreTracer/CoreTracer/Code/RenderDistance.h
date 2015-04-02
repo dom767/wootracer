@@ -31,6 +31,9 @@ protected:
 
 private:
 	float DistanceEstimator(DVector3& pos) const;
+	bool GetCollisionPoint(DVector3 &out_Point, const DVector3& start, const DVector3& end, const DVector3& direction) const;
+	DVector3 GetNormal(const DVector3& position, const DVector3& direction) const;
+	void Nudge(DVector3& out_Position, const DVector3& normal) const;
 
 	DProgram mDistanceProgram;
 	float mMinimumDistance;	

@@ -363,11 +363,16 @@ struct Patch
 		if (success)
 		{
 			bool debugInfo = false;
-/*			if (x==318 && y == 58)
+			if (x==240 && y == 0)
 			{
 				debugInfo = true;
+				Log().SetErrorLevel(Info);
 			}
-	*/		DCollisionResponse response;
+			else
+			{
+				Log().SetErrorLevel(Error);
+			}
+			DCollisionResponse response;
 			LOG(Info, "Sample ray");
 			hit = mScene.Intersect(DRayContext(&mScene, ray, RequestColour, mScene.GetMaximumRecursion(), DRayContext::AirRefractionIndex, pixelIndex, subframe), response, debugInfo);
 			mColour = response.mColour;

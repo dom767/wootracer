@@ -49,6 +49,16 @@ m_Scene(scene), m_RecursionRemaining(maxRecursion), m_RefractiveIndex(refraction
 		return false;
 	}
 
+	void RemoveWithin(int idx)
+	{
+		for (std::vector<int>::iterator witer = mWithinIdx.begin(); witer != mWithinIdx.end(); witer++)
+		{
+			if (*witer==idx)
+				mWithinIdx.erase(witer);
+			return;
+		}
+	}
+
 	const static float AirRefractionIndex;
 	DRay m_Ray;
 	int m_RequestFlags;

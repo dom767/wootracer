@@ -330,6 +330,32 @@ int DKDTree::Intersect(const DRayContext& rRayContext, DCollisionResponse& out_R
 		// no hit
 		if (RenderCache.m_HitPoints.size()==0)
 		{
+			if (Log().mErrorLevel==Info)
+			{
+				std::string kdDebug;
+				std::stringstream ss;
+				ss<<"KDTree intersect, obj intersected : ";
+				for (unsigned int i=0; i<RenderCache.m_HitPoints.size(); i++)
+				{
+					ss<<(*(RenderCache.m_HitPoints[i].iter))->GetObjectId()<<", ";
+				}
+				ss<<"\r\nObj Tested : ";
+				for (int i=0; i<OBJCACHESIZE; i++)
+				{
+					ss<<RenderCache.m_HitTested[i]<<", ";
+				}
+				ss<<"\r\nObj Tested Total: "<<RenderCache.m_HitTestNum;
+				ss<<"\r\nRay start : "<<rRayContext.m_Ray.GetStart()[0]<<", "<<rRayContext.m_Ray.GetStart()[1]<<", "<<rRayContext.m_Ray.GetStart()[2];
+				ss<<"\r\nRay direction : "<<rRayContext.m_Ray.GetDirection()[0]<<", "<<rRayContext.m_Ray.GetDirection()[1]<<", "<<rRayContext.m_Ray.GetDirection()[2];
+				ss<<"\r\nRay recursionRemaining : "<<rRayContext.m_RecursionRemaining;
+				ss<<"\r\nRay AirRefractionIndex : "<<rRayContext.AirRefractionIndex;
+				ss<<"\r\nRay RefractiveIndex : "<<rRayContext.m_RefractiveIndex;
+				ss<<"\r\nRay m_RequestFlags : "<<rRayContext.m_RequestFlags;
+				ss<<"\r\nCollision point : "<<-1;
+				ss<<"\r\n";
+				kdDebug = ss.str();
+				LOG(Info, kdDebug.c_str());
+			}
 			return false;
 		}
 
@@ -375,8 +401,7 @@ int DKDTree::Intersect(const DRayContext& rRayContext, DCollisionResponse& out_R
 			ss<<"\r\nRay AirRefractionIndex : "<<rRayContext.AirRefractionIndex;
 			ss<<"\r\nRay RefractiveIndex : "<<rRayContext.m_RefractiveIndex;
 			ss<<"\r\nRay m_RequestFlags : "<<rRayContext.m_RequestFlags;
-			ss<<"\r\nCollision point : "<<out_Response.mHitPosition[0]<<", "<<out_Response.mHitPosition[1]<<", "<<out_Response.mHitPosition[2];
-			ss<<"\r\nCollision colour : "<<out_Response.mColour.mRed<<", "<<out_Response.mColour.mGreen<<", "<<out_Response.mColour.mBlue;
+			ss<<"\r\nCollision point : "<<nearestDistance;
 			ss<<"\r\n";
 			kdDebug = ss.str();
 			LOG(Info, kdDebug.c_str());
@@ -404,7 +429,9 @@ void DKDTree::IntersectRecurse(DKDTreeNode* node, EAxis axis, const DVector3& st
 			tempResponse.m_WithinObjectId = RenderCache.m_WithinObjectId;
 			if (!RenderCache.Find((*iter)->GetObjectId()))
 			{
-				if ((((RenderCache.mRayContext.m_RequestFlags&RequestLighting)!=RequestLighting)||(!(*iter)->GetIgnoreWhileLighting())))
+				bool NotIgnoreForLighting = (((RenderCache.mRayContext.m_RequestFlags&RequestLighting)!=RequestLighting)||(!(*iter)->GetIgnoreWhileLighting()));
+				bool FrontfaceAndInside = (RenderCache.mRayContext.m_RequestFlags&RequestBackface)==0 && RenderCache.mRayContext.Within((*iter)->GetObjectId());
+				if (NotIgnoreForLighting && !FrontfaceAndInside)
 				{
 					mIntersections++;
 					if ((*iter)->Intersect(DRayContext(NULL, RenderCache.mRayContext.m_Ray, RequestDistance, 0, RenderCache.mRayContext.m_RefractiveIndex, RenderCache.mRayContext.mPixelIndex, RenderCache.mRayContext.mSubFrame), tempResponse)

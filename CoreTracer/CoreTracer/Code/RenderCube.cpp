@@ -147,10 +147,21 @@ bool DRenderCube::InternalIntersect(const DRayContext& rRayContext, DCollisionRe
 	{
 		return false;
 	}
-	else if (t0>0)
+	if (t0>0 && !((rRayContext.m_RequestFlags&RequestBackface)>0))
 	{
+		if (t0<0.00001f)
+			return false;
+
 		out_Response.mHitPosition = start + (rRayContext.m_Ray.GetDirection()*t0); // object space
 		out_Response.mNormal = normal0;
+		return true;
+	}
+	if (t1>0 && rRayContext.m_RequestFlags&RequestBackface)
+	{
+		if (t1<0.00001f)
+			return false;
+		out_Response.mHitPosition = start + (rRayContext.m_Ray.GetDirection()*t1); // object space
+		out_Response.mNormal = normal1;
 		return true;
 	}
 

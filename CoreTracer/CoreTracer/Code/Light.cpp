@@ -5,6 +5,7 @@
 #include "convert.h"
 #include "Ray.h"
 #include "Scene.h"
+#include "Log.h"
 
 DLight* DLight::CreateFromXML(TiXmlElement* element)
 {
@@ -158,6 +159,7 @@ bool DWorldLight::GetLighting(const DScene& scene, const DRayContext &rayContext
 
 		DCollisionResponse response;
 		response.mIgnoreObjectId = 0;
+		LOG(Info, "Worldlight Test Ray");
 		if (!scene.Intersect(lightContext, response))
 		{
 			out_Diffuse += mColour;
@@ -197,6 +199,7 @@ bool DDirectionalLight::GetLighting(const DScene& scene, const DRayContext &rayC
 
 	DCollisionResponse response;
 	response.mIgnoreObjectId = 0;
+	LOG(Info, "Directional light test ray");
 	bool hit = scene.Intersect(lightContext, response);
 	if (!hit)
 	{

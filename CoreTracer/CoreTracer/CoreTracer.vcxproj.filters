@@ -280,11 +280,11 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <Library Include="..\Debug\xml.lib" />
-  </ItemGroup>
-  <ItemGroup>
     <ResourceCompile Include="DebugExeTest.rc">
       <Filter>Resource Files</Filter>
     </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="..\Release\xml.lib" />
   </ItemGroup>
 </Project>

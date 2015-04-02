@@ -103,7 +103,7 @@ DVector3 digetSampleBiased(const DScene* scene, const DRayContext& rayContext, D
 void DMaterial::CalculateColour(DColour &out_colour,
 	const DVector3& hitPos,
 	const int hitId,
-	const DVector3& normal,
+	const DVector3& in_normal,
 	const DRayContext &rRayContext,
 	const bool ignoreLighting) const
 {
@@ -112,18 +112,19 @@ void DMaterial::CalculateColour(DColour &out_colour,
 
 	const DScene* const scene = rRayContext.m_Scene;
 	DColour diffuseLight(0.f,0.f,0.f), specularLight(0.f,0.f,0.f);
-	DVector3 reflection = eyeVector - normal*(normal.Dot(eyeVector)*2.f);
 
 	// shininess perturb
 	DVector3 perturb = scene->GetRandomDirection3d(rRayContext);//DVector3(scene->GetRandom()*2-1, scene->GetRandom()*2-1, scene->GetRandom()*2-1);
 	perturb *= 1.0f - m_Shininess;
-	reflection += perturb;
-	reflection.Normalise();
+	DVector3 normal = in_normal + perturb;
+	normal.Normalise();
+
+	DVector3 reflection = eyeVector - normal*(normal.Dot(eyeVector)*2.f);
 
 	DColour reflectivity = mReflectivity->GetColour(hitPos);
 	float refractiveIndex;
 	float n;
-	bool exiting;
+	bool exiting = false;
 
 	if (m_Opacity!=1)
 	{
@@ -143,6 +144,11 @@ void DMaterial::CalculateColour(DColour &out_colour,
 		r0 = r0 * r0;
 
 		float reflectance = r0 + (1-r0) * (1-powf(cosf(1 + rRayContext.m_Ray.GetDirection().Dot(normal)), 5));
+		if (reflectance!=reflectance)
+		{
+			reflectance = 0.f;
+		}
+		reflectance = clamp(reflectance, 0.f, 1.f);
 		reflectivity = DColour(reflectance, reflectance, reflectance);
 	}
 
@@ -170,6 +176,8 @@ void DMaterial::CalculateColour(DColour &out_colour,
 	// return diffuse and specular lighting contributions
 	DRayContext colourContext(rRayContext);
 	colourContext.m_Ray = DRay(hitPos, normal);
+	if (exiting)
+		colourContext.RemoveWithin(hitId);
 
 	LOG(Info, "Shadow test ray");
 	if (scene && !ignoreLighting)
@@ -186,7 +194,7 @@ void DMaterial::CalculateColour(DColour &out_colour,
 	diffuseLight *= funcState.mDiffuse;
 
 	// calculate the colour of the surface
-	out_colour = diffuseLight + specularLight + funcState.mEmissive;
+	out_colour = (diffuseLight + specularLight + funcState.mEmissive) * m_Opacity;
 
 	// calculate reflection
 	DCollisionResponse response;
@@ -241,10 +249,11 @@ void DMaterial::CalculateColour(DColour &out_colour,
 
 
 		float cos1 = -normal.Dot(eyeVector);
-		const float cos2 = sqrtf(1 - ((n * n) * (1 - (cos1 * cos1))));
-		DVector3 refractionVector;
-		if (cos1<0)
+		float cos2 = 1 - ((n * n) * (1 - (cos1 * cos1)));
+		if (cos2<0)
 			return;
+		cos2 = sqrtf(cos2);
+		DVector3 refractionVector;
 
 		if (exiting)
 			refractionVector = (eyeVector * n) - (normal * ((n*cos1) + cos2));
@@ -267,11 +276,12 @@ void DMaterial::CalculateColour(DColour &out_colour,
 		
 //		RefractionResponse.mIgnoreObjectId = hitId;
 //		RefractionResponse.m_WithinObjectId = hitId;
+		LOG(Info, "Refraction ray");
 		if (scene)
 			scene->Intersect(refractionContext, RefractionResponse);
 	
-		float refractivity = funcState.mReflectivity.mRed;
+		float refractivity = 1-funcState.mReflectivity.mRed;
 	
-		out_colour = (out_colour*refractivity) + (RefractionResponse.mColour*(1-refractivity));
+		out_colour = out_colour + (RefractionResponse.mColour*refractivity);
 	}
 }
