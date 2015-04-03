@@ -107,6 +107,7 @@ void DMaterial::CalculateColour(DColour &out_colour,
 	const DRayContext &rRayContext,
 	const bool ignoreLighting) const
 {
+	// this function doesn't do backfaces!!
 	int recursionRemaining = rRayContext.m_RecursionRemaining;
 	const DVector3 eyeVector = rRayContext.m_Ray.GetDirection();
 
@@ -176,6 +177,7 @@ void DMaterial::CalculateColour(DColour &out_colour,
 	// return diffuse and specular lighting contributions
 	DRayContext colourContext(rRayContext);
 	colourContext.m_Ray = DRay(hitPos, normal);
+	colourContext.m_RequestFlags &= ~RequestBackface;
 	if (exiting)
 		colourContext.RemoveWithin(hitId);
 
@@ -206,6 +208,7 @@ void DMaterial::CalculateColour(DColour &out_colour,
 		DVector3 randomInter = digetSampleBiased(scene, rRayContext, normal, 1);
 
 		DRayContext pathTrace(rRayContext);
+		pathTrace.m_RequestFlags &= ~RequestBackface;
 		pathTrace.m_Ray = DRay(hitPos, randomInter);
 		pathTrace.m_RecursionRemaining = recursionRemaining==0 ? -1 : recursionRemaining-1;
 		pathTrace.m_RequestFlags |= RequestZeroLighting;
@@ -222,6 +225,7 @@ void DMaterial::CalculateColour(DColour &out_colour,
 	if (scene && reflectivityCol.Max()>0)
 	{
 		DRayContext reflectionContext(rRayContext);
+		reflectionContext.m_RequestFlags &= ~RequestBackface;
 		reflectionContext.m_Ray = DRay(hitPos, reflection);
 		if (scene->IsCaustics())
 			reflectionContext.m_RequestFlags &= ~RequestZeroLighting;
@@ -256,7 +260,7 @@ void DMaterial::CalculateColour(DColour &out_colour,
 		DVector3 refractionVector;
 
 		if (exiting)
-			refractionVector = (eyeVector * n) - (normal * ((n*cos1) + cos2));
+			refractionVector = (eyeVector * n) + (normal * ((n*cos1) - cos2));
 		else
 			refractionVector = (eyeVector * n) + (normal * ((n*cos1) - cos2));
 		refractionVector.Normalise();
@@ -264,6 +268,7 @@ void DMaterial::CalculateColour(DColour &out_colour,
 		// calculate passthrough
 		DCollisionResponse RefractionResponse;
 		DRayContext refractionContext(rRayContext);
+		refractionContext.m_RequestFlags &= ~RequestBackface;
 		if (scene->IsCaustics())
 			refractionContext.m_RequestFlags &= ~RequestZeroLighting;
 		if (exiting)
