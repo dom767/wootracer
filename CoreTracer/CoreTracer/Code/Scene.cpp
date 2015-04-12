@@ -226,18 +226,22 @@ bool DScene::Intersect(DRayContext& RayContext, DCollisionResponse& out_Response
 					distance = within_Response.mDistance;
 					RayContext.m_RequestFlags = oldFlags|RequestBackface|RequestDistance;
 //					RayContext.mWithinIdx.erase(RayContext.mWithinIdx.begin()); 
-					object->Intersect(RayContext, out_Response);
+					object->CalculateColour(RayContext, out_Response);
 //					out_Response = within_Response;
 				}
 				else
 				{
 					RayContext.m_RequestFlags = oldFlags;
 					if (hitId>0)
-						RayContext.m_Scene->GetObject(hitId)->Intersect(RayContext, out_Response);
+						RayContext.m_Scene->GetObject(hitId)->CalculateColour(RayContext, out_Response);
 				}
 
+				// absorb
 				float density = 1 - exp(-distance * object->GetDensity());
 				out_Response.mColour = object->GetAbsorptionColour(RayContext.m_Ray.GetStart()) * density + out_Response.mColour * (1-density);
+				// tint
+				density = 1 - exp(-distance * object->GetTintDensity());
+				out_Response.mColour = out_Response.mColour * ((object->GetDiffuseColour(RayContext.m_Ray.GetStart()) * density) + (DColour(1,1,1) * (1-density)));
 			}
 
 			RayContext.m_RequestFlags = oldFlags;
@@ -252,7 +256,7 @@ bool DScene::Intersect(DRayContext& RayContext, DCollisionResponse& out_Response
 	else
 	{
 		if (hitId>0)
-			RayContext.m_Scene->GetObject(hitId)->Intersect(RayContext, out_Response);
+			RayContext.m_Scene->GetObject(hitId)->CalculateColour(RayContext, out_Response);
 	}
 
 	/*

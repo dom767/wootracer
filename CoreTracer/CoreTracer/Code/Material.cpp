@@ -58,6 +58,7 @@ void DMaterial::Read(TiXmlElement* element)
 	mReflectivity = DCF::CreateFromXML((TiXmlElement*) element->FirstChildElement("REFLECTIVITYCOLOUR"));
 	Convert::StrToFloat(element->Attribute("opacity"), m_Opacity);
 	Convert::StrToFloat(element->Attribute("density"), m_Density);
+	Convert::StrToFloat(element->Attribute("tintdensity"), m_TintDensity);
 	mAbsorptionColour = DCF::CreateFromXML((TiXmlElement*) element->FirstChildElement("ABSORPTIONCOLOUR"));
 	Convert::StrToFloat(element->Attribute("shininess"), m_Shininess);
 	Convert::StrToFloat(element->Attribute("refractiveIndex"), m_RefractiveIndex);
@@ -196,7 +197,7 @@ void DMaterial::CalculateColour(DColour &out_colour,
 	diffuseLight *= funcState.mDiffuse;
 
 	// calculate the colour of the surface
-	out_colour = (diffuseLight + specularLight + funcState.mEmissive) * m_Opacity;
+	out_colour = (diffuseLight * m_Opacity) + specularLight + funcState.mEmissive;
 
 	// calculate reflection
 	DCollisionResponse response;

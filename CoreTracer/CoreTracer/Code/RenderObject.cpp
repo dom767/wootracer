@@ -74,6 +74,19 @@ bool DRenderObject::Intersect(const DRayContext& rRayContext, DCollisionResponse
 	return ret;
 }
 
+void DRenderObject::CalculateColour(const DRayContext& rRayContext, DCollisionResponse& out_Response)
+{
+	if (rRayContext.m_RequestFlags&RequestZeroLighting && GetIgnoreWhileLighting()) // pathtracing ignores lightsources as light contributions (lighting is directly sampled)
+	{
+		out_Response.mColour = DColour(0,0,0);
+	}
+	else if (rRayContext.m_RequestFlags&RequestColour) // colour requsted (expensive!)
+	{
+		mMaterial.CalculateColour(out_Response.mColour, out_Response.mHitPosition, GetObjectId(), out_Response.mNormal, rRayContext, mIgnoreWhileLighting);
+	}
+//	mMaterial.CalculateColour(out_Response.mColour, out_Response.mHitPosition, GetObjectId(), out_Response.mNormal, rRayContext, mIgnoreWhileLighting);
+}
+
 DRenderObject* DRenderObject::Clone()
 {
 	DRenderObject* ret = InternalClone();

@@ -36,12 +36,16 @@ public:
 	void Read(TiXmlElement* element);
 
 	bool Intersect(const DRayContext& rRayContext, DCollisionResponse& out_Response);
+	void CalculateColour(const DRayContext& rRayContext, DCollisionResponse& out_Response);
 	const DVector3& GetCentre() {return mCentre;}
 	const DAABoundingBox& GetAABoundingBox() {return mAABoundingBox;}
 	void SetIgnoreWhileLighting(bool IgnoreWhileLighting) {mIgnoreWhileLighting=IgnoreWhileLighting;}
 	bool GetIgnoreWhileLighting() const {return mIgnoreWhileLighting;} 
 	DColour GetAbsorptionColour(DVector3 pos) const {return mMaterial.GetAbsorptionColour(pos);}
+	DColour GetDiffuseColour(DVector3 pos) const {return mMaterial.GetDiffuseColour(pos);}
 	float GetDensity() const {return mMaterial.GetDensity();}
+	float GetTintDensity() const {return mMaterial.GetTintDensity();}
+	float GetOpacity() const {return mMaterial.GetOpacity();}
 	float GetRefractiveIndex() const {return mMaterial.GetRefractiveIndex();}
 	DRenderObject* Clone();
 

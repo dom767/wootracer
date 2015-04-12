@@ -23,9 +23,10 @@ public:
 		m_Opacity(1.f),
 		m_RefractiveIndex(1.f),
 		m_Density(1.f),
+		m_TintDensity(0.1f),
 		m_Shininess(1.f),
 		mAbsorptionColour(new DCFConstant(0.f, 0.f, 0.f)) {}
-	DMaterial(const DCFConstant& colour, const DColour& specularColour, const float specularPower, const float reflectivity, const float Opacity, const float RefractiveIndex, const float Density, const DColour& Absorbtion)
+	DMaterial(const DCFConstant& colour, const DColour& specularColour, const float specularPower, const float reflectivity, const float Opacity, const float RefractiveIndex, const float Density, const float tintDensity, const DColour& Absorbtion)
 		: mDiffuseColour(new DCFConstant(colour)),
 		mSpecularColour(new DCFConstant(specularColour)),
 		mEmissiveColour(new DCFConstant(0.f, 0.f, 0.f)),
@@ -34,6 +35,7 @@ public:
 		m_Opacity(Opacity),
 		m_RefractiveIndex(RefractiveIndex),
 		m_Density(Density),
+		m_TintDensity(tintDensity),
 		m_Shininess(1.f),
 		mAbsorptionColour(new DCFConstant(Absorbtion)) {}
 	
@@ -47,9 +49,13 @@ public:
 	void SetOpacity(const float Opacity) {m_Opacity = Opacity;}
 	void SetRefractiveIndex(const float RefractiveIndex) {m_RefractiveIndex = RefractiveIndex;}
 	void SetDensity(const float Density) {m_Density = Density;}
+	void SetTintDensity(const float tintdensity) {m_TintDensity = tintdensity;}
 	void SetShininess(const float shininess) {m_Shininess = shininess;}
 	DColour GetAbsorptionColour(DVector3 pos) const {return mAbsorptionColour->GetColour(pos);}
+	DColour GetDiffuseColour(DVector3 pos) const {return mDiffuseColour->GetColour(pos);}
 	float GetDensity() const {return m_Density;}
+	float GetTintDensity() const {return m_TintDensity;}
+	float GetOpacity() const {return m_Opacity;}
 	float GetRefractiveIndex() const {return m_RefractiveIndex;}
 
 	void Cleanup();
@@ -72,6 +78,7 @@ private:
 	float m_Opacity;
 	float m_RefractiveIndex;
 	float m_Density;
+	float m_TintDensity;
 	float m_Shininess;
 	DCF* mAbsorptionColour;
 };
