@@ -123,6 +123,12 @@ public:
 	{
 		return DVector3(-mComponent[0], -mComponent[1], -mComponent[2]);
 	}
+	void Negate()
+	{
+		mComponent[0] = -mComponent[0];
+		mComponent[1] = -mComponent[1];
+		mComponent[2] = -mComponent[2];
+	}
 };
 
 #endif // DVECTOR3_H
