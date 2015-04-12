@@ -272,16 +272,19 @@ DVector3 DRenderDistance::GetNormal(const DVector3& position, const DVector3& di
 
 	// sigh...
 	float MagSq = normal.MagnitudeSquared();
-	if (MagSq <= 0)
+	if (MagSq == 0)
 	{
 		normal[0] = -direction[0];
 		normal[1] = -direction[1];
 		normal[2] = -direction[2];
+		return normal;
 	}
-
-	// normalise (already got the magsq)
-	normal /= sqrtf(MagSq);
-	return normal;
+	else
+	{
+		// normalise (already got the magsq)
+		normal /= sqrtf(MagSq);
+		return normal;
+	}
 }
 
 void DRenderDistance::Nudge(DVector3& out_Position, const DVector3& normal) const
@@ -312,6 +315,36 @@ void DRenderDistance::Nudge(DVector3& out_Position, const DVector3& normal) cons
 	}				
 
 	out_Position += delta;
+}
+
+void DRenderDistance::DeNudge(DVector3& out_Position, const DVector3& normal) const
+{
+	DVector3 delta = normal * (1.001f*mMinimumDistance);
+	float distance;
+	// push the delta location out a bit if we're still inside the object surface
+	float deltaDistance = DistanceEstimator(out_Position - delta);
+
+	if (deltaDistance > mMinimumDistance)
+	{
+		float startpos = 1.001f;
+		float endpos = 2.f;
+		for (int i=0; i<4; i++)
+		{
+			float mid = (endpos+startpos)*0.5f;
+			delta = normal * (mid*mMinimumDistance);
+			distance = DistanceEstimator(out_Position - delta);
+			if (distance > mMinimumDistance)
+				startpos = mid;
+			else
+				endpos = mid;
+		}
+		if (distance > mMinimumDistance)
+		{
+			delta = normal * (endpos*mMinimumDistance);
+		}
+	}				
+
+	out_Position -= delta;
 }
 
 bool DRenderDistance::GetCollisionPoint(DVector3 &out_Point, const DVector3& start, const DVector3& end, const DVector3& direction) const
@@ -354,15 +387,75 @@ bool DRenderDistance::GetCollisionPoint(DVector3 &out_Point, const DVector3& sta
 			}
 		}
 
-		oldDistance = totalDistance;
-		totalDistance += distance*mStepSize;
-		out_Point += direction * distance*mStepSize;
-
 		if (distance < mMinimumDistance
 			&& totalDistance < endT)
 		{
 			return true;
 		}
+
+		oldDistance = totalDistance;
+		totalDistance += distance*mStepSize;
+		out_Point += direction * distance*mStepSize;
+
+		if (totalDistance > endT)
+			return false;
+	}
+
+	return false;
+}
+
+bool DRenderDistance::GetBackfaceCollisionPoint(DVector3 &out_Point, const DVector3& start, const DVector3& end, const DVector3& direction) const
+{
+	// step no further than this
+	float endT = (end - start).Magnitude();
+	out_Point = start;
+	float oldDistance = 0.0f;
+	float totalDistance = 0.0f;
+
+	for (int steps=0; steps < mDEIterations; steps++)
+	{
+		float distance = DistanceEstimator(out_Point);
+
+		if (steps==0 && distance>mMinimumDistance)	
+		{
+			out_Point = start;
+			return true;
+		}
+
+		// stepped too far...
+		if (distance>mMinimumDistance*2)
+		{
+			float starttd = oldDistance;
+			float endtd = totalDistance;
+			while (endtd-starttd>mMinimumDistance*0.1 && (distance<mMinimumDistance || distance>mMinimumDistance*2))
+			{
+				float mid = (endtd+starttd)*0.5f;
+				out_Point = start + direction * mid;
+				distance = DistanceEstimator(out_Point);
+				if (distance > mMinimumDistance*2)
+					endtd = mid;
+				else
+					starttd = mid;
+			}
+			if (distance>mMinimumDistance*2)
+			{
+				out_Point = start + direction * starttd;
+				distance = mMinimumDistance*0.5f;//DistanceEstimator(p);
+			}
+		}
+
+		if (distance > mMinimumDistance
+			&& totalDistance < endT)
+		{
+			return true;
+		}
+
+		oldDistance = totalDistance;
+		totalDistance += (2*mMinimumDistance-distance)*mStepSize;
+		out_Point += direction * (2*mMinimumDistance-distance)*mStepSize;
+
+		if (totalDistance > endT)
+			return false;
 	}
 
 	return false;
@@ -385,14 +478,33 @@ bool DRenderDistance::InternalIntersect(const DRayContext& rRayContext, DCollisi
 	const DVector3 start = (AAstart - mDEOffset) / mDEScale;
 	const DVector3 end = (AAend - mDEOffset) / mDEScale;
 
-	// work out how far away our hit is...
 	DVector3 p;
-	bool hit = GetCollisionPoint(p, start, end, direction);
-	if (!hit)
-		return false;
+	DVector3 normal;
 
-	DVector3 normal = GetNormal(p, direction);
-	Nudge(p, normal);
+	if ((rRayContext.m_RequestFlags&RequestBackface)==0)
+	{
+		// work out how far away our hit is...
+		if (!GetCollisionPoint(p, start, end, direction))
+			return false;
+
+		normal = GetNormal(p, direction);
+		Nudge(p, normal);
+	}
+	else
+	{
+		// BACKFACE FTW
+		DVector3 newStart = start;
+		normal = GetNormal(start, direction);
+		DeNudge(newStart, normal);
+
+		// work out how far away our hit is...
+		if (!GetBackfaceCollisionPoint(p, newStart, end, direction))
+			return false;
+
+		normal = GetNormal(p, direction);
+		Nudge(p, normal);
+		normal.Negate();
+	}
 	
 	out_Response.mNormal = normal;
 	out_Response.mHitPosition = p;
