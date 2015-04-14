@@ -276,10 +276,16 @@ DVector3 DKDTree::FindMedian(const std::vector<DRenderObject*> &objects)
 
 struct hit
 {
-	hit(float dist, std::vector<DRenderObject*>::const_iterator i)
+	hit(float dist, DVector3& norm, DColour& hitcol, DVector3& hitpos, std::vector<DRenderObject*>::const_iterator i)
 		: distance(dist),
+		normal(norm),
+		hitColour(hitcol),
+		hitPosition(hitpos),
 		iter(i) {}
 	float distance;
+	DVector3 normal;
+	DColour hitColour;
+	DVector3 hitPosition;
 	std::vector<DRenderObject*>::const_iterator iter;
 };
 
@@ -360,26 +366,25 @@ int DKDTree::Intersect(const DRayContext& rRayContext, DCollisionResponse& out_R
 		}
 
 		// lets iterate over the hit points and find the nearest
-		std::vector<hit>::iterator hitIter = RenderCache.m_HitPoints.begin(), hitEnd = RenderCache.m_HitPoints.end();
-		std::vector<DRenderObject*>::const_iterator nearestObject=(*hitIter).iter;
-		float nearestDistance = (*hitIter).distance;
-
-		// we initialise to hitpoint[0] so increment before while
-		hitIter++;
+		float nearestDistance = RenderCache.m_HitPoints[0].distance;
+		int nearestObjectIdx = 0;
 
 		// see if anything else is nearer
-		while (hitIter!=hitEnd)
+		float testdistance = 0;
+		for (unsigned int i=1; i<RenderCache.m_HitPoints.size(); i++)
 		{
-			if ((*hitIter).distance < nearestDistance)
+			testdistance = RenderCache.m_HitPoints[i].distance;
+			if (testdistance < nearestDistance)
 			{
-				// woohoo, something nearer
-				nearestObject = (*hitIter).iter;
-				nearestDistance = (*hitIter).distance;
+				nearestDistance = testdistance;
+				nearestObjectIdx = i;
 			}
-			hitIter++;
 		}
 
 		out_Response.mDistance = nearestDistance;
+		out_Response.mHitPosition = RenderCache.m_HitPoints[nearestObjectIdx].hitPosition;
+		out_Response.mNormal = RenderCache.m_HitPoints[nearestObjectIdx].normal;
+		out_Response.mColour = RenderCache.m_HitPoints[nearestObjectIdx].hitColour;
 		if (Log().mErrorLevel==Info)
 		{
 			std::string kdDebug;
@@ -407,7 +412,7 @@ int DKDTree::Intersect(const DRayContext& rRayContext, DCollisionResponse& out_R
 			LOG(Info, kdDebug.c_str());
 		}
 
-		return (*nearestObject)->GetObjectId();
+		return (*(RenderCache.m_HitPoints[nearestObjectIdx].iter))->GetObjectId();
 	}
 	return false;
 }
@@ -437,7 +442,7 @@ void DKDTree::IntersectRecurse(DKDTreeNode* node, EAxis axis, const DVector3& st
 					if ((*iter)->Intersect(DRayContext(NULL, RenderCache.mRayContext.m_Ray, RequestDistance, 0, RenderCache.mRayContext.m_RefractiveIndex, RenderCache.mRayContext.mPixelIndex, RenderCache.mRayContext.mSubFrame), tempResponse)
 						&& (*iter)->GetObjectId()!=RenderCache.m_IgnoreObjectId)
 					{
-						RenderCache.m_HitPoints.push_back(hit(tempResponse.mDistance, iter));
+						RenderCache.m_HitPoints.push_back(hit(tempResponse.mDistance, tempResponse.mNormal, tempResponse.mColour, tempResponse.mHitPosition, iter));
 					}
 				}
 				RenderCache.Add((*iter)->GetObjectId());
