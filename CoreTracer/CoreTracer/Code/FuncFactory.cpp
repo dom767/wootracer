@@ -26,6 +26,7 @@ DFuncFactory::DFuncFactory()
 	mFuncList.push_back(new DDistGetY());
 	mFuncList.push_back(new DDistGetZ());
 	mFuncList.push_back(new DDistKaleido());
+	mFuncList.push_back(new DDistKaleidoCol());
 	mFuncList.push_back(new DAdd());
 	mFuncList.push_back(new DDistSub());
 	mFuncList.push_back(new DDistMul());

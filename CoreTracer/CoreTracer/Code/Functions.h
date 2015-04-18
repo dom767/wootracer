@@ -505,6 +505,83 @@ BEGIN_FUNC(DDistKaleido, "kaleido");
 	}
 END_FUNC
 
+BEGIN_VECFUNC(DDistKaleidoCol, "kaleidocol");
+	DDistKaleidoCol()
+	{
+		mParam.push_back(new DFuncParam("mPos", Vec));
+		mParam.push_back(new DFuncParam("mRot1", Vec));
+		mParam.push_back(new DFuncParam("mRot2", Vec));
+		mParam.push_back(new DFuncParam("mOffset", Vec));
+		mParam.push_back(new DFuncParam("mIterations", Float));
+		mParam.push_back(new DFuncParam("mScale", Float));
+		mRot1 = mRot2 = DVector3(0,0,0);
+		matRot1.MakeIdentity();
+		matRot2.MakeIdentity();
+	}
+
+	DMatrix4 rotate1(const DVector3& rot)
+	{
+		DMatrix4 mat;
+		mat.MakeFromRPY(rot[0],rot[1],rot[2]);
+		return mat;
+	}
+
+	DVector3 mRot1;
+	DVector3 mRot2;
+	DMatrix4 matRot1;
+	DMatrix4 matRot2;
+
+	virtual DVector3 Evaluate(DFunctionState& state)
+	{
+		DVector3 pos = mParam[0]->EvaluateVec(state);
+		DVector3 rot1 = mParam[1]->EvaluateVec(state);
+		DVector3 rot2 = mParam[2]->EvaluateVec(state);
+		DVector3 offset = mParam[3]->EvaluateVec(state);
+		int iterations = int(0.5f + mParam[4]->Evaluate(state));
+		float scale = mParam[5]->Evaluate(state);
+
+		if (mRot1[0]!=rot1[0] || mRot1[1]!=rot1[1] || mRot1[2]!=rot1[2])
+		{
+			matRot1 = rotate1(rot1);
+			mRot1 = rot1;
+		}
+		if (mRot2[0]!=rot2[0] || mRot2[1]!=rot2[1] || mRot2[2]!=rot2[2])
+		{
+			matRot2 = rotate1(rot2);
+			mRot2 = rot2;
+		}
+
+		float bailout = 1000;
+		float r=pos.MagnitudeSquared();
+		int i;
+		float acc[3];
+		acc[0] = acc[1] = acc[2] = 0;
+		for(i=0;i<iterations && r<bailout;i++){
+			//Folding... These are some of the symmetry planes of the tetrahedron
+			float tmp;
+
+			pos = matRot1 * pos;
+
+			if(pos[0]+pos[1]<0){acc[0]++;tmp=-pos[1];pos[1]=-pos[0];pos[0]=tmp;}
+			if(pos[0]+pos[2]<0){acc[1]++;tmp=-pos[2];pos[2]=-pos[0];pos[0]=tmp;}
+			if(pos[1]+pos[2]<0){acc[2]++;tmp=-pos[2];pos[2]=-pos[1];pos[1]=tmp;}
+      
+			pos = matRot2 * pos;
+
+			//Stretche about the point [1,1,1]*(scale-1)/scale; The "(scale-1)/scale" is here in order to keep the size of the fractal constant wrt scale
+			pos[0]=scale*pos[0]-offset[0]*(scale-1);//equivalent to: x=scale*(x-cx); where cx=(scale-1)/scale;
+			pos[1]=scale*pos[1]-offset[1]*(scale-1);
+			pos[2]=scale*pos[2]-offset[2]*(scale-1);
+			r=pos.MagnitudeSquared();
+		}
+		DVector3 ret;
+		ret[0] = fabsf(acc[0]-(float(iterations)*0.5f))/(float(iterations)*0.5f);
+		ret[1] = fabsf(acc[1]-(float(iterations)*0.5f))/(float(iterations)*0.5f);
+		ret[2] = fabsf(acc[2]-(float(iterations)*0.5f))/(float(iterations)*0.5f);
+		return ret;
+	}
+END_FUNC
+
 BEGIN_FUNC(DAdd, "add");
 	DAdd()
 	{
