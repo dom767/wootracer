@@ -68,3 +68,5 @@ CoreTracer/CoreTracer/sequence101024753
 *.txt
 *.unsuccessfulbuild
 CoreTracer/CoreTracer/log.txt
+CoreTracer/CoreTracer/log.txt
+bin/CoreTracer.dll
