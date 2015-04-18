@@ -19,6 +19,7 @@ struct DCollisionResponse
 	DColour mColour;
 	int mIgnoreObjectId;
 	int m_WithinObjectId;
+	DVector3 mObjectPosition;
 	DVector3 mHitPosition;
 	DVector3 mNormal;
 

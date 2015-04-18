@@ -17,6 +17,7 @@ enum EVectorStateVar;
 enum EVariableName
 {
 	VNPosition,
+	VNObjectPosition,
 	VNDistance,
 	VNDiffuse,
 	VNSpecular,

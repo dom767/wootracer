@@ -507,8 +507,8 @@ bool DRenderDistance::InternalIntersect(const DRayContext& rRayContext, DCollisi
 	}
 	
 	out_Response.mNormal = normal;
-	out_Response.mHitPosition = p;
-	out_Response.mHitPosition *= mDEScale;
-	out_Response.mHitPosition += mDEOffset;
+	out_Response.mObjectPosition = p;
+	out_Response.mObjectPosition *= mDEScale;
+	out_Response.mObjectPosition += mDEOffset;
 	return true;
 }

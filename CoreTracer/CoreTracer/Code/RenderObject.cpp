@@ -56,7 +56,7 @@ bool DRenderObject::Intersect(const DRayContext& rRayContext, DCollisionResponse
 
 	if (ret)
 	{
-		out_Response.mHitPosition = mInvCentreTrans * out_Response.mHitPosition;
+		out_Response.mHitPosition = mInvCentreTrans * out_Response.mObjectPosition;
 		out_Response.mNormal = mInvDirectionTrans * out_Response.mNormal;
 		out_Response.mNormal.Normalise();
 		out_Response.mDistance = (out_Response.mHitPosition - rRayContext.m_Ray.GetStart()).Magnitude();
@@ -67,7 +67,7 @@ bool DRenderObject::Intersect(const DRayContext& rRayContext, DCollisionResponse
 		}
 		else if (rRayContext.m_RequestFlags&RequestColour) // colour requsted (expensive!)
 		{
-			mMaterial.CalculateColour(out_Response.mColour, out_Response.mHitPosition, GetObjectId(), out_Response.mNormal, rRayContext, mIgnoreWhileLighting);
+			mMaterial.CalculateColour(out_Response.mColour, out_Response.mHitPosition, out_Response.mObjectPosition, GetObjectId(), out_Response.mNormal, rRayContext, mIgnoreWhileLighting);
 		}
 	}
 
@@ -82,7 +82,7 @@ void DRenderObject::CalculateColour(const DRayContext& rRayContext, DCollisionRe
 	}
 	else if (rRayContext.m_RequestFlags&RequestColour) // colour requsted (expensive!)
 	{
-		mMaterial.CalculateColour(out_Response.mColour, out_Response.mHitPosition, GetObjectId(), out_Response.mNormal, rRayContext, mIgnoreWhileLighting);
+		mMaterial.CalculateColour(out_Response.mColour, out_Response.mHitPosition, out_Response.mObjectPosition, GetObjectId(), out_Response.mNormal, rRayContext, mIgnoreWhileLighting);
 	}
 //	mMaterial.CalculateColour(out_Response.mColour, out_Response.mHitPosition, GetObjectId(), out_Response.mNormal, rRayContext, mIgnoreWhileLighting);
 }

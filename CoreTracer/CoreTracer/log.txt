@@ -1,0 +1,3646 @@
+DLL.StartRayTracer
+DLL.InitialiseRender
+Coretracer.BuildFromXml
+DLL.GetRayCount
+Coretracer.GetRayCount
+DLL.GetKDCount
+Coretracer.GetKDCount
+DLL.GetIntersectionCount
+Coretracer.GetIntersectionCount
+DLL.GetPixels
+Coretracer.GetPixelCount
+DLL.GetPatchSamples
+Coretracer.GetPatchSamples
+DLL.StartRender
+Coretracer.StartRender
+Camera.Render
+Camera.Render InitialiseRenderQueue
+Camera.Render InitialiseThreads
+Camera.Render Initialise Thread 0
+Camera.Render Initialise Thread 1
+Camera.Render Initialise Thread 2
+Thread 0 rendered square at 0, 0
+
+Thread 1 rendered square at 16, 0
+
+Thread 1 rendered square at 64, 0
+
+DLL.CopyBuffer
+Coretracer.CopyBuffer
+Thread 1 rendered square at 80, 0
+
+Thread 0 rendered square at 48, 0
+
+DLL.GetRayCount
+Coretracer.GetRayCount
+DLL.GetKDCount
+Coretracer.GetKDCount
+DLL.GetIntersectionCount
+Coretracer.GetIntersectionCount
+DLL.GetPixels
+Coretracer.GetPixelCount
+DLL.GetPatchSamples
+Coretracer.GetPatchSamples
+DLL.CopyBuffer
+Coretracer.CopyBuffer
+Thread 1 rendered square at 96, 0
+
+Camera.Render Initialise Thread 3
+Thread 2 rendered square at 32, 0
+
+DLL.GetRayCount
+Coretracer.GetRayCount
+DLL.GetKDCount
+Coretracer.GetKDCount
+DLL.GetIntersectionCount
+Coretracer.GetIntersectionCount
+DLL.GetPixels
+Coretracer.GetPixelCount
+DLL.GetPatchSamples
+Coretracer.GetPatchSamples
+DLL.CopyBuffer
+Coretracer.CopyBuffer
+Thread 1 rendered square at 128, 0
+
+Thread 0 rendered square at 112, 0
+
+DLL.GetRayCount
+Coretracer.GetRayCount
+DLL.GetKDCount
+Coretracer.GetKDCount
+DLL.GetIntersectionCount
+Coretracer.GetIntersectionCount
+DLL.GetPixels
+Coretracer.GetPixelCount
+DLL.GetPatchSamples
+Coretracer.GetPatchSamples
+DLL.CopyBuffer
+Coretracer.CopyBuffer
+Thread 2 rendered square at 160, 0
+
+Thread 1 rendered square at 176, 0
+
+Thread 3 rendered square at 144, 0
+
+Sample ray
+Worldlight Test Ray
+Worldlight Test Ray
+KDTree intersect, obj intersected : 1, 2, 
+Obj Tested : 1, 2, 320, -1111382549, -1094293332, 1063960713, 0, 0, 
+Obj Tested Total: 2
+Ray start : -1.04461, 9.13167, -5.37479
+Ray direction : 0.172072, -0.360224, 0.916859
+Ray recursionRemaining : 3
+Ray AirRefractionIndex : 1.003
+Ray RefractiveIndex : 1.003
+Ray m_RequestFlags : 1
+Collision point : 4.10823
+
+Shadow test ray
+KDTree intersect, obj intersected : 2, 
+Obj Tested : 1, 2, 1064043321, -1104412004, 1058867469, -1085960898, 69860320, 6, 
+Obj Tested Total: 2
+Ray start : 0.0958567, 5.57023, 3.6877
+Ray direction : -0.167979, 0.613419, -0.771686
+Ray recursionRemaining : 2
+Ray AirRefractionIndex : 1.003
+Ray RefractiveIndex : 1
+Ray m_RequestFlags : 8
+Collision point : 0.0123081
+Directional light test ray
+
+Worldlight Test Ray
+KDTree intersect, obj intersected : 1, 2, 
+Obj Tested : 1, 2, 1063982134, 1049448296, -1098443011, -1083401554, 67828808, 6, 
+Obj Tested Total: 2
+Ray start : 0.421381, 5.55189, 3.67311
+Ray direction : 0.275996, -0.263847, -0.924235
+Ray recursionRemaining : 2
+Ray AirRefractionIndex : 1.003
+Ray RefractiveIndex : 1
+Ray m_RequestFlags : 8
+Collision point : 0.00348044
+
+Worldlight Test Ray
+KDTree intersect, obj intersected : 
+Obj Tested : 1, 2, 0, 0, 0, 5, 0, 0, 
+Obj Tested Total: 2
+Ray start : -0.337547, 7.65442, -1.60712
+Ray direction : -0.526281, 0.810258, -0.257895
+Ray recursionRemaining : 3
+Ray AirRefractionIndex : 1.003
+Ray RefractiveIndex : 1.003
+Ray m_RequestFlags : 8
+Collision point : -1
+
+Worldlight Test Ray
+KDTree intersect, obj intersected : 2, 
+Obj Tested : 1, 2, 1064043321, -1104412004, 1058867469, -1085960898, 69860320, 6, 
+Obj Tested Total: 2
+Ray start : 0.0958567, 5.57023, 3.6877
+Ray direction : -0.167979, 0.613419, -0.771686
+Ray recursionRemaining : 2
+Ray AirRefractionIndex : 1.003
+Ray RefractiveIndex : 1
+Ray m_RequestFlags : 8
+Collision point : 0.0123081
+
+Reflection ray
+KDTree intersect, obj intersected : 1, 2, 
+Obj Tested : 1, 2, 1063982134, 1049448296, -1098443011, -1083401554, 67828808, 6, 
+Obj Tested Total: 2
+Ray start : 0.421381, 5.55189, 3.67311
+Ray direction : 0.275996, -0.263847, -0.924235
+Ray recursionRemaining : 2
+Ray AirRefractionIndex : 1.003
+Ray RefractiveIndex : 1
+Ray m_RequestFlags : 8
+Collision point : 0.00348044
+
+KDTree intersect, obj intersected : 
+Obj Tested : 1, 2, 0, 0, 2, 0, 2097152, -67108864, 
+Obj Tested Total: 2
+Ray start : -0.337547, 7.65442, -1.60712
+Ray direction : -0.696069, 0.483571, -0.530705
+Ray recursionRemaining : 3
+Ray AirRefractionIndex : 1.003
+Ray RefractiveIndex : 1.003
+Ray m_RequestFlags : 8
+Collision point : -1
+
+KDTree intersect, obj intersected : 1, 
+Obj Tested : 1, 2, 0, 0, 0, 0, 0, 0, 
+Obj Tested Total: 2
+Ray start : 0.0958567, 5.57023, 3.6877
+Ray direction : 0.0823233, -0.919654, -0.384005
+Ray recursionRemaining : 1
+Ray AirRefractionIndex : 1.003
+Ray RefractiveIndex : 1
+Ray m_RequestFlags : 3
+Collision point : 6.05687
+
+Worldlight Test Ray
+Checking for intersection with containing object
+Worldlight Test Ray
+KDTree intersect, obj intersected : 
+Obj Tested : 1, 2, 0, 0, 2, 0, 2097152, -67108864, 
+Obj Tested Total: 2
+Ray start : -0.337547, 7.65442, -1.60712
+Ray direction : -0.696069, 0.483571, -0.530705
+Ray recursionRemaining : 3
+Ray AirRefractionIndex : 1.003
+Ray RefractiveIndex : 1.003
+Ray m_RequestFlags : 8
+Collision point : -1
+
+Worldlight Test Ray
+Containing Object intersection result : 2
+Ray start : 0.0958567, 5.57023, 3.6877
+Ray direction : 0.0823233, -0.919654, -0.384005
+Ray recursionRemaining : 1
+Ray AirRefractionIndex : 1.003
+Ray RefractiveIndex : 1
+Ray m_RequestFlags : 6
+Collision point : 5.70595
+
+Shadow test ray
+KDTree intersect, obj intersected : 1, 2, 
+Obj Tested : 1, 2, 1063982134, 1049448296, -1098443011, -1083401554, 67828808, 6, 
+Obj Tested Total: 2
+Ray start : 0.421381, 5.55189, 3.67311
+Ray direction : 0.275996, -0.263847, -0.924235
+Ray recursionRemaining : 2
+Ray AirRefractionIndex : 1.003
+Ray RefractiveIndex : 1
+Ray m_RequestFlags : 8
+Collision point : 0.00348044
+
+Directional light test ray
+Worldlight Test Ray
+KDTree intersect, obj intersected : 
+Obj Tested : 1, 2, 0, 0, 2, 0, 2097152, -67108864, 
+Obj Tested Total: 2
+Ray start : -0.337547, 7.65442, -1.60712
+Ray direction : -0.696069, 0.483571, -0.530705
+Ray recursionRemaining : 3
+Ray AirRefractionIndex : 1.003
+Ray RefractiveIndex : 1.003
+Ray m_RequestFlags : 8
+Collision point : -1
+
+Worldlight Test Ray
+KDTree intersect, obj intersected : 2, 
+Obj Tested : 1, 2, 0, 0, 0, 5, 0, 0, 
+Obj Tested Total: 2
+Ray start : 0.565487, 0.323058, 1.49577
+Ray direction : -0.533497, 0.805162, -0.259027
+Ray recursionRemaining : 1
+Ray AirRefractionIndex : 1.003
+Ray RefractiveIndex : 1
+Ray m_RequestFlags : 8
+Collision point : 0.00350434
+
+Worldlight Test Ray
+KDTree intersect, obj intersected : 
+Obj Tested : 1, 2, 0, 0, 2, 0, 2097152, -67108864, 
+Obj Tested Total: 2
+Ray start : -0.337547, 7.65442, -1.60712
+Ray direction : -0.696069, 0.483571, -0.530705
+Ray recursionRemaining : 3
+Ray AirRefractionIndex : 1.003
+Ray RefractiveIndex : 1.003
+Ray m_RequestFlags : 8
+Collision point : -1
+
+Worldlight Test Ray
+KDTree intersect, obj intersected : 1, 
+Obj Tested : 1, 2, 1063638051, 1051150955, -1083887246, -1097135032, 66713504, 6, 
+Obj Tested Total: 2
+Ray start : -0.915133, 5.52851, 3.59107
+Ray direction : 0.0120207, -0.369159, 0.929289
+Ray recursionRemaining : 1
+Ray AirRefractionIndex : 1.003
+Ray RefractiveIndex : 1.003
+Ray m_RequestFlags : 3
+Collision point : 14.976
+
+Shadow test ray
+Directional light test ray
+KDTree intersect, obj intersected : 1, 2, 
+Obj Tested : 1, 2, 1063982134, 1049448296, -1098443011, -1083401554, 67828808, 6, 
+Obj Tested Total: 2
+Ray start : 0.421381, 5.55189, 3.67311
+Ray direction : 0.275996, -0.263847, -0.924235
+Ray recursionRemaining : 2
+Ray AirRefractionIndex : 1.003
+Ray RefractiveIndex : 1
+Ray m_RequestFlags : 8
+Collision point : 0.00348044
+
+Reflection ray
+KDTree intersect, obj intersected : 2, 
+Obj Tested : 1, 2, 69860320, 6, -1074795212, 1067383138, -1065937906, 2004892673, 
+Obj Tested Total: 2
+Ray start : 0.565487, 0.323058, 1.49577
+Ray direction : -0.777193, 0.606071, -0.169259
+Ray recursionRemaining : 1
+Ray AirRefractionIndex : 1.003
+Ray RefractiveIndex : 1
+Ray m_RequestFlags : 8
+Collision point : 0.00762932
+KDTree intersect, obj intersected : 1, 
+Obj Tested : 1, 2, 0, 0, 0, 0, 0, 0, 
+Obj Tested Total: 2
+Ray start : 0.421381, 5.55189, 3.67311
+Ray direction : -0.00251165, -0.918397, -0.395651
+Ray recursionRemaining : 1
+Ray AirRefractionIndex : 1.003
+Ray RefractiveIndex : 1
+Ray m_RequestFlags : 3
+Collision point : 6.04519
+
+
+KDTree intersect, obj intersected : 
+Obj Tested : 1, 2, 0, 0, 0, 5, 0, 0, 
+Obj Tested Total: 2
+Ray start : -0.735112, -4.76837e-007, 17.5081
+Ray direction : -0.536756, 0.808675, -0.240702
+Ray recursionRemaining : 1
+Ray AirRefractionIndex : 1.003
+Ray RefractiveIndex : 1.003
+Ray m_RequestFlags : 8
+Collision point : -1
+Checking for intersection with containing object
+
+KDTree intersect, obj intersected : 
+Obj Tested : 1, 2, 0, 0, 2, 0, 2097152, -67108864, 
+Obj Tested Total: 2
+Ray start : -0.337547, 7.65442, -1.60712
+Ray direction : -0.696069, 0.483571, -0.530705
+Ray recursionRemaining : 3
+Ray AirRefractionIndex : 1.003
+Ray RefractiveIndex : 1.003
+Ray m_RequestFlags : 8
+Collision point : -1
+Worldlight Test Ray
+
+Worldlight Test Ray
+Worldlight Test Ray
+Containing Object intersection result : 2
+Ray start : 0.421381, 5.55189, 3.67311
+Ray direction : -0.00251165, -0.918397, -0.395651
+Ray recursionRemaining : 1
+Ray AirRefractionIndex : 1.003
+Ray RefractiveIndex : 1
+Ray m_RequestFlags : 6
+Collision point : 5.76073
+
+Shadow test ray
+Directional light test ray
+KDTree intersect, obj intersected : 2, 
+Obj Tested : 1, 2, 1052734830, -1085868514, 1058744190, -1104326080, 69860320, 6, 
+Obj Tested Total: 2
+Ray start : 0.565487, 0.323058, 1.49577
+Ray direction : -0.777193, 0.606071, -0.169259
+Ray recursionRemaining : 1
+Ray AirRefractionIndex : 1.003
+Ray RefractiveIndex : 1
+Ray m_RequestFlags : 8
+Collision point : 0.00762932
+
+Worldlight Test Ray
+KDTree intersect, obj intersected : 
+Obj Tested : 1, 2, 0, 0, 2, 0, 66709332, -1400897536, 
+Obj Tested Total: 2
+Ray start : -0.735112, -4.76837e-007, 17.5081
+Ray direction : -0.0649479, 0.993553, 0.0929231
+Ray recursionRemaining : 1
+Ray AirRefractionIndex : 1.003
+Ray RefractiveIndex : 1.003
+Ray m_RequestFlags : 8
+Collision point : -1
+
+KDTree intersect, obj intersected : 
+Obj Tested : 1, 2, 0, 0, 2, 0, 2097152, -67108864, 
+Obj Tested Total: 2
+Ray start : -0.337547, 7.65442, -1.60712
+Ray direction : -0.696069, 0.483571, -0.530705
+Ray recursionRemaining : 3
+Ray AirRefractionIndex : 1.003
+Ray RefractiveIndex : 1.003
+Ray m_RequestFlags : 8
+Collision point : -1
+
+Worldlight Test Ray
+Worldlight Test Ray
+KDTree intersect, obj intersected : 2, 
+Obj Tested : 1, 2, 0, 0, 0, 5, 0, 0, 
+Obj Tested Total: 2
+Ray start : 0.406732, 0.261726, 1.39276
+Ray direction : -0.527513, 0.815978, -0.236454
+Ray recursionRemaining : 1
+Ray AirRefractionIndex : 1.003
+Ray RefractiveIndex : 1
+Ray m_RequestFlags : 8
+Collision point : 0.0038335
+
+Worldlight Test Ray
+KDTree intersect, obj intersected : 2, 
+Obj Tested : 1, 2, 1052734830, -1085868514, 1058744190, -1104326080, 69860320, 6, 
+Obj Tested Total: 2
+Ray start : 0.565487, 0.323058, 1.49577
+Ray direction : -0.777193, 0.606071, -0.169259
+Ray recursionRemaining : 1
+Ray AirRefractionIndex : 1.003
+Ray RefractiveIndex : 1
+Ray m_RequestFlags : 8
+Collision point : 0.00762932
+
+KDTree intersect, obj intersected : 
+Obj Tested : 1, 2, 0, 0, 2, 0, 66709332, -1400897536, 
+Obj Tested Total: 2
+Ray start : -0.735112, -4.76837e-007, 17.5081
+Ray direction : -0.0649479, 0.993553, 0.0929231
+Ray recursionRemaining : 1
+Ray AirRefractionIndex : 1.003
+Ray RefractiveIndex : 1.003
+Ray m_RequestFlags : 8
+Collision point : -1
+
+Worldlight Test Ray
+Worldlight Test Ray
+KDTree intersect, obj intersected : 
+Obj Tested : 1, 2, 0, 0, 2, 0, 2097152, -67108864, 
+Obj Tested Total: 2
+Ray start : -0.337547, 7.65442, -1.60712
+Ray direction : -0.696069, 0.483571, -0.530705
+Ray recursionRemaining : 3
+Ray AirRefractionIndex : 1.003
+Ray RefractiveIndex : 1.003
+Ray m_RequestFlags : 8
+Collision point : -1
+
+Worldlight Test Ray
+KDTree intersect, obj intersected : 2, 
+Obj Tested : 1, 2, 67828808, 6, -1074616858, 1067245048, -1064872664, 2004892673, 
+Obj Tested Total: 2
+Ray start : 0.406732, 0.261726, 1.39276
+Ray direction : 0.156412, 0.745211, -0.648226
+Ray recursionRemaining : 1
+Ray AirRefractionIndex : 1.003
+Ray RefractiveIndex : 1
+Ray m_RequestFlags : 8
+Collision point : 0.00377704
+
+KDTree intersect, obj intersected : 2, 
+Obj Tested : 1, 2, 1052734830, -1085868514, 1058744190, -1104326080, 69860320, 6, 
+Obj Tested Total: 2
+Ray start : 0.565487, 0.323058, 1.49577
+Ray direction : -0.777193, 0.606071, -0.169259
+Ray recursionRemaining : 1
+Ray AirRefractionIndex : 1.003
+Ray RefractiveIndex : 1
+Ray m_RequestFlags : 8
+Collision point : 0.00762932
+
+Worldlight Test Ray
+Worldlight Test Ray
+KDTree intersect, obj intersected : 
+Obj Tested : 1, 2, 0, 0, 2, 0, 2097152, -67108864, 
+Obj Tested Total: 2
+Ray start : -0.337547, 7.65442, -1.60712
+Ray direction : -0.696069, 0.483571, -0.530705
+Ray recursionRemaining : 3
+Ray AirRefractionIndex : 1.003
+Ray RefractiveIndex : 1.003
+Ray m_RequestFlags : 8
+Collision point : -1
+
+Reflection ray
+KDTree intersect, obj intersected : 
+Obj Tested : 1, 2, 0, 0, 2, 0, 66709332, -1400897536, 
+Obj Tested Total: 2
+Ray start : -0.735112, -4.76837e-007, 17.5081
+Ray direction : -0.0649479, 0.993553, 0.0929231
+Ray recursionRemaining : 1
+Ray AirRefractionIndex : 1.003
+Ray RefractiveIndex : 1.003
+Ray m_RequestFlags : 8
+Collision point : -1
+
+Worldlight Test Ray
+KDTree intersect, obj intersected : 
+Obj Tested : 1, 2, 9361960, 2103712, 39271520, 1619456769, 7, 72874012, 
+Obj Tested Total: 2
+Ray start : -0.337547, 7.65442, -1.60712
+Ray direction : 0.0517428, 0.936284, 0.347413
+Ray recursionRemaining : 2
+Ray AirRefractionIndex : 1.003
+Ray RefractiveIndex : 1.003
+Ray m_RequestFlags : 1
+Collision point : -1
+
+KDTree intersect, obj intersected : 2, 
+Obj Tested : 1, 2, 1051870733, 1042295426, 1061078561, -1088032228, 67828808, 6, 
+Obj Tested Total: 2
+Ray start : 0.406732, 0.261726, 1.39276
+Ray direction : 0.156412, 0.745211, -0.648226
+Ray recursionRemaining : 1
+Ray AirRefractionIndex : 1.003
+Ray RefractiveIndex : 1
+Ray m_RequestFlags : 8
+Collision point : 0.00377704
+
+Refraction ray
+Worldlight Test Ray
+KDTree intersect, obj intersected : 2, 
+Obj Tested : 1, 2, 1052734830, -1085868514, 1058744190, -1104326080, 69860320, 6, 
+Obj Tested Total: 2
+Ray start : 0.565487, 0.323058, 1.49577
+Ray direction : -0.777193, 0.606071, -0.169259
+Ray recursionRemaining : 1
+Ray AirRefractionIndex : 1.003
+Ray RefractiveIndex : 1
+Ray m_RequestFlags : 8
+Collision point : 0.00762932
+
+Worldlight Test Ray
+KDTree intersect, obj intersected : 
+Obj Tested : 1, 2, 0, 0, 2, 0, 66709332, -1400897536, 
+Obj Tested Total: 2
+Ray start : -0.735112, -4.76837e-007, 17.5081
+Ray direction : -0.0649479, 0.993553, 0.0929231
+Ray recursionRemaining : 1
+Ray AirRefractionIndex : 1.003
+Ray RefractiveIndex : 1.003
+Ray m_RequestFlags : 8
+Collision point : -1
+
+Worldlight Test Ray
+KDTree intersect, obj intersected : 1, 
+Obj Tested : 1, 2, 9361960, 2103712, 39271520, 1619456769, 7, 72874012, 
+Obj Tested Total: 2
+Ray start : -0.337547, 7.65442, -1.60712
+Ray direction : 0.17223, -0.357447, 0.917915
+Ray recursionRemaining : 2
+Ray AirRefractionIndex : 1.003
+Ray RefractiveIndex : 1
+Ray m_RequestFlags : 1
+Collision point : 21.4141
+
+Checking for intersection with containing object
+KDTree intersect, obj intersected : 2, 
+Obj Tested : 1, 2, 1051870733, 1042295426, 1061078561, -1088032228, 67828808, 6, 
+Obj Tested Total: 2
+Ray start : 0.406732, 0.261726, 1.39276
+Ray direction : 0.156412, 0.745211, -0.648226
+Ray recursionRemaining : 1
+Ray AirRefractionIndex : 1.003
+Ray RefractiveIndex : 1
+Ray m_RequestFlags : 8
+Collision point : 0.00377704
+
+Worldlight Test Ray
+KDTree intersect, obj intersected : 2, 
+Obj Tested : 1, 2, 1052734830, -1085868514, 1058744190, -1104326080, 69860320, 6, 
+Obj Tested Total: 2
+Ray start : 0.565487, 0.323058, 1.49577
+Ray direction : -0.777193, 0.606071, -0.169259
+Ray recursionRemaining : 1
+Ray AirRefractionIndex : 1.003
+Ray RefractiveIndex : 1
+Ray m_RequestFlags : 8
+Collision point : 0.00762932
+Containing Object intersection result : 2
+Ray start : -0.337547, 7.65442, -1.60712
+Ray direction : 0.17223, -0.357447, 0.917915
+Ray recursionRemaining : 2
+Ray AirRefractionIndex : 1.003
+Ray RefractiveIndex : 1
+Ray m_RequestFlags : 6
+Collision point : 5.68298
+
+
+Worldlight Test Ray
+KDTree intersect, obj intersected : 
+Obj Tested : 1, 2, 0, 0, 2, 0, 66709332, -1400897536, 
+Obj Tested Total: 2
+Ray start : -0.735112, -4.76837e-007, 17.5081
+Ray direction : -0.0649479, 0.993553, 0.0929231
+Ray recursionRemaining : 1
+Ray AirRefractionIndex : 1.003
+Ray RefractiveIndex : 1.003
+Ray m_RequestFlags : 8
+Collision point : -1
+
+Worldlight Test Ray
+Shadow test ray
+Directional light test ray
+KDTree intersect, obj intersected : 2, 
+Obj Tested : 1, 2, 1051870733, 1042295426, 1061078561, -1088032228, 67828808, 6, 
+Obj Tested Total: 2
+Ray start : 0.406732, 0.261726, 1.39276
+Ray direction : 0.156412, 0.745211, -0.648226
+Ray recursionRemaining : 1
+Ray AirRefractionIndex : 1.003
+Ray RefractiveIndex : 1
+Ray m_RequestFlags : 8
+Collision point : 0.00377704
+
+Worldlight Test Ray
+KDTree intersect, obj intersected : 2, 
+Obj Tested : 1, 2, 1052734830, -1085868514, 1058744190, -1104326080, 69860320, 6, 
+Obj Tested Total: 2
+Ray start : 0.565487, 0.323058, 1.49577
+Ray direction : -0.777193, 0.606071, -0.169259
+Ray recursionRemaining : 1
+Ray AirRefractionIndex : 1.003
+Ray RefractiveIndex : 1
+Ray m_RequestFlags : 8
+Collision point : 0.00762932
+
+Worldlight Test Ray
+KDTree intersect, obj intersected : 
+Obj Tested : 1, 2, 0, 0, 0, 5, 0, 0, 
+Obj Tested Total: 2
+Ray start : 0.641234, 5.62305, 3.60938
+Ray direction : -0.530516, 0.806203, -0.261897
+Ray recursionRemaining : 2
+Ray AirRefractionIndex : 1.003
+Ray RefractiveIndex : 1
+Ray m_RequestFlags : 8
+Collision point : -1
+
+Worldlight Test Ray
+KDTree intersect, obj intersected : 
+Obj Tested : 1, 2, 0, 0, 2, 0, 66709332, -1400897536, 
+Obj Tested Total: 2
+Ray start : -0.735112, -4.76837e-007, 17.5081
+Ray direction : -0.0649479, 0.993553, 0.0929231
+Ray recursionRemaining : 1
+Ray AirRefractionIndex : 1.003
+Ray RefractiveIndex : 1.003
+Ray m_RequestFlags : 8
+Collision point : -1
+
+Worldlight Test Ray
+KDTree intersect, obj intersected : 2, 
+Obj Tested : 1, 2, 1051870733, 1042295426, 1061078561, -1088032228, 67828808, 6, 
+Obj Tested Total: 2
+Ray start : 0.406732, 0.261726, 1.39276
+Ray direction : 0.156412, 0.745211, -0.648226
+Ray recursionRemaining : 1
+Ray AirRefractionIndex : 1.003
+Ray RefractiveIndex : 1
+Ray m_RequestFlags : 8
+Collision point : 0.00377704
+
+Worldlight Test Ray
+KDTree intersect, obj intersected : 
+Obj Tested : 1, 2, 0, 0, 2, 0, 66709332, -1400897536, 
+Obj Tested Total: 2
+Ray start : -0.735112, -4.76837e-007, 17.5081
+Ray direction : -0.0649479, 0.993553, 0.0929231
+Ray recursionRemaining : 1
+Ray AirRefractionIndex : 1.003
+Ray RefractiveIndex : 1.003
+Ray m_RequestFlags : 8
+Collision point : -1
+
+Worldlight Test Ray
+KDTree intersect, obj intersected : 2, 
+Obj Tested : 1, 2, 1052734830, -1085868514, 1058744190, -1104326080, 69860320, 6, 
+Obj Tested Total: 2
+Ray start : 0.565487, 0.323058, 1.49577
+Ray direction : -0.777193, 0.606071, -0.169259
+Ray recursionRemaining : 1
+Ray AirRefractionIndex : 1.003
+Ray RefractiveIndex : 1
+Ray m_RequestFlags : 8
+Collision point : 0.00762932
+
+Reflection ray
+KDTree intersect, obj intersected : 1, 2, 
+Obj Tested : 1, 2, 0, 0, 2, 0, 2004870028, -1585446912, 
+Obj Tested Total: 2
+Ray start : 0.641234, 5.62305, 3.60938
+Ray direction : -0.968075, -0.15572, -0.196421
+Ray recursionRemaining : 2
+Ray AirRefractionIndex : 1.003
+Ray RefractiveIndex : 1
+Ray m_RequestFlags : 8
+Collision point : 0.0133159
+
+Worldlight Test Ray
+KDTree intersect, obj intersected : 
+Obj Tested : 1, 2, 0, 0, 2, 0, 66709332, -1400897536, 
+Obj Tested Total: 2
+Ray start : -0.735112, -4.76837e-007, 17.5081
+Ray direction : -0.0649479, 0.993553, 0.0929231
+Ray recursionRemaining : 1
+Ray AirRefractionIndex : 1.003
+Ray RefractiveIndex : 1.003
+Ray m_RequestFlags : 8
+Collision point : -1
+KDTree intersect, obj intersected : 
+Obj Tested : 1, 2, 0, 5, 0, 0, 0, -1665497182, 
+Obj Tested Total: 2
+Ray start : 0.565487, 0.323058, 1.49577
+Ray direction : -0.118848, 0.386687, -0.914521
+Ray recursionRemaining : 0
+Ray AirRefractionIndex : 1.003
+Ray RefractiveIndex : 1
+Ray m_RequestFlags : 3
+Collision point : -1
+KDTree intersect, obj intersected : 1, 2, 
+Obj Tested : 1, 2, 1063714818, -1082666037, -1105234650, -1102503292, 72875256, 6, 
+Obj Tested Total: 2
+Ray start : 0.641234, 5.62305, 3.60938
+Ray direction : -0.968075, -0.15572, -0.196421
+Ray recursionRemaining : 2
+Ray AirRefractionIndex : 1.003
+Ray RefractiveIndex : 1
+Ray m_RequestFlags : 8
+Collision point : 0.0133159
+
+
+
+KDTree intersect, obj intersected : 2, 
+Obj Tested : 1, 2, 1051870733, 1042295426, 1061078561, -1088032228, 67828808, 6, 
+Obj Tested Total: 2
+Ray start : 0.406732, 0.261726, 1.39276
+Ray direction : 0.156412, 0.745211, -0.648226
+Ray recursionRemaining : 1
+Ray AirRefractionIndex : 1.003
+Ray RefractiveIndex : 1
+Ray m_RequestFlags : 8
+Collision point : 0.00377704
+
+Checking for intersection with containing objectReflection ray
+
+Worldlight Test Ray
+Worldlight Test Ray
+Containing Object intersection result : 2
+Ray start : 0.565487, 0.323058, 1.49577
+Ray direction : -0.118848, 0.386687, -0.914521
+Ray recursionRemaining : 0
+Ray AirRefractionIndex : 1.003
+Ray RefractiveIndex : 1
+Ray m_RequestFlags : 6
+Collision point : 5.71534
+
+Shadow test ray
+Directional light test ray
+KDTree intersect, obj intersected : 2, 
+Obj Tested : 1, 2, 1051870733, 1042295426, 1061078561, -1088032228, 67828808, 6, 
+Obj Tested Total: 2
+Ray start : 0.406732, 0.261726, 1.39276
+Ray direction : 0.156412, 0.745211, -0.648226
+Ray recursionRemaining : 1
+Ray AirRefractionIndex : 1.003
+Ray RefractiveIndex : 1
+Ray m_RequestFlags : 8
+Collision point : 0.00377704
+
+Worldlight Test Ray
+KDTree intersect, obj intersected : 
+Obj Tested : 1, 2, 9361960, 2103712, 2161944, 1619456769, 7, 66709684, 
+Obj Tested Total: 2
+Ray start : -0.735112, -4.76837e-007, 17.5081
+Ray direction : 0.0311849, 0.346259, 0.937621
+Ray recursionRemaining : 0
+Ray AirRefractionIndex : 1.003
+Ray RefractiveIndex : 1.003
+Ray m_RequestFlags : 3
+Collision point : -1
+
+KDTree intersect, obj intersected : 1, 2, 
+Obj Tested : 1, 2, 1063714818, -1082666037, -1105234650, -1102503292, 72875256, 6, 
+Obj Tested Total: 2
+Ray start : 0.641234, 5.62305, 3.60938
+Ray direction : -0.968075, -0.15572, -0.196421
+Ray recursionRemaining : 2
+Ray AirRefractionIndex : 1.003
+Ray RefractiveIndex : 1
+Ray m_RequestFlags : 8
+Collision point : 0.0133159
+
+DLL.GetRayCount
+Coretracer.GetRayCount
+DLL.GetKDCount
+Coretracer.GetKDCount
+DLL.GetIntersectionCount
+Coretracer.GetIntersectionCount
+DLL.GetPixels
+Coretracer.GetPixelCount
+DLL.GetPatchSamples
+Coretracer.GetPatchSamples
+DLL.CopyBuffer
+Coretracer.CopyBuffer
+Thread 0 rendered square at 192, 0
+
+Thread 1 rendered square at 224, 0
+
+Thread 2 rendered square at 208, 0
+
+Thread 3 rendered square at 240, 0
+
+DLL.GetRayCount
+Coretracer.GetRayCount
+DLL.GetKDCount
+Coretracer.GetKDCount
+DLL.GetIntersectionCount
+Coretracer.GetIntersectionCount
+DLL.GetPixels
+Coretracer.GetPixelCount
+DLL.GetPatchSamples
+Coretracer.GetPatchSamples
+DLL.CopyBuffer
+Coretracer.CopyBuffer
+Thread 0 rendered square at 256, 0
+
+Thread 1 rendered square at 272, 0
+
+DLL.GetRayCount
+Coretracer.GetRayCount
+DLL.GetKDCount
+Coretracer.GetKDCount
+DLL.GetIntersectionCount
+Coretracer.GetIntersectionCount
+DLL.GetPixels
+Coretracer.GetPixelCount
+DLL.GetPatchSamples
+Coretracer.GetPatchSamples
+DLL.CopyBuffer
+Coretracer.CopyBuffer
+Thread 0 rendered square at 320, 0
+
+Thread 3 rendered square at 304, 0
+
+Thread 1 rendered square at 336, 0
+
+Thread 1 rendered square at 384, 0
+
+Thread 1 rendered square at 400, 0
+
+Thread 2 rendered square at 288, 0
+
+Thread 1 rendered square at 416, 0
+
+DLL.GetRayCount
+Coretracer.GetRayCount
+DLL.GetKDCount
+Coretracer.GetKDCount
+DLL.GetIntersectionCount
+Coretracer.GetIntersectionCount
+DLL.GetPixels
+Coretracer.GetPixelCount
+DLL.GetPatchSamples
+Coretracer.GetPatchSamples
+Thread 1 rendered square at 448, 0
+
+DLL.CopyBuffer
+Coretracer.CopyBuffer
+Thread 1 rendered square at 464, 0
+
+Thread 1 rendered square at 480, 0
+
+Thread 1 rendered square at 0, 16
+
+Thread 1 rendered square at 16, 16
+
+Thread 0 rendered square at 352, 0
+
+Thread 1 rendered square at 32, 16
+
+Thread 0 rendered square at 48, 16
+
+Thread 1 rendered square at 64, 16
+
+Thread 2 rendered square at 432, 0
+
+Thread 0 rendered square at 80, 16
+
+Thread 3 rendered square at 368, 0
+
+DLL.GetRayCount
+Coretracer.GetRayCount
+DLL.GetKDCount
+Coretracer.GetKDCount
+DLL.GetIntersectionCount
+Coretracer.GetIntersectionCount
+DLL.GetPixels
+Coretracer.GetPixelCount
+DLL.GetPatchSamples
+Coretracer.GetPatchSamples
+DLL.CopyBuffer
+Coretracer.CopyBuffer
+Thread 1 rendered square at 96, 16
+
+DLL.GetRayCount
+Coretracer.GetRayCount
+DLL.GetKDCount
+Coretracer.GetKDCount
+DLL.GetIntersectionCount
+Coretracer.GetIntersectionCount
+DLL.GetPixels
+Coretracer.GetPixelCount
+DLL.GetPatchSamples
+Coretracer.GetPatchSamples
+DLL.CopyBuffer
+Coretracer.CopyBuffer
+Thread 0 rendered square at 128, 16
+
+Thread 2 rendered square at 112, 16
+
+Thread 3 rendered square at 144, 16
+
+Thread 1 rendered square at 160, 16
+
+DLL.GetRayCount
+Coretracer.GetRayCount
+DLL.GetKDCount
+Coretracer.GetKDCount
+DLL.GetIntersectionCount
+Coretracer.GetIntersectionCount
+DLL.GetPixels
+Coretracer.GetPixelCount
+DLL.GetPatchSamples
+Coretracer.GetPatchSamples
+DLL.CopyBuffer
+Coretracer.CopyBuffer
+Thread 0 rendered square at 176, 16
+
+DLL.GetRayCount
+Coretracer.GetRayCount
+DLL.GetKDCount
+Coretracer.GetKDCount
+DLL.GetIntersectionCount
+Coretracer.GetIntersectionCount
+DLL.GetPixels
+Coretracer.GetPixelCount
+DLL.GetPatchSamples
+Coretracer.GetPatchSamples
+Thread 1 rendered square at 224, 16
+
+Thread 0 rendered square at 240, 16
+
+Thread 3 rendered square at 208, 16
+
+Thread 2 rendered square at 192, 16
+
+DLL.CopyBuffer
+Coretracer.CopyBuffer
+Thread 1 rendered square at 256, 16
+
+Thread 0 rendered square at 272, 16
+
+DLL.GetRayCount
+Coretracer.GetRayCount
+DLL.GetKDCount
+Coretracer.GetKDCount
+DLL.GetIntersectionCount
+Coretracer.GetIntersectionCount
+DLL.GetPixels
+Coretracer.GetPixelCount
+DLL.GetPatchSamples
+Coretracer.GetPatchSamples
+DLL.CopyBuffer
+Coretracer.CopyBuffer
+Thread 3 rendered square at 288, 16
+
+Thread 1 rendered square at 320, 16
+
+Thread 2 rendered square at 304, 16
+
+Thread 0 rendered square at 336, 16
+
+Thread 0 rendered square at 400, 16
+
+Thread 0 rendered square at 416, 16
+
+Thread 0 rendered square at 432, 16
+
+Thread 0 rendered square at 448, 16
+
+Thread 0 rendered square at 464, 16
+
+Thread 0 rendered square at 480, 16
+
+DLL.GetRayCount
+Coretracer.GetRayCount
+DLL.GetKDCount
+Coretracer.GetKDCount
+DLL.GetIntersectionCount
+Coretracer.GetIntersectionCount
+DLL.GetPixels
+Coretracer.GetPixelCount
+DLL.GetPatchSamples
+Coretracer.GetPatchSamples
+DLL.CopyBuffer
+Coretracer.CopyBuffer
+Thread 0 rendered square at 0, 32
+
+Thread 0 rendered square at 16, 32
+
+Thread 0 rendered square at 32, 32
+
+Thread 0 rendered square at 48, 32
+
+Thread 0 rendered square at 64, 32
+
+Thread 1 rendered square at 368, 16
+
+Thread 3 rendered square at 352, 16
+
+DLL.GetRayCount
+Coretracer.GetRayCount
+DLL.GetKDCount
+Coretracer.GetKDCount
+DLL.GetIntersectionCount
+Coretracer.GetIntersectionCount
+DLL.GetPixels
+Coretracer.GetPixelCount
+DLL.GetPatchSamples
+Coretracer.GetPatchSamples
+DLL.CopyBuffer
+Coretracer.CopyBuffer
+Thread 0 rendered square at 80, 32
+
+Thread 2 rendered square at 384, 16
+
+Thread 1 rendered square at 96, 32
+
+DLL.GetRayCount
+Coretracer.GetRayCount
+DLL.GetKDCount
+Coretracer.GetKDCount
+DLL.GetIntersectionCount
+Coretracer.GetIntersectionCount
+DLL.GetPixels
+Coretracer.GetPixelCount
+DLL.GetPatchSamples
+Coretracer.GetPatchSamples
+DLL.CopyBuffer
+Coretracer.CopyBuffer
+Thread 0 rendered square at 128, 32
+
+Thread 3 rendered square at 112, 32
+
+Thread 1 rendered square at 160, 32
+
+DLL.GetRayCount
+Coretracer.GetRayCount
+DLL.GetKDCount
+Coretracer.GetKDCount
+DLL.GetIntersectionCount
+Coretracer.GetIntersectionCount
+DLL.GetPixels
+Coretracer.GetPixelCount
+DLL.GetPatchSamples
+Coretracer.GetPatchSamples
+Thread 2 rendered square at 144, 32
+
+Thread 0 rendered square at 176, 32
+
+Thread 1 rendered square at 208, 32
+
+DLL.CopyBuffer
+Coretracer.CopyBuffer
+Thread 3 rendered square at 192, 32
+
+Thread 0 rendered square at 240, 32
+
+Thread 2 rendered square at 224, 32
+
+Thread 1 rendered square at 256, 32
+
+DLL.GetRayCount
+Coretracer.GetRayCount
+DLL.GetKDCount
+Coretracer.GetKDCount
+DLL.GetIntersectionCount
+Coretracer.GetIntersectionCount
+DLL.GetPixels
+Coretracer.GetPixelCount
+DLL.GetPatchSamples
+Coretracer.GetPatchSamples
+DLL.CopyBuffer
+Coretracer.CopyBuffer
+Thread 0 rendered square at 288, 32
+
+Thread 3 rendered square at 272, 32
+
+Thread 1 rendered square at 320, 32
+
+DLL.GetRayCount
+Coretracer.GetRayCount
+DLL.GetKDCount
+Coretracer.GetKDCount
+DLL.GetIntersectionCount
+Coretracer.GetIntersectionCount
+DLL.GetPixels
+Coretracer.GetPixelCount
+DLL.GetPatchSamples
+Coretracer.GetPatchSamples
+DLL.CopyBuffer
+Coretracer.CopyBuffer
+Thread 0 rendered square at 336, 32
+
+Thread 2 rendered square at 304, 32
+
+Thread 1 rendered square at 368, 32
+
+Thread 1 rendered square at 416, 32
+
+Thread 1 rendered square at 432, 32
+
+DLL.GetRayCount
+Coretracer.GetRayCount
+DLL.GetKDCount
+Coretracer.GetKDCount
+DLL.GetIntersectionCount
+Coretracer.GetIntersectionCount
+DLL.GetPixels
+Coretracer.GetPixelCount
+DLL.GetPatchSamples
+Coretracer.GetPatchSamples
+DLL.CopyBuffer
+Coretracer.CopyBuffer
+Thread 1 rendered square at 448, 32
+
+Thread 1 rendered square at 464, 32
+
+Thread 1 rendered square at 480, 32
+
+Thread 1 rendered square at 0, 48
+
+Thread 3 rendered square at 352, 32
+
+Thread 1 rendered square at 16, 48
+
+Thread 3 rendered square at 32, 48
+
+Thread 1 rendered square at 48, 48
+
+Thread 2 rendered square at 400, 32
+
+Thread 3 rendered square at 64, 48
+
+Thread 0 rendered square at 384, 32
+
+DLL.GetRayCount
+Coretracer.GetRayCount
+DLL.GetKDCount
+Coretracer.GetKDCount
+DLL.GetIntersectionCount
+Coretracer.GetIntersectionCount
+DLL.GetPixels
+Coretracer.GetPixelCount
+DLL.GetPatchSamples
+Coretracer.GetPatchSamples
+DLL.CopyBuffer
+Coretracer.CopyBuffer
+Thread 1 rendered square at 80, 48
+
+Thread 0 rendered square at 128, 48
+
+DLL.GetRayCount
+Coretracer.GetRayCount
+DLL.GetKDCount
+Coretracer.GetKDCount
+DLL.GetIntersectionCount
+Coretracer.GetIntersectionCount
+DLL.GetPixels
+Coretracer.GetPixelCount
+DLL.GetPatchSamples
+Coretracer.GetPatchSamples
+DLL.CopyBuffer
+Coretracer.CopyBuffer
+Thread 3 rendered square at 112, 48
+
+Thread 1 rendered square at 144, 48
+
+Thread 2 rendered square at 96, 48
+
+Thread 0 rendered square at 160, 48
+
+DLL.GetRayCount
+Coretracer.GetRayCount
+DLL.GetKDCount
+Coretracer.GetKDCount
+DLL.GetIntersectionCount
+Coretracer.GetIntersectionCount
+DLL.GetPixels
+Coretracer.GetPixelCount
+DLL.GetPatchSamples
+Coretracer.GetPatchSamples
+DLL.CopyBuffer
+Coretracer.CopyBuffer
+Thread 1 rendered square at 192, 48
+
+Thread 0 rendered square at 224, 48
+
+Thread 2 rendered square at 208, 48
+
+DLL.GetRayCount
+Coretracer.GetRayCount
+DLL.GetKDCount
+Coretracer.GetKDCount
+DLL.GetIntersectionCount
+Coretracer.GetIntersectionCount
+DLL.GetPixels
+Coretracer.GetPixelCount
+DLL.GetPatchSamples
+Coretracer.GetPatchSamples
+Thread 3 rendered square at 176, 48
+
+DLL.CopyBuffer
+Coretracer.CopyBuffer
+Thread 1 rendered square at 240, 48
+
+Thread 0 rendered square at 256, 48
+
+DLL.GetRayCount
+Coretracer.GetRayCount
+DLL.GetKDCount
+Coretracer.GetKDCount
+DLL.GetIntersectionCount
+Coretracer.GetIntersectionCount
+DLL.GetPixels
+Coretracer.GetPixelCount
+DLL.GetPatchSamples
+Coretracer.GetPatchSamples
+DLL.CopyBuffer
+Coretracer.CopyBuffer
+Thread 0 rendered square at 320, 48
+
+Thread 1 rendered square at 304, 48
+
+Thread 2 rendered square at 272, 48
+
+Thread 3 rendered square at 288, 48
+
+DLL.GetRayCount
+Coretracer.GetRayCount
+DLL.GetKDCount
+Coretracer.GetKDCount
+DLL.GetIntersectionCount
+Coretracer.GetIntersectionCount
+DLL.GetPixels
+Coretracer.GetPixelCount
+DLL.GetPatchSamples
+Coretracer.GetPatchSamples
+DLL.CopyBuffer
+Coretracer.CopyBuffer
+Thread 0 rendered square at 336, 48
+
+Thread 0 rendered square at 400, 48
+
+Thread 1 rendered square at 352, 48
+
+Thread 0 rendered square at 416, 48
+
+Thread 1 rendered square at 432, 48
+
+Thread 0 rendered square at 448, 48
+
+Thread 0 rendered square at 480, 48
+
+Thread 1 rendered square at 464, 48
+
+Thread 0 rendered square at 0, 64
+
+Thread 0 rendered square at 32, 64
+
+Thread 0 rendered square at 48, 64
+
+DLL.GetRayCount
+Coretracer.GetRayCount
+DLL.GetKDCount
+Coretracer.GetKDCount
+DLL.GetIntersectionCount
+Coretracer.GetIntersectionCount
+DLL.GetPixels
+Coretracer.GetPixelCount
+DLL.GetPatchSamples
+Coretracer.GetPatchSamples
+DLL.CopyBuffer
+Coretracer.CopyBuffer
+Thread 1 rendered square at 16, 64
+
+Thread 3 rendered square at 384, 48
+
+Thread 0 rendered square at 64, 64
+
+Thread 2 rendered square at 368, 48
+
+DLL.GetRayCount
+Coretracer.GetRayCount
+DLL.GetKDCount
+Coretracer.GetKDCount
+DLL.GetIntersectionCount
+Coretracer.GetIntersectionCount
+DLL.GetPixels
+Coretracer.GetPixelCount
+DLL.GetPatchSamples
+Coretracer.GetPatchSamples
+DLL.CopyBuffer
+Coretracer.CopyBuffer
+Thread 1 rendered square at 80, 64
+
+Thread 0 rendered square at 112, 64
+
+Thread 3 rendered square at 96, 64
+
+DLL.GetRayCount
+Coretracer.GetRayCount
+DLL.GetKDCount
+Coretracer.GetKDCount
+DLL.GetIntersectionCount
+Coretracer.GetIntersectionCount
+DLL.GetPixels
+Coretracer.GetPixelCount
+DLL.GetPatchSamples
+Coretracer.GetPatchSamples
+DLL.CopyBuffer
+Coretracer.CopyBuffer
+Thread 1 rendered square at 144, 64
+
+Thread 0 rendered square at 160, 64
+
+Thread 2 rendered square at 128, 64
+
+Thread 3 rendered square at 176, 64
+
+DLL.GetRayCount
+Coretracer.GetRayCount
+DLL.GetKDCount
+Coretracer.GetKDCount
+DLL.GetIntersectionCount
+Coretracer.GetIntersectionCount
+DLL.GetPixels
+Coretracer.GetPixelCount
+DLL.GetPatchSamples
+Coretracer.GetPatchSamples
+DLL.CopyBuffer
+Coretracer.CopyBuffer
+Thread 1 rendered square at 192, 64
+
+Thread 0 rendered square at 208, 64
+
+Thread 2 rendered square at 224, 64
+
+Thread 1 rendered square at 256, 64
+
+Thread 0 rendered square at 272, 64
+
+DLL.GetRayCount
+Coretracer.GetRayCount
+DLL.GetKDCount
+Coretracer.GetKDCount
+DLL.GetIntersectionCount
+Coretracer.GetIntersectionCount
+DLL.GetPixels
+Coretracer.GetPixelCount
+DLL.GetPatchSamples
+Coretracer.GetPatchSamples
+DLL.CopyBuffer
+Coretracer.CopyBuffer
+Thread 3 rendered square at 240, 64
+
+Thread 1 rendered square at 304, 64
+
+Thread 0 rendered square at 320, 64
+
+DLL.GetRayCount
+Coretracer.GetRayCount
+DLL.GetKDCount
+Coretracer.GetKDCount
+DLL.GetIntersectionCount
+Coretracer.GetIntersectionCount
+DLL.GetPixels
+Coretracer.GetPixelCount
+DLL.GetPatchSamples
+Coretracer.GetPatchSamples
+DLL.CopyBuffer
+Coretracer.CopyBuffer
+Thread 2 rendered square at 288, 64
+
+Thread 1 rendered square at 352, 64
+
+Thread 0 rendered square at 368, 64
+
+Thread 0 rendered square at 416, 64
+
+Thread 0 rendered square at 432, 64
+
+DLL.GetRayCount
+Coretracer.GetRayCount
+DLL.GetKDCount
+Coretracer.GetKDCount
+DLL.GetIntersectionCount
+Coretracer.GetIntersectionCount
+DLL.GetPixels
+Coretracer.GetPixelCount
+DLL.GetPatchSamples
+Coretracer.GetPatchSamples
+DLL.CopyBuffer
+Coretracer.CopyBuffer
+Thread 0 rendered square at 448, 64
+
+Thread 0 rendered square at 464, 64
+
+Thread 0 rendered square at 480, 64
+
+Thread 0 rendered square at 0, 80
+
+Thread 3 rendered square at 336, 64
+
+Thread 0 rendered square at 16, 80
+
+Thread 3 rendered square at 32, 80
+
+Thread 0 rendered square at 48, 80
+
+Thread 1 rendered square at 400, 64
+
+DLL.GetRayCount
+Coretracer.GetRayCount
+DLL.GetKDCount
+Coretracer.GetKDCount
+DLL.GetIntersectionCount
+Coretracer.GetIntersectionCount
+DLL.GetPixels
+Coretracer.GetPixelCount
+DLL.GetPatchSamples
+Coretracer.GetPatchSamples
+DLL.CopyBuffer
+Coretracer.CopyBuffer
+Thread 0 rendered square at 80, 80
+
+Thread 1 rendered square at 96, 80
+
+Thread 2 rendered square at 384, 64
+
+Thread 3 rendered square at 64, 80
+
+DLL.GetRayCount
+Coretracer.GetRayCount
+DLL.GetKDCount
+Coretracer.GetKDCount
+DLL.GetIntersectionCount
+Coretracer.GetIntersectionCount
+DLL.GetPixels
+Coretracer.GetPixelCount
+DLL.GetPatchSamples
+Coretracer.GetPatchSamples
+DLL.CopyBuffer
+Coretracer.CopyBuffer
+Thread 0 rendered square at 112, 80
+
+Thread 1 rendered square at 128, 80
+
+Thread 3 rendered square at 160, 80
+
+DLL.GetRayCount
+Coretracer.GetRayCount
+DLL.GetKDCount
+Coretracer.GetKDCount
+DLL.GetIntersectionCount
+Coretracer.GetIntersectionCount
+DLL.GetPixels
+Coretracer.GetPixelCount
+DLL.GetPatchSamples
+Coretracer.GetPatchSamples
+DLL.CopyBuffer
+Coretracer.CopyBuffer
+Thread 0 rendered square at 176, 80
+
+Thread 1 rendered square at 192, 80
+
+Thread 2 rendered square at 144, 80
+
+Thread 0 rendered square at 224, 80
+
+Thread 1 rendered square at 240, 80
+
+DLL.GetRayCount
+Coretracer.GetRayCount
+DLL.GetKDCount
+Coretracer.GetKDCount
+DLL.GetIntersectionCount
+Coretracer.GetIntersectionCount
+DLL.GetPixels
+Coretracer.GetPixelCount
+DLL.GetPatchSamples
+Coretracer.GetPatchSamples
+DLL.CopyBuffer
+Coretracer.CopyBuffer
+Thread 0 rendered square at 272, 80
+
+Thread 1 rendered square at 288, 80
+
+Thread 3 rendered square at 208, 80
+
+DLL.GetRayCount
+Coretracer.GetRayCount
+DLL.GetKDCount
+Coretracer.GetKDCount
+DLL.GetIntersectionCount
+Coretracer.GetIntersectionCount
+DLL.GetPixels
+Coretracer.GetPixelCount
+DLL.GetPatchSamples
+Coretracer.GetPatchSamples
+DLL.CopyBuffer
+Coretracer.CopyBuffer
+Thread 2 rendered square at 256, 80
+
+Thread 0 rendered square at 304, 80
+
+Thread 1 rendered square at 320, 80
+
+DLL.GetRayCount
+Coretracer.GetRayCount
+DLL.GetKDCount
+Coretracer.GetKDCount
+DLL.GetIntersectionCount
+Coretracer.GetIntersectionCount
+DLL.GetPixels
+Coretracer.GetPixelCount
+DLL.GetPatchSamples
+Coretracer.GetPatchSamples
+DLL.CopyBuffer
+Coretracer.CopyBuffer
+Thread 0 rendered square at 368, 80
+
+Thread 3 rendered square at 336, 80
+
+Thread 1 rendered square at 384, 80
+
+Thread 1 rendered square at 432, 80
+
+Thread 1 rendered square at 448, 80
+
+Thread 2 rendered square at 352, 80
+
+Thread 2 rendered square at 480, 80
+
+Thread 1 rendered square at 464, 80
+
+Thread 1 rendered square at 16, 96
+
+Thread 3 rendered square at 416, 80
+
+Thread 3 rendered square at 48, 96
+
+Thread 1 rendered square at 32, 96
+
+DLL.GetRayCount
+Coretracer.GetRayCount
+DLL.GetKDCount
+Coretracer.GetKDCount
+DLL.GetIntersectionCount
+Coretracer.GetIntersectionCount
+DLL.GetPixels
+Coretracer.GetPixelCount
+DLL.GetPatchSamples
+Coretracer.GetPatchSamples
+DLL.CopyBuffer
+Coretracer.CopyBuffer
+Thread 0 rendered square at 400, 80
+
+Thread 2 rendered square at 0, 96
+
+Thread 1 rendered square at 80, 96
+
+Thread 3 rendered square at 64, 96
+
+DLL.GetRayCount
+Coretracer.GetRayCount
+DLL.GetKDCount
+Coretracer.GetKDCount
+DLL.GetIntersectionCount
+Coretracer.GetIntersectionCount
+DLL.GetPixels
+Coretracer.GetPixelCount
+DLL.GetPatchSamples
+Coretracer.GetPatchSamples
+DLL.CopyBuffer
+Coretracer.CopyBuffer
+Thread 0 rendered square at 96, 96
+
+Thread 2 rendered square at 112, 96
+
+Thread 1 rendered square at 128, 96
+
+DLL.GetRayCount
+Coretracer.GetRayCount
+DLL.GetKDCount
+Coretracer.GetKDCount
+DLL.GetIntersectionCount
+Coretracer.GetIntersectionCount
+DLL.GetPixels
+Coretracer.GetPixelCount
+DLL.GetPatchSamples
+Coretracer.GetPatchSamples
+Thread 0 rendered square at 160, 96
+
+DLL.CopyBuffer
+Coretracer.CopyBuffer
+Thread 3 rendered square at 144, 96
+
+Thread 1 rendered square at 192, 96
+
+Thread 0 rendered square at 208, 96
+
+DLL.GetRayCount
+Coretracer.GetRayCount
+DLL.GetKDCount
+Coretracer.GetKDCount
+DLL.GetIntersectionCount
+Coretracer.GetIntersectionCount
+DLL.GetPixels
+Coretracer.GetPixelCount
+DLL.GetPatchSamples
+Coretracer.GetPatchSamples
+DLL.CopyBuffer
+Coretracer.CopyBuffer
+Thread 1 rendered square at 240, 96
+
+Thread 2 rendered square at 176, 96
+
+Thread 0 rendered square at 256, 96
+
+Thread 3 rendered square at 224, 96
+
+DLL.GetRayCount
+Coretracer.GetRayCount
+DLL.GetKDCount
+Coretracer.GetKDCount
+DLL.GetIntersectionCount
+Coretracer.GetIntersectionCount
+DLL.GetPixels
+Coretracer.GetPixelCount
+DLL.GetPatchSamples
+Coretracer.GetPatchSamples
+DLL.CopyBuffer
+Coretracer.CopyBuffer
+Thread 1 rendered square at 272, 96
+
+Thread 0 rendered square at 304, 96
+
+DLL.GetRayCount
+Coretracer.GetRayCount
+DLL.GetKDCount
+Coretracer.GetKDCount
+DLL.GetIntersectionCount
+Coretracer.GetIntersectionCount
+DLL.GetPixels
+Coretracer.GetPixelCount
+DLL.GetPatchSamples
+Coretracer.GetPatchSamples
+DLL.CopyBuffer
+Coretracer.CopyBuffer
+Thread 1 rendered square at 336, 96
+
+Thread 2 rendered square at 288, 96
+
+Thread 0 rendered square at 352, 96
+
+Thread 3 rendered square at 320, 96
+
+Thread 3 rendered square at 416, 96
+
+Thread 3 rendered square at 432, 96
+
+Thread 1 rendered square at 368, 96
+
+Thread 1 rendered square at 464, 96
+
+Thread 1 rendered square at 480, 96
+
+Thread 1 rendered square at 0, 112
+
+Thread 3 rendered square at 448, 96
+
+Thread 1 rendered square at 16, 112
+
+DLL.GetRayCount
+Coretracer.GetRayCount
+DLL.GetKDCount
+Coretracer.GetKDCount
+DLL.GetIntersectionCount
+Coretracer.GetIntersectionCount
+DLL.GetPixels
+Coretracer.GetPixelCount
+DLL.GetPatchSamples
+Coretracer.GetPatchSamples
+Thread 3 rendered square at 32, 112
+
+Thread 1 rendered square at 48, 112
+
+Thread 0 rendered square at 400, 96
+
+DLL.CopyBuffer
+Coretracer.CopyBuffer
+Thread 1 rendered square at 80, 112
+
+Thread 2 rendered square at 384, 96
+
+Thread 3 rendered square at 64, 112
+
+Thread 0 rendered square at 96, 112
+
+DLL.GetRayCount
+Coretracer.GetRayCount
+DLL.GetKDCount
+Coretracer.GetKDCount
+DLL.GetIntersectionCount
+Coretracer.GetIntersectionCount
+DLL.GetPixels
+Coretracer.GetPixelCount
+DLL.GetPatchSamples
+Coretracer.GetPatchSamples
+DLL.CopyBuffer
+Coretracer.CopyBuffer
+Thread 1 rendered square at 112, 112
+
+Thread 0 rendered square at 160, 112
+
+Thread 2 rendered square at 128, 112
+
+DLL.GetRayCount
+Coretracer.GetRayCount
+DLL.GetKDCount
+Coretracer.GetKDCount
+DLL.GetIntersectionCount
+Coretracer.GetIntersectionCount
+DLL.GetPixels
+Coretracer.GetPixelCount
+DLL.GetPatchSamples
+Coretracer.GetPatchSamples
+DLL.CopyBuffer
+Coretracer.CopyBuffer
+Thread 1 rendered square at 176, 112
+
+Thread 0 rendered square at 192, 112
+
+Thread 3 rendered square at 144, 112
+
+DLL.GetRayCount
+Coretracer.GetRayCount
+DLL.GetKDCount
+Coretracer.GetKDCount
+DLL.GetIntersectionCount
+Coretracer.GetIntersectionCount
+DLL.GetPixels
+Coretracer.GetPixelCount
+DLL.GetPatchSamples
+Coretracer.GetPatchSamples
+DLL.CopyBuffer
+Coretracer.CopyBuffer
+Thread 1 rendered square at 224, 112
+
+Thread 0 rendered square at 240, 112
+
+Thread 3 rendered square at 256, 112
+
+Thread 2 rendered square at 208, 112
+
+Thread 1 rendered square at 272, 112
+
+DLL.GetRayCount
+Coretracer.GetRayCount
+DLL.GetKDCount
+Coretracer.GetKDCount
+DLL.GetIntersectionCount
+Coretracer.GetIntersectionCount
+DLL.GetPixels
+Coretracer.GetPixelCount
+DLL.GetPatchSamples
+Coretracer.GetPatchSamples
+DLL.CopyBuffer
+Coretracer.CopyBuffer
+Thread 0 rendered square at 288, 112
+
+Thread 1 rendered square at 336, 112
+
+DLL.GetRayCount
+Coretracer.GetRayCount
+DLL.GetKDCount
+Coretracer.GetKDCount
+DLL.GetIntersectionCount
+Coretracer.GetIntersectionCount
+DLL.GetPixels
+Coretracer.GetPixelCount
+DLL.GetPatchSamples
+Coretracer.GetPatchSamples
+DLL.CopyBuffer
+Coretracer.CopyBuffer
+Thread 0 rendered square at 352, 112
+
+Thread 3 rendered square at 304, 112
+
+Thread 2 rendered square at 320, 112
+
+Thread 2 rendered square at 416, 112
+
+Thread 2 rendered square at 432, 112
+
+Thread 1 rendered square at 368, 112
+
+Thread 2 rendered square at 448, 112
+
+Thread 2 rendered square at 480, 112
+
+Thread 1 rendered square at 464, 112
+
+Thread 2 rendered square at 0, 128
+
+Thread 1 rendered square at 16, 128
+
+Thread 1 rendered square at 48, 128
+
+DLL.GetRayCount
+Coretracer.GetRayCount
+DLL.GetKDCount
+Coretracer.GetKDCount
+DLL.GetIntersectionCount
+Coretracer.GetIntersectionCount
+DLL.GetPixels
+Coretracer.GetPixelCount
+DLL.GetPatchSamples
+Coretracer.GetPatchSamples
+DLL.CopyBuffer
+Coretracer.CopyBuffer
+Thread 0 rendered square at 384, 112
+
+Thread 2 rendered square at 32, 128
+
+Thread 1 rendered square at 64, 128
+
+Thread 3 rendered square at 400, 112
+
+Thread 0 rendered square at 80, 128
+
+DLL.GetRayCount
+Coretracer.GetRayCount
+DLL.GetKDCount
+Coretracer.GetKDCount
+DLL.GetIntersectionCount
+Coretracer.GetIntersectionCount
+DLL.GetPixels
+Coretracer.GetPixelCount
+DLL.GetPatchSamples
+Coretracer.GetPatchSamples
+DLL.CopyBuffer
+Coretracer.CopyBuffer
+Thread 1 rendered square at 112, 128
+
+Thread 0 rendered square at 144, 128
+
+DLL.GetRayCount
+Coretracer.GetRayCount
+DLL.GetKDCount
+Coretracer.GetKDCount
+DLL.GetIntersectionCount
+Coretracer.GetIntersectionCount
+DLL.GetPixels
+Coretracer.GetPixelCount
+DLL.GetPatchSamples
+Coretracer.GetPatchSamples
+DLL.CopyBuffer
+Coretracer.CopyBuffer
+Thread 1 rendered square at 160, 128
+
+Thread 2 rendered square at 96, 128
+
+Thread 3 rendered square at 128, 128
+
+Thread 0 rendered square at 176, 128
+
+Thread 1 rendered square at 192, 128
+
+DLL.GetRayCount
+Coretracer.GetRayCount
+DLL.GetKDCount
+Coretracer.GetKDCount
+DLL.GetIntersectionCount
+Coretracer.GetIntersectionCount
+DLL.GetPixels
+Coretracer.GetPixelCount
+DLL.GetPatchSamples
+Coretracer.GetPatchSamples
+DLL.CopyBuffer
+Coretracer.CopyBuffer
+Thread 0 rendered square at 240, 128
+
+Thread 2 rendered square at 208, 128
+
+Thread 1 rendered square at 256, 128
+
+Thread 3 rendered square at 224, 128
+
+DLL.GetRayCount
+Coretracer.GetRayCount
+DLL.GetKDCount
+Coretracer.GetKDCount
+DLL.GetIntersectionCount
+Coretracer.GetIntersectionCount
+DLL.GetPixels
+Coretracer.GetPixelCount
+DLL.GetPatchSamples
+Coretracer.GetPatchSamples
+Thread 0 rendered square at 272, 128
+
+DLL.CopyBuffer
+Coretracer.CopyBuffer
+Thread 1 rendered square at 304, 128
+
+Thread 2 rendered square at 288, 128
+
+Thread 0 rendered square at 336, 128
+
+Thread 3 rendered square at 320, 128
+
+Thread 1 rendered square at 352, 128
+
+Thread 1 rendered square at 416, 128
+
+Thread 1 rendered square at 432, 128
+
+Thread 1 rendered square at 448, 128
+
+Thread 1 rendered square at 464, 128
+
+Thread 1 rendered square at 480, 128
+
+Thread 1 rendered square at 0, 144
+
+Thread 1 rendered square at 16, 144
+
+DLL.GetRayCount
+Coretracer.GetRayCount
+DLL.GetKDCount
+Coretracer.GetKDCount
+DLL.GetIntersectionCount
+Coretracer.GetIntersectionCount
+DLL.GetPixels
+Coretracer.GetPixelCount
+DLL.GetPatchSamples
+Coretracer.GetPatchSamples
+DLL.CopyBuffer
+Coretracer.CopyBuffer
+Thread 1 rendered square at 32, 144
+
+Thread 1 rendered square at 48, 144
+
+Thread 0 rendered square at 384, 128
+
+Thread 1 rendered square at 64, 144
+
+Thread 3 rendered square at 400, 128
+
+Thread 2 rendered square at 368, 128
+
+Thread 0 rendered square at 80, 144
+
+DLL.GetRayCount
+Coretracer.GetRayCount
+DLL.GetKDCount
+Coretracer.GetKDCount
+DLL.GetIntersectionCount
+Coretracer.GetIntersectionCount
+DLL.GetPixels
+Coretracer.GetPixelCount
+DLL.GetPatchSamples
+Coretracer.GetPatchSamples
+DLL.CopyBuffer
+Coretracer.CopyBuffer
+Thread 1 rendered square at 96, 144
+
+Thread 3 rendered square at 112, 144
+
+Thread 0 rendered square at 144, 144
+
+Thread 1 rendered square at 160, 144
+
+DLL.GetRayCount
+Coretracer.GetRayCount
+DLL.GetKDCount
+Coretracer.GetKDCount
+DLL.GetIntersectionCount
+Coretracer.GetIntersectionCount
+DLL.GetPixels
+Coretracer.GetPixelCount
+DLL.GetPatchSamples
+Coretracer.GetPatchSamples
+DLL.CopyBuffer
+Coretracer.CopyBuffer
+Thread 2 rendered square at 128, 144
+
+Thread 0 rendered square at 192, 144
+
+Thread 1 rendered square at 208, 144
+
+DLL.GetRayCount
+Coretracer.GetRayCount
+DLL.GetKDCount
+Coretracer.GetKDCount
+DLL.GetIntersectionCount
+Coretracer.GetIntersectionCount
+DLL.GetPixels
+Coretracer.GetPixelCount
+DLL.GetPatchSamples
+Coretracer.GetPatchSamples
+DLL.CopyBuffer
+Coretracer.CopyBuffer
+Thread 3 rendered square at 176, 144
+
+Thread 0 rendered square at 240, 144
+
+Thread 1 rendered square at 256, 144
+
+DLL.GetRayCount
+Coretracer.GetRayCount
+DLL.GetKDCount
+Coretracer.GetKDCount
+DLL.GetIntersectionCount
+Coretracer.GetIntersectionCount
+DLL.GetPixels
+Coretracer.GetPixelCount
+DLL.GetPatchSamples
+Coretracer.GetPatchSamples
+DLL.CopyBuffer
+Coretracer.CopyBuffer
+Thread 3 rendered square at 272, 144
+
+Thread 0 rendered square at 288, 144
+
+Thread 2 rendered square at 224, 144
+
+Thread 1 rendered square at 304, 144
+
+DLL.GetRayCount
+Coretracer.GetRayCount
+DLL.GetKDCount
+Coretracer.GetKDCount
+DLL.GetIntersectionCount
+Coretracer.GetIntersectionCount
+DLL.GetPixels
+Coretracer.GetPixelCount
+DLL.GetPatchSamples
+Coretracer.GetPatchSamples
+DLL.CopyBuffer
+Coretracer.CopyBuffer
+Thread 0 rendered square at 336, 144
+
+Thread 1 rendered square at 368, 144
+
+Thread 3 rendered square at 320, 144
+
+Thread 3 rendered square at 416, 144
+
+Thread 3 rendered square at 432, 144
+
+DLL.GetRayCount
+Coretracer.GetRayCount
+DLL.GetKDCount
+Coretracer.GetKDCount
+DLL.GetIntersectionCount
+Coretracer.GetIntersectionCount
+DLL.GetPixels
+Coretracer.GetPixelCount
+DLL.GetPatchSamples
+Coretracer.GetPatchSamples
+Thread 3 rendered square at 448, 144
+
+DLL.CopyBuffer
+Coretracer.CopyBuffer
+Thread 1 rendered square at 400, 144
+
+Thread 1 rendered square at 480, 144
+
+Thread 3 rendered square at 464, 144
+
+Thread 1 rendered square at 0, 160
+
+Thread 3 rendered square at 16, 160
+
+Thread 1 rendered square at 32, 160
+
+Thread 1 rendered square at 64, 160
+
+Thread 3 rendered square at 48, 160
+
+Thread 2 rendered square at 352, 144
+
+Thread 0 rendered square at 384, 144
+
+DLL.GetRayCount
+Coretracer.GetRayCount
+DLL.GetKDCount
+Coretracer.GetKDCount
+DLL.GetIntersectionCount
+Coretracer.GetIntersectionCount
+DLL.GetPixels
+Coretracer.GetPixelCount
+DLL.GetPatchSamples
+Coretracer.GetPatchSamples
+Thread 0 rendered square at 128, 160
+
+Thread 1 rendered square at 80, 160
+
+DLL.CopyBuffer
+Coretracer.CopyBuffer
+Thread 3 rendered square at 96, 160
+
+Thread 0 rendered square at 144, 160
+
+Thread 1 rendered square at 160, 160
+
+Thread 2 rendered square at 112, 160
+
+DLL.GetRayCount
+Coretracer.GetRayCount
+DLL.GetKDCount
+Coretracer.GetKDCount
+DLL.GetIntersectionCount
+Coretracer.GetIntersectionCount
+DLL.GetPixels
+Coretracer.GetPixelCount
+DLL.GetPatchSamples
+Coretracer.GetPatchSamples
+DLL.CopyBuffer
+Coretracer.CopyBuffer
+Thread 0 rendered square at 192, 160
+
+Thread 1 rendered square at 208, 160
+
+Thread 3 rendered square at 176, 160
+
+DLL.GetRayCount
+Coretracer.GetRayCount
+DLL.GetKDCount
+Coretracer.GetKDCount
+DLL.GetIntersectionCount
+Coretracer.GetIntersectionCount
+DLL.GetPixels
+Coretracer.GetPixelCount
+DLL.GetPatchSamples
+Coretracer.GetPatchSamples
+DLL.CopyBuffer
+Coretracer.CopyBuffer
+Thread 0 rendered square at 240, 160
+
+Thread 2 rendered square at 224, 160
+
+Thread 1 rendered square at 256, 160
+
+DLL.GetRayCount
+Coretracer.GetRayCount
+DLL.GetKDCount
+Coretracer.GetKDCount
+DLL.GetIntersectionCount
+Coretracer.GetIntersectionCount
+DLL.GetPixels
+Coretracer.GetPixelCount
+DLL.GetPatchSamples
+Coretracer.GetPatchSamples
+DLL.CopyBuffer
+Coretracer.CopyBuffer
+Thread 3 rendered square at 272, 160
+
+Thread 1 rendered square at 320, 160
+
+Thread 0 rendered square at 288, 160
+
+DLL.GetRayCount
+Coretracer.GetRayCount
+DLL.GetKDCount
+Coretracer.GetKDCount
+DLL.GetIntersectionCount
+Coretracer.GetIntersectionCount
+DLL.GetPixels
+Coretracer.GetPixelCount
+DLL.GetPatchSamples
+Coretracer.GetPatchSamples
+DLL.CopyBuffer
+Coretracer.CopyBuffer
+Thread 3 rendered square at 336, 160
+
+Thread 1 rendered square at 352, 160
+
+Thread 2 rendered square at 304, 160
+
+Thread 2 rendered square at 416, 160
+
+Thread 0 rendered square at 368, 160
+
+Thread 2 rendered square at 432, 160
+
+Thread 0 rendered square at 448, 160
+
+Thread 0 rendered square at 480, 160
+
+Thread 2 rendered square at 464, 160
+
+Thread 0 rendered square at 0, 176
+
+Thread 0 rendered square at 32, 176
+
+Thread 1 rendered square at 400, 160
+
+Thread 0 rendered square at 48, 176
+
+Thread 1 rendered square at 64, 176
+
+DLL.GetRayCount
+Coretracer.GetRayCount
+DLL.GetKDCount
+Coretracer.GetKDCount
+DLL.GetIntersectionCount
+Coretracer.GetIntersectionCount
+DLL.GetPixels
+Coretracer.GetPixelCount
+DLL.GetPatchSamples
+Coretracer.GetPatchSamples
+DLL.CopyBuffer
+Coretracer.CopyBuffer
+Thread 2 rendered square at 16, 176
+
+Thread 0 rendered square at 80, 176
+
+Thread 1 rendered square at 96, 176
+
+Thread 3 rendered square at 384, 160
+
+DLL.GetRayCount
+Coretracer.GetRayCount
+DLL.GetKDCount
+Coretracer.GetKDCount
+DLL.GetIntersectionCount
+Coretracer.GetIntersectionCount
+DLL.GetPixels
+Coretracer.GetPixelCount
+DLL.GetPatchSamples
+Coretracer.GetPatchSamples
+Thread 0 rendered square at 128, 176
+
+DLL.CopyBuffer
+Coretracer.CopyBuffer
+Thread 1 rendered square at 144, 176
+
+Thread 2 rendered square at 112, 176
+
+Thread 3 rendered square at 160, 176
+
+Thread 0 rendered square at 176, 176
+
+DLL.GetRayCount
+Coretracer.GetRayCount
+DLL.GetKDCount
+Coretracer.GetKDCount
+DLL.GetIntersectionCount
+Coretracer.GetIntersectionCount
+DLL.GetPixels
+Coretracer.GetPixelCount
+DLL.GetPatchSamples
+Coretracer.GetPatchSamples
+DLL.CopyBuffer
+Coretracer.CopyBuffer
+Thread 1 rendered square at 192, 176
+
+Thread 0 rendered square at 240, 176
+
+DLL.GetRayCount
+Coretracer.GetRayCount
+DLL.GetKDCount
+Coretracer.GetKDCount
+DLL.GetIntersectionCount
+Coretracer.GetIntersectionCount
+DLL.GetPixels
+Coretracer.GetPixelCount
+DLL.GetPatchSamples
+Coretracer.GetPatchSamples
+DLL.CopyBuffer
+Coretracer.CopyBuffer
+Thread 3 rendered square at 224, 176
+
+Thread 1 rendered square at 256, 176
+
+Thread 2 rendered square at 208, 176
+
+Thread 0 rendered square at 272, 176
+
+DLL.GetRayCount
+Coretracer.GetRayCount
+DLL.GetKDCount
+Coretracer.GetKDCount
+DLL.GetIntersectionCount
+Coretracer.GetIntersectionCount
+DLL.GetPixels
+Coretracer.GetPixelCount
+DLL.GetPatchSamples
+Coretracer.GetPatchSamples
+DLL.CopyBuffer
+Coretracer.CopyBuffer
+Thread 1 rendered square at 304, 176
+
+Thread 3 rendered square at 288, 176
+
+Thread 0 rendered square at 336, 176
+
+DLL.GetRayCount
+Coretracer.GetRayCount
+DLL.GetKDCount
+Coretracer.GetKDCount
+DLL.GetIntersectionCount
+Coretracer.GetIntersectionCount
+DLL.GetPixels
+Coretracer.GetPixelCount
+DLL.GetPatchSamples
+Coretracer.GetPatchSamples
+DLL.CopyBuffer
+Coretracer.CopyBuffer
+Thread 1 rendered square at 352, 176
+
+Thread 1 rendered square at 400, 176
+
+Thread 2 rendered square at 320, 176
+
+Thread 1 rendered square at 416, 176
+
+Thread 2 rendered square at 432, 176
+
+Thread 1 rendered square at 448, 176
+
+Thread 1 rendered square at 480, 176
+
+Thread 2 rendered square at 464, 176
+
+Thread 1 rendered square at 0, 192
+
+Thread 2 rendered square at 16, 192
+
+Thread 1 rendered square at 32, 192
+
+Thread 2 rendered square at 48, 192
+
+Thread 0 rendered square at 384, 176
+
+Thread 1 rendered square at 64, 192
+
+DLL.GetRayCount
+Coretracer.GetRayCount
+DLL.GetKDCount
+Coretracer.GetKDCount
+DLL.GetIntersectionCount
+Coretracer.GetIntersectionCount
+DLL.GetPixels
+Coretracer.GetPixelCount
+DLL.GetPatchSamples
+Coretracer.GetPatchSamples
+DLL.CopyBuffer
+Coretracer.CopyBuffer
+Thread 3 rendered square at 368, 176
+
+Thread 2 rendered square at 80, 192
+
+Thread 0 rendered square at 96, 192
+
+Thread 1 rendered square at 112, 192
+
+Thread 0 rendered square at 160, 192
+
+DLL.GetRayCount
+Coretracer.GetRayCount
+DLL.GetKDCount
+Coretracer.GetKDCount
+DLL.GetIntersectionCount
+Coretracer.GetIntersectionCount
+DLL.GetPixels
+Coretracer.GetPixelCount
+DLL.GetPatchSamples
+Coretracer.GetPatchSamples
+DLL.CopyBuffer
+Coretracer.CopyBuffer
+Thread 3 rendered square at 128, 192
+
+Thread 1 rendered square at 176, 192
+
+Thread 2 rendered square at 144, 192
+
+Thread 0 rendered square at 192, 192
+
+DLL.GetRayCount
+Coretracer.GetRayCount
+DLL.GetKDCount
+Coretracer.GetKDCount
+DLL.GetIntersectionCount
+Coretracer.GetIntersectionCount
+DLL.GetPixels
+Coretracer.GetPixelCount
+DLL.GetPatchSamples
+Coretracer.GetPatchSamples
+DLL.CopyBuffer
+Coretracer.CopyBuffer
+Thread 1 rendered square at 224, 192
+
+Thread 3 rendered square at 208, 192
+
+Thread 0 rendered square at 256, 192
+
+DLL.GetRayCount
+Coretracer.GetRayCount
+DLL.GetKDCount
+Coretracer.GetKDCount
+DLL.GetIntersectionCount
+Coretracer.GetIntersectionCount
+DLL.GetPixels
+Coretracer.GetPixelCount
+DLL.GetPatchSamples
+Coretracer.GetPatchSamples
+DLL.CopyBuffer
+Coretracer.CopyBuffer
+Thread 1 rendered square at 272, 192
+
+Thread 2 rendered square at 240, 192
+
+Thread 0 rendered square at 304, 192
+
+Thread 1 rendered square at 320, 192
+
+DLL.GetRayCount
+Coretracer.GetRayCount
+DLL.GetKDCount
+Coretracer.GetKDCount
+DLL.GetIntersectionCount
+Coretracer.GetIntersectionCount
+DLL.GetPixels
+Coretracer.GetPixelCount
+DLL.GetPatchSamples
+Coretracer.GetPatchSamples
+DLL.CopyBuffer
+Coretracer.CopyBuffer
+Thread 3 rendered square at 288, 192
+
+Thread 0 rendered square at 352, 192
+
+Thread 3 rendered square at 384, 192
+
+Thread 0 rendered square at 400, 192
+
+Thread 3 rendered square at 416, 192
+
+Thread 2 rendered square at 336, 192
+
+Thread 1 rendered square at 368, 192
+
+Thread 1 rendered square at 480, 192
+
+Thread 3 rendered square at 448, 192
+
+Thread 2 rendered square at 464, 192
+
+Thread 0 rendered square at 432, 192
+
+Thread 1 rendered square at 0, 208
+
+Thread 3 rendered square at 16, 208
+
+Thread 2 rendered square at 32, 208
+
+Thread 0 rendered square at 48, 208
+
+Thread 1 rendered square at 64, 208
+
+DLL.GetRayCount
+Coretracer.GetRayCount
+DLL.GetKDCount
+Coretracer.GetKDCount
+DLL.GetIntersectionCount
+Coretracer.GetIntersectionCount
+DLL.GetPixels
+Coretracer.GetPixelCount
+DLL.GetPatchSamples
+Coretracer.GetPatchSamples
+DLL.CopyBuffer
+Coretracer.CopyBuffer
+Thread 3 rendered square at 80, 208
+
+Thread 2 rendered square at 96, 208
+
+Thread 1 rendered square at 128, 208
+
+Thread 0 rendered square at 112, 208
+
+DLL.GetRayCount
+Coretracer.GetRayCount
+DLL.GetKDCount
+Coretracer.GetKDCount
+DLL.GetIntersectionCount
+Coretracer.GetIntersectionCount
+DLL.GetPixels
+Coretracer.GetPixelCount
+DLL.GetPatchSamples
+Coretracer.GetPatchSamples
+DLL.CopyBuffer
+Coretracer.CopyBuffer
+Thread 3 rendered square at 144, 208
+
+Thread 1 rendered square at 176, 208
+
+Thread 0 rendered square at 192, 208
+
+DLL.GetRayCount
+Coretracer.GetRayCount
+DLL.GetKDCount
+Coretracer.GetKDCount
+DLL.GetIntersectionCount
+Coretracer.GetIntersectionCount
+DLL.GetPixels
+Coretracer.GetPixelCount
+DLL.GetPatchSamples
+Coretracer.GetPatchSamples
+DLL.CopyBuffer
+Coretracer.CopyBuffer
+Thread 3 rendered square at 208, 208
+
+Thread 2 rendered square at 160, 208
+
+Thread 1 rendered square at 224, 208
+
+Thread 0 rendered square at 240, 208
+
+DLL.GetRayCount
+Coretracer.GetRayCount
+DLL.GetKDCount
+Coretracer.GetKDCount
+DLL.GetIntersectionCount
+Coretracer.GetIntersectionCount
+DLL.GetPixels
+Coretracer.GetPixelCount
+DLL.GetPatchSamples
+Coretracer.GetPatchSamples
+DLL.CopyBuffer
+Coretracer.CopyBuffer
+Thread 1 rendered square at 288, 208
+
+Thread 0 rendered square at 304, 208
+
+Thread 3 rendered square at 256, 208
+
+Thread 2 rendered square at 272, 208
+
+DLL.GetRayCount
+Coretracer.GetRayCount
+DLL.GetKDCount
+Coretracer.GetKDCount
+DLL.GetIntersectionCount
+Coretracer.GetIntersectionCount
+DLL.GetPixels
+Coretracer.GetPixelCount
+DLL.GetPatchSamples
+Coretracer.GetPatchSamples
+DLL.CopyBuffer
+Coretracer.CopyBuffer
+Thread 1 rendered square at 320, 208
+
+Thread 0 rendered square at 336, 208
+
+Thread 1 rendered square at 384, 208
+
+Thread 0 rendered square at 400, 208
+
+Thread 1 rendered square at 416, 208
+
+Thread 0 rendered square at 432, 208
+
+Thread 1 rendered square at 448, 208
+
+Thread 1 rendered square at 480, 208
+
+Thread 0 rendered square at 464, 208
+
+Thread 1 rendered square at 0, 224
+
+Thread 0 rendered square at 16, 224
+
+Thread 1 rendered square at 32, 224
+
+Thread 1 rendered square at 64, 224
+
+Thread 0 rendered square at 48, 224
+
+Thread 1 rendered square at 80, 224
+
+Thread 0 rendered square at 96, 224
+
+DLL.GetRayCount
+Coretracer.GetRayCount
+DLL.GetKDCount
+Coretracer.GetKDCount
+DLL.GetIntersectionCount
+Coretracer.GetIntersectionCount
+DLL.GetPixels
+Coretracer.GetPixelCount
+DLL.GetPatchSamples
+Coretracer.GetPatchSamples
+DLL.CopyBuffer
+Coretracer.CopyBuffer
+Thread 1 rendered square at 112, 224
+
+Thread 2 rendered square at 368, 208
+
+Thread 3 rendered square at 352, 208
+
+DLL.GetRayCount
+Coretracer.GetRayCount
+DLL.GetKDCount
+Coretracer.GetKDCount
+DLL.GetIntersectionCount
+Coretracer.GetIntersectionCount
+DLL.GetPixels
+Coretracer.GetPixelCount
+DLL.GetPatchSamples
+Coretracer.GetPatchSamples
+DLL.CopyBuffer
+Coretracer.CopyBuffer
+Thread 0 rendered square at 128, 224
+
+Thread 1 rendered square at 144, 224
+
+DLL.GetRayCount
+Coretracer.GetRayCount
+DLL.GetKDCount
+Coretracer.GetKDCount
+DLL.GetIntersectionCount
+Coretracer.GetIntersectionCount
+DLL.GetPixels
+Coretracer.GetPixelCount
+DLL.GetPatchSamples
+Coretracer.GetPatchSamples
+DLL.CopyBuffer
+Coretracer.CopyBuffer
+Thread 0 rendered square at 192, 224
+
+Thread 3 rendered square at 176, 224
+
+Thread 2 rendered square at 160, 224
+
+Thread 1 rendered square at 208, 224
+
+Thread 0 rendered square at 224, 224
+
+DLL.GetRayCount
+Coretracer.GetRayCount
+DLL.GetKDCount
+Coretracer.GetKDCount
+DLL.GetIntersectionCount
+Coretracer.GetIntersectionCount
+DLL.GetPixels
+Coretracer.GetPixelCount
+DLL.GetPatchSamples
+Coretracer.GetPatchSamples
+DLL.CopyBuffer
+Coretracer.CopyBuffer
+Thread 1 rendered square at 272, 224
+
+Thread 3 rendered square at 240, 224
+
+Thread 0 rendered square at 288, 224
+
+DLL.GetRayCount
+Coretracer.GetRayCount
+DLL.GetKDCount
+Coretracer.GetKDCount
+DLL.GetIntersectionCount
+Coretracer.GetIntersectionCount
+DLL.GetPixels
+Coretracer.GetPixelCount
+DLL.GetPatchSamples
+Coretracer.GetPatchSamples
+DLL.CopyBuffer
+Coretracer.CopyBuffer
+Thread 1 rendered square at 304, 224
+
+Thread 2 rendered square at 256, 224
+
+Thread 2 rendered square at 368, 224
+
+Thread 2 rendered square at 384, 224
+
+Thread 2 rendered square at 400, 224
+
+Thread 2 rendered square at 416, 224
+
+Thread 0 rendered square at 336, 224
+
+Thread 0 rendered square at 448, 224
+
+Thread 1 rendered square at 352, 224
+
+Thread 1 rendered square at 480, 224
+
+Thread 0 rendered square at 464, 224
+
+Thread 3 rendered square at 320, 224
+
+DLL.GetRayCount
+Coretracer.GetRayCount
+DLL.GetKDCount
+Coretracer.GetKDCount
+DLL.GetIntersectionCount
+Coretracer.GetIntersectionCount
+DLL.GetPixels
+Coretracer.GetPixelCount
+DLL.GetPatchSamples
+Coretracer.GetPatchSamples
+DLL.CopyBuffer
+Coretracer.CopyBuffer
+Thread 1 rendered square at 0, 240
+
+Thread 0 rendered square at 16, 240
+
+Thread 1 rendered square at 48, 240
+
+Thread 0 rendered square at 64, 240
+
+Thread 1 rendered square at 80, 240
+
+Thread 2 rendered square at 432, 224
+
+Thread 0 rendered square at 96, 240
+
+Thread 3 rendered square at 32, 240
+
+Thread 1 rendered square at 112, 240
+
+Thread 2 rendered square at 128, 240
+
+DLL.GetRayCount
+Coretracer.GetRayCount
+DLL.GetKDCount
+Coretracer.GetKDCount
+DLL.GetIntersectionCount
+Coretracer.GetIntersectionCount
+DLL.GetPixels
+Coretracer.GetPixelCount
+DLL.GetPatchSamples
+Coretracer.GetPatchSamples
+DLL.CopyBuffer
+Thread 0 rendered square at 144, 240
+
+Coretracer.CopyBuffer
+Thread 1 rendered square at 176, 240
+
+Thread 0 rendered square at 208, 240
+
+Thread 3 rendered square at 160, 240
+
+DLL.GetRayCount
+Coretracer.GetRayCount
+DLL.GetKDCount
+Coretracer.GetKDCount
+DLL.GetIntersectionCount
+Coretracer.GetIntersectionCount
+DLL.GetPixels
+Coretracer.GetPixelCount
+DLL.GetPatchSamples
+Coretracer.GetPatchSamples
+DLL.CopyBuffer
+Coretracer.CopyBuffer
+Thread 1 rendered square at 224, 240
+
+Thread 2 rendered square at 192, 240
+
+Thread 0 rendered square at 240, 240
+
+DLL.GetRayCount
+Coretracer.GetRayCount
+DLL.GetKDCount
+Coretracer.GetKDCount
+DLL.GetIntersectionCount
+Coretracer.GetIntersectionCount
+DLL.GetPixels
+Coretracer.GetPixelCount
+DLL.GetPatchSamples
+Coretracer.GetPatchSamples
+DLL.CopyBuffer
+Coretracer.CopyBuffer
+Thread 1 rendered square at 272, 240
+
+Thread 3 rendered square at 256, 240
+
+DLL.GetRayCount
+Coretracer.GetRayCount
+DLL.GetKDCount
+Coretracer.GetKDCount
+DLL.GetIntersectionCount
+Coretracer.GetIntersectionCount
+DLL.GetPixels
+Coretracer.GetPixelCount
+DLL.GetPatchSamples
+Coretracer.GetPatchSamples
+DLL.CopyBuffer
+Coretracer.CopyBuffer
+Thread 3 rendered square at 336, 240
+
+Thread 0 rendered square at 304, 240
+
+Thread 3 rendered square at 352, 240
+
+Thread 0 rendered square at 368, 240
+
+Thread 3 rendered square at 384, 240
+
+Thread 0 rendered square at 400, 240
+
+Thread 1 rendered square at 320, 240
+
+Thread 3 rendered square at 416, 240
+
+Thread 0 rendered square at 432, 240
+
+Thread 0 rendered square at 480, 240
+
+Thread 0 rendered square at 0, 256
+
+Thread 1 rendered square at 448, 240
+
+Thread 0 rendered square at 16, 256
+
+Thread 1 rendered square at 32, 256
+
+Thread 0 rendered square at 48, 256
+
+Thread 1 rendered square at 64, 256
+
+Thread 0 rendered square at 80, 256
+
+Thread 1 rendered square at 96, 256
+
+Thread 3 rendered square at 464, 240
+
+Thread 0 rendered square at 112, 256
+
+Thread 1 rendered square at 128, 256
+
+Thread 3 rendered square at 144, 256
+
+Thread 2 rendered square at 288, 240
+
+DLL.GetRayCount
+Coretracer.GetRayCount
+DLL.GetKDCount
+Coretracer.GetKDCount
+DLL.GetIntersectionCount
+Coretracer.GetIntersectionCount
+DLL.GetPixels
+Coretracer.GetPixelCount
+DLL.GetPatchSamples
+Coretracer.GetPatchSamples
+DLL.CopyBuffer
+Coretracer.CopyBuffer
+Thread 0 rendered square at 160, 256
+
+Thread 1 rendered square at 176, 256
+
+DLL.GetRayCount
+Coretracer.GetRayCount
+DLL.GetKDCount
+Coretracer.GetKDCount
+DLL.GetIntersectionCount
+Coretracer.GetIntersectionCount
+DLL.GetPixels
+Coretracer.GetPixelCount
+DLL.GetPatchSamples
+Coretracer.GetPatchSamples
+DLL.CopyBuffer
+Coretracer.CopyBuffer
+Thread 0 rendered square at 224, 256
+
+Thread 3 rendered square at 192, 256
+
+Thread 1 rendered square at 240, 256
+
+Thread 2 rendered square at 208, 256
+
+DLL.GetRayCount
+Coretracer.GetRayCount
+DLL.GetKDCount
+Coretracer.GetKDCount
+DLL.GetIntersectionCount
+Coretracer.GetIntersectionCount
+DLL.GetPixels
+Coretracer.GetPixelCount
+DLL.GetPatchSamples
+Coretracer.GetPatchSamples
+DLL.CopyBuffer
+Coretracer.CopyBuffer
+Thread 0 rendered square at 256, 256
+
+Thread 1 rendered square at 288, 256
+
+Thread 1 rendered square at 336, 256
+
+Thread 0 rendered square at 320, 256
+
+Thread 1 rendered square at 352, 256
+
+Thread 0 rendered square at 368, 256
+
+Thread 1 rendered square at 384, 256
+
+Thread 0 rendered square at 400, 256
+
+Thread 1 rendered square at 416, 256
+
+Thread 0 rendered square at 432, 256
+
+Thread 1 rendered square at 448, 256
+
+Thread 1 rendered square at 480, 256
+
+Thread 0 rendered square at 464, 256
+
+Thread 1 rendered square at 0, 0
+
+Thread 0 rendered square at 16, 0
+
+Thread 3 rendered square at 272, 256
+
+Thread 1 rendered square at 64, 0
+
+Thread 3 rendered square at 48, 0
+
+Thread 0 rendered square at 80, 0
+
+Thread 3 rendered square at 32, 0
+
+Thread 2 rendered square at 304, 256
+
+DLL.GetRayCount
+Coretracer.GetRayCount
+DLL.GetKDCount
+Coretracer.GetKDCount
+DLL.GetIntersectionCount
+Coretracer.GetIntersectionCount
+DLL.GetPixels
+Coretracer.GetPixelCount
+DLL.GetPatchSamples
+Coretracer.GetPatchSamples
+DLL.CopyBuffer
+Coretracer.CopyBuffer
+Thread 1 rendered square at 96, 0
+
+Thread 0 rendered square at 128, 0
+
+Thread 3 rendered square at 112, 0
+
+Thread 1 rendered square at 176, 0
+
+DLL.GetRayCount
+Coretracer.GetRayCount
+DLL.GetKDCount
+Coretracer.GetKDCount
+DLL.GetIntersectionCount
+Coretracer.GetIntersectionCount
+DLL.GetPixels
+Coretracer.GetPixelCount
+DLL.GetPatchSamples
+Coretracer.GetPatchSamples
+DLL.CopyBuffer
+Coretracer.CopyBuffer
+Thread 0 rendered square at 144, 0
+
+Thread 2 rendered square at 160, 0
+
+Sample ray
+Worldlight Test Ray
+KDTree intersect, obj intersected : 2, 
+Obj Tested : 1, 2, 1064174390, -1108593490, 1060494528, -1087259494, 66713504, 6, 
+Obj Tested Total: 2
+Ray start : -0.19931, 5.48529, 3.71895
+Ray direction : -0.115335, 0.7104, -0.694284
+Ray recursionRemaining : 2
+Ray AirRefractionIndex : 1.003
+Ray RefractiveIndex : 1
+Ray m_RequestFlags : 8
+Collision point : 0.0142443
+
+Worldlight Test Ray
+KDTree intersect, obj intersected : 2, 
+Obj Tested : 1, 2, 1042603865, -1084109494, 1055850572, -1115472694, 67828808, 6, 
+Obj Tested Total: 2
+Ray start : 0.330267, 0.0576024, 0.644033
+Ray direction : -0.882039, 0.466799, -0.0640808
+Ray recursionRemaining : 1
+Ray AirRefractionIndex : 1.003
+Ray RefractiveIndex : 1
+Ray m_RequestFlags : 8
+Collision point : 0.00798286
+KDTree intersect, obj intersected : 2, 
+Obj Tested : 1, 2, 1064174390, -1108593490, 1060494528, -1087259494, 66713504, 6, 
+Obj Tested Total: 2
+Ray start : -0.19931, 5.48529, 3.71895
+Ray direction : -0.115335, 0.7104, -0.694284
+Ray recursionRemaining : 2
+Ray AirRefractionIndex : 1.003
+Ray RefractiveIndex : 1
+Ray m_RequestFlags : 8
+Collision point : 0.0142443
+
+
+KDTree intersect, obj intersected : 1, 2, 
+Obj Tested : 1, 2, 320, -1120597437, -1094126199, 1063989064, 69860320, 6, 
+Obj Tested Total: 2
+Ray start : -1.04461, 9.13167, -5.37479
+Ray direction : 0.172072, -0.360224, 0.916859
+Ray recursionRemaining : 3
+Ray AirRefractionIndex : 1.003
+Ray RefractiveIndex : 1.003
+Ray m_RequestFlags : 1
+Collision point : 4.10823
+
+KDTree intersect, obj intersected : 
+Obj Tested : 1, 2, 72875256, 6, -1075266406, 1067461076, -1065095507, 2004892673, 
+Obj Tested Total: 2
+Ray start : 0.905508, -2.38419e-007, 1.46978
+Ray direction : 0.00973634, 0.585875, 0.810343
+Ray recursionRemaining : 0
+Ray AirRefractionIndex : 1.003
+Ray RefractiveIndex : 1.003
+Ray m_RequestFlags : 8
+Collision point : -1
+
+Worldlight Test Ray
+Worldlight Test Ray
+Worldlight Test Ray
+Shadow test ray
+Directional light test ray
+KDTree intersect, obj intersected : 
+Obj Tested : 1, 2, 0, 0, 0, 5, 0, 0, 
+Obj Tested Total: 2
+Ray start : -0.337547, 7.65442, -1.60712
+Ray direction : -0.540079, 0.807232, -0.238099
+Ray recursionRemaining : 3
+Ray AirRefractionIndex : 1.003
+Ray RefractiveIndex : 1.003
+Ray m_RequestFlags : 8
+Collision point : -1
+
+Worldlight Test RayKDTree intersect, obj intersected : 2, 
+Obj Tested : 1, 2, 1064174390, -1108593490, 1060494528, -1087259494, 66713504, 6, 
+Obj Tested Total: 2
+Ray start : -0.19931, 5.48529, 3.71895
+Ray direction : -0.115335, 0.7104, -0.694284
+Ray recursionRemaining : 2
+Ray AirRefractionIndex : 1.003
+Ray RefractiveIndex : 1
+Ray m_RequestFlags : 8
+Collision point : 0.0142443
+
+
+Reflection ray
+KDTree intersect, obj intersected : 
+Obj Tested : 1, 2, 72875256, 6, -1075266406, 1067461076, -1065095507, 2004892673, 
+Obj Tested Total: 2
+Ray start : 0.905508, -2.38419e-007, 1.46978
+Ray direction : 0.00973634, 0.585875, 0.810343
+Ray recursionRemaining : 0
+Ray AirRefractionIndex : 1.003
+Ray RefractiveIndex : 1.003
+Ray m_RequestFlags : 8
+Collision point : -1
+
+Reflection ray
+KDTree intersect, obj intersected : 2, 
+Obj Tested : 1, 2, 1042603865, -1084109494, 1055850572, -1115472694, 67828808, 6, 
+Obj Tested Total: 2
+Ray start : 0.330267, 0.0576024, 0.644033
+Ray direction : -0.882039, 0.466799, -0.0640808
+Ray recursionRemaining : 1
+Ray AirRefractionIndex : 1.003
+Ray RefractiveIndex : 1
+Ray m_RequestFlags : 8
+Collision point : 0.00798286
+Recursion limit reached, bailout
+
+Refraction ray
+Worldlight Test Ray
+KDTree intersect, obj intersected : 
+Obj Tested : 1, 2, 0, 0, 2, 0, 69858512, -67108864, 
+Obj Tested Total: 2
+Ray start : -0.337547, 7.65442, -1.60712
+Ray direction : 0.0994563, 0.977782, -0.184528
+Ray recursionRemaining : 3
+Ray AirRefractionIndex : 1.003
+Ray RefractiveIndex : 1.003
+Ray m_RequestFlags : 8
+Collision point : -1
+
+Worldlight Test Ray
+KDTree intersect, obj intersected : 1, 
+Obj Tested : 1, 2, 0, 0, 0, 0, 0, 0, 
+Obj Tested Total: 2
+Ray start : -0.19931, 5.48529, 3.71895
+Ray direction : 0.156759, -0.900782, -0.404993
+Ray recursionRemaining : 1
+Ray AirRefractionIndex : 1.003
+Ray RefractiveIndex : 1
+Ray m_RequestFlags : 3
+Collision point : 6.08948
+
+Checking for intersection with containing object
+KDTree intersect, obj intersected : 2, 
+Obj Tested : 1, 2, 1042603865, -1084109494, 1055850572, -1115472694, 67828808, 6, 
+Obj Tested Total: 2
+Ray start : 0.330267, 0.0576024, 0.644033
+Ray direction : -0.882039, 0.466799, -0.0640808
+Ray recursionRemaining : 1
+Ray AirRefractionIndex : 1.003
+Ray RefractiveIndex : 1
+Ray m_RequestFlags : 8
+Collision point : 0.00798286
+
+Reflection ray
+KDTree intersect, obj intersected : 1, 
+Obj Tested : 1, 2, 1063984421, 1047158909, -1083738975, -1095189970, 72875256, 6, 
+Obj Tested Total: 2
+Ray start : -0.49329, 5.52562, 3.67365
+Ray direction : 0.0555952, -0.366012, 0.928948
+Ray recursionRemaining : 1
+Ray AirRefractionIndex : 1.003
+Ray RefractiveIndex : 1.003
+Ray m_RequestFlags : 3
+Collision point : 15.0968
+
+Shadow test ray
+Directional light test ray
+Containing Object intersection result : 2
+Ray start : -0.19931, 5.48529, 3.71895
+Ray direction : 0.156759, -0.900782, -0.404993
+Ray recursionRemaining : 1
+Ray AirRefractionIndex : 1.003
+Ray RefractiveIndex : 1
+Ray m_RequestFlags : 6
+Collision point : 5.74982
+
+KDTree intersect, obj intersected : 
+Obj Tested : 1, 2, 0, 0, 2, 0, 69858512, -67108864, 
+Obj Tested Total: 2
+Ray start : -0.337547, 7.65442, -1.60712
+Ray direction : 0.0994563, 0.977782, -0.184528
+Ray recursionRemaining : 3
+Ray AirRefractionIndex : 1.003
+Ray RefractiveIndex : 1.003
+Ray m_RequestFlags : 8
+Collision point : -1
+
+Worldlight Test Ray
+Shadow test ray
+Directional light test ray
+KDTree intersect, obj intersected : 
+Obj Tested : 1, 2, 30868, 0, 0, 0, 0, 1, 
+Obj Tested Total: 2
+Ray start : 0.330267, 0.0576024, 0.644033
+Ray direction : -0.142501, 0.633732, -0.760314
+Ray recursionRemaining : 0
+Ray AirRefractionIndex : 1.003
+Ray RefractiveIndex : 1
+Ray m_RequestFlags : 3
+Collision point : -1
+
+Checking for intersection with containing object
+KDTree intersect, obj intersected : 
+Obj Tested : 1, 2, 0, 0, 0, 5, 0, 0, 
+Obj Tested Total: 2
+Ray start : 0.346021, 4.76837e-007, 17.6978
+Ray direction : -0.527351, 0.808503, -0.261195
+Ray recursionRemaining : 1
+Ray AirRefractionIndex : 1.003
+Ray RefractiveIndex : 1.003
+Ray m_RequestFlags : 8
+Collision point : -1
+
+Worldlight Test Ray
+KDTree intersect, obj intersected : 2, 
+Obj Tested : 1, 2, 0, 0, 0, 5, 0, 0, 
+Obj Tested Total: 2
+Ray start : 0.701913, 0.306442, 1.38919
+Ray direction : -0.540043, 0.809822, -0.229221
+Ray recursionRemaining : 1
+Ray AirRefractionIndex : 1.003
+Ray RefractiveIndex : 1
+Ray m_RequestFlags : 8
+Collision point : 0.00253376
+
+Worldlight Test Ray
+KDTree intersect, obj intersected : 
+Obj Tested : 1, 2, 0, 0, 2, 0, 69858512, -67108864, 
+Obj Tested Total: 2
+Ray start : -0.337547, 7.65442, -1.60712
+Ray direction : 0.0994563, 0.977782, -0.184528
+Ray recursionRemaining : 3
+Ray AirRefractionIndex : 1.003
+Ray RefractiveIndex : 1.003
+Ray m_RequestFlags : 8
+Collision point : -1
+
+Worldlight Test Ray
+Containing Object intersection result : 2
+Ray start : 0.330267, 0.0576024, 0.644033
+Ray direction : -0.142501, 0.633732, -0.760314
+Ray recursionRemaining : 0
+Ray AirRefractionIndex : 1.003
+Ray RefractiveIndex : 1
+Ray m_RequestFlags : 6
+Collision point : 6.07097
+
+Shadow test ray
+Directional light test ray
+KDTree intersect, obj intersected : 
+Obj Tested : 1, 2, 0, 0, 2, 0, 72871084, 872415232, 
+Obj Tested Total: 2
+Ray start : 0.346021, 4.76837e-007, 17.6978
+Ray direction : 0.231827, 0.42159, -0.876652
+Ray recursionRemaining : 1
+Ray AirRefractionIndex : 1.003
+Ray RefractiveIndex : 1.003
+Ray m_RequestFlags : 8
+Collision point : -1
+
+Worldlight Test Ray
+KDTree intersect, obj intersected : 
+Obj Tested : 1, 2, 0, 0, 2, 0, 69858512, -67108864, 
+Obj Tested Total: 2
+Ray start : -0.337547, 7.65442, -1.60712
+Ray direction : 0.0994563, 0.977782, -0.184528
+Ray recursionRemaining : 3
+Ray AirRefractionIndex : 1.003
+Ray RefractiveIndex : 1.003
+Ray m_RequestFlags : 8
+Collision point : -1
+
+Worldlight Test Ray
+KDTree intersect, obj intersected : 2, 
+Obj Tested : 1, 2, 66713504, 6, -1074985821, 1067323194, -1064592783, 2004892673, 
+Obj Tested Total: 2
+Ray start : 0.701913, 0.306442, 1.38919
+Ray direction : 0.401594, 0.904194, -0.145452
+Ray recursionRemaining : 1
+Ray AirRefractionIndex : 1.003
+Ray RefractiveIndex : 1
+Ray m_RequestFlags : 8
+Collision point : 0.00336208
+
+Worldlight Test Ray
+KDTree intersect, obj intersected : 
+Obj Tested : 1, 2, 0, 0, 67822454, 5, 0, 0, 
+Obj Tested Total: 2
+Ray start : -0.534835, 3.90522, -3.9716
+Ray direction : -0.543565, 0.808423, -0.225809
+Ray recursionRemaining : 0
+Ray AirRefractionIndex : 1.003
+Ray RefractiveIndex : 1
+Ray m_RequestFlags : 8
+Collision point : -1
+KDTree intersect, obj intersected : 
+Obj Tested : 1, 2, 0, 0, 2, 0, 72871084, 872415232, 
+Obj Tested Total: 2
+Ray start : 0.346021, 4.76837e-007, 17.6978
+Ray direction : 0.231827, 0.42159, -0.876652
+Ray recursionRemaining : 1
+Ray AirRefractionIndex : 1.003
+Ray RefractiveIndex : 1.003
+Ray m_RequestFlags : 8
+Collision point : -1
+
+
+Worldlight Test Ray
+Worldlight Test Ray
+KDTree intersect, obj intersected : 
+Obj Tested : 1, 2, 0, 0, 2, 0, 69858512, -67108864, 
+Obj Tested Total: 2
+Ray start : -0.337547, 7.65442, -1.60712
+Ray direction : 0.0994563, 0.977782, -0.184528
+Ray recursionRemaining : 3
+Ray AirRefractionIndex : 1.003
+Ray RefractiveIndex : 1.003
+Ray m_RequestFlags : 8
+Collision point : -1
+
+Worldlight Test Ray
+KDTree intersect, obj intersected : 2, 
+Obj Tested : 1, 2, 1051840798, 1053662654, 1063745850, -1105923719, 66713504, 6, 
+Obj Tested Total: 2
+Ray start : 0.701913, 0.306442, 1.38919
+Ray direction : 0.401594, 0.904194, -0.145452
+Ray recursionRemaining : 1
+Ray AirRefractionIndex : 1.003
+Ray RefractiveIndex : 1
+Ray m_RequestFlags : 8
+Collision point : 0.00336208
+
+Worldlight Test Ray
+KDTree intersect, obj intersected : 1, 2, 
+Obj Tested : 1, 2, 0, 0, 2, 0, 2004870028, 1056964608, 
+Obj Tested Total: 2
+Ray start : -0.534835, 3.90522, -3.9716
+Ray direction : 0.854327, -0.371744, 0.363223
+Ray recursionRemaining : 0
+Ray AirRefractionIndex : 1.003
+Ray RefractiveIndex : 1
+Ray m_RequestFlags : 8
+Collision point : 0.00893251
+
+KDTree intersect, obj intersected : 
+Obj Tested : 1, 2, 0, 0, 2, 0, 72871084, 872415232, 
+Obj Tested Total: 2
+Ray start : 0.346021, 4.76837e-007, 17.6978
+Ray direction : 0.231827, 0.42159, -0.876652
+Ray recursionRemaining : 1
+Ray AirRefractionIndex : 1.003
+Ray RefractiveIndex : 1.003
+Ray m_RequestFlags : 8
+Collision point : -1
+
+Worldlight Test Ray
+Worldlight Test Ray
+KDTree intersect, obj intersected : 
+Obj Tested : 1, 2, 0, 0, 2, 0, 69858512, -67108864, 
+Obj Tested Total: 2
+Ray start : -0.337547, 7.65442, -1.60712
+Ray direction : 0.0994563, 0.977782, -0.184528
+Ray recursionRemaining : 3
+Ray AirRefractionIndex : 1.003
+Ray RefractiveIndex : 1.003
+Ray m_RequestFlags : 8
+Collision point : -1
+
+Worldlight Test Ray
+KDTree intersect, obj intersected : 2, 
+Obj Tested : 1, 2, 1051840798, 1053662654, 1063745850, -1105923719, 66713504, 6, 
+Obj Tested Total: 2
+Ray start : 0.701913, 0.306442, 1.38919
+Ray direction : 0.401594, 0.904194, -0.145452
+Ray recursionRemaining : 1
+Ray AirRefractionIndex : 1.003
+Ray RefractiveIndex : 1
+Ray m_RequestFlags : 8
+Collision point : 0.00336208
+
+Worldlight Test Ray
+KDTree intersect, obj intersected : 1, 2, 
+Obj Tested : 1, 2, -1082249542, 1062909236, -1094822610, 1052375150, 67828808, 6, 
+Obj Tested Total: 2
+Ray start : -0.534835, 3.90522, -3.9716
+Ray direction : 0.854327, -0.371744, 0.363223
+Ray recursionRemaining : 0
+Ray AirRefractionIndex : 1.003
+Ray RefractiveIndex : 1
+Ray m_RequestFlags : 8
+Collision point : 0.00893251
+
+Worldlight Test Ray
+KDTree intersect, obj intersected : 
+Obj Tested : 1, 2, 0, 0, 2, 0, 72871084, 872415232, 
+Obj Tested Total: 2
+Ray start : 0.346021, 4.76837e-007, 17.6978
+Ray direction : 0.231827, 0.42159, -0.876652
+Ray recursionRemaining : 1
+Ray AirRefractionIndex : 1.003
+Ray RefractiveIndex : 1.003
+Ray m_RequestFlags : 8
+Collision point : -1
+
+Worldlight Test Ray
+KDTree intersect, obj intersected : 
+Obj Tested : 1, 2, 0, 0, 2, 0, 69858512, -67108864, 
+Obj Tested Total: 2
+Ray start : -0.337547, 7.65442, -1.60712
+Ray direction : 0.0994563, 0.977782, -0.184528
+Ray recursionRemaining : 3
+Ray AirRefractionIndex : 1.003
+Ray RefractiveIndex : 1.003
+Ray m_RequestFlags : 8
+Collision point : -1
+
+Worldlight Test Ray
+KDTree intersect, obj intersected : 2, 
+Obj Tested : 1, 2, 1051840798, 1053662654, 1063745850, -1105923719, 66713504, 6, 
+Obj Tested Total: 2
+Ray start : 0.701913, 0.306442, 1.38919
+Ray direction : 0.401594, 0.904194, -0.145452
+Ray recursionRemaining : 1
+Ray AirRefractionIndex : 1.003
+Ray RefractiveIndex : 1
+Ray m_RequestFlags : 8
+Collision point : 0.00336208
+KDTree intersect, obj intersected : 1, 2, 
+Obj Tested : 1, 2, -1082249542, 1062909236, -1094822610, 1052375150, 67828808, 6, 
+Obj Tested Total: 2
+Ray start : -0.534835, 3.90522, -3.9716
+Ray direction : 0.854327, -0.371744, 0.363223
+Ray recursionRemaining : 0
+Ray AirRefractionIndex : 1.003
+Ray RefractiveIndex : 1
+Ray m_RequestFlags : 8
+Collision point : 0.00893251
+KDTree intersect, obj intersected : 
+Obj Tested : 1, 2, 0, 0, 2, 0, 72871084, 872415232, 
+Obj Tested Total: 2
+Ray start : 0.346021, 4.76837e-007, 17.6978
+Ray direction : 0.231827, 0.42159, -0.876652
+Ray recursionRemaining : 1
+Ray AirRefractionIndex : 1.003
+Ray RefractiveIndex : 1.003
+Ray m_RequestFlags : 8
+Collision point : -1
+
+
+
+Worldlight Test Ray
+Worldlight Test Ray
+Worldlight Test Ray
+KDTree intersect, obj intersected : 
+Obj Tested : 1, 2, 0, 0, 2, 0, 69858512, -67108864, 
+Obj Tested Total: 2
+Ray start : -0.337547, 7.65442, -1.60712
+Ray direction : 0.0994563, 0.977782, -0.184528
+Ray recursionRemaining : 3
+Ray AirRefractionIndex : 1.003
+Ray RefractiveIndex : 1.003
+Ray m_RequestFlags : 8
+Collision point : -1
+
+Reflection ray
+KDTree intersect, obj intersected : 
+Obj Tested : 1, 2, 0, 0, 2, 0, 72871084, 872415232, 
+Obj Tested Total: 2
+Ray start : 0.346021, 4.76837e-007, 17.6978
+Ray direction : 0.231827, 0.42159, -0.876652
+Ray recursionRemaining : 1
+Ray AirRefractionIndex : 1.003
+Ray RefractiveIndex : 1.003
+Ray m_RequestFlags : 8
+Collision point : -1
+
+Worldlight Test Ray
+KDTree intersect, obj intersected : 1, 2, 
+Obj Tested : 1, 2, -1082249542, 1062909236, -1094822610, 1052375150, 67828808, 6, 
+Obj Tested Total: 2
+Ray start : -0.534835, 3.90522, -3.9716
+Ray direction : 0.854327, -0.371744, 0.363223
+Ray recursionRemaining : 0
+Ray AirRefractionIndex : 1.003
+Ray RefractiveIndex : 1
+Ray m_RequestFlags : 8
+Collision point : 0.00893251
+
+Worldlight Test Ray
+KDTree intersect, obj intersected : 2, 
+Obj Tested : 1, 2, 1051840798, 1053662654, 1063745850, -1105923719, 66713504, 6, 
+Obj Tested Total: 2
+Ray start : 0.701913, 0.306442, 1.38919
+Ray direction : 0.401594, 0.904194, -0.145452
+Ray recursionRemaining : 1
+Ray AirRefractionIndex : 1.003
+Ray RefractiveIndex : 1
+Ray m_RequestFlags : 8
+Collision point : 0.00336208
+
+Worldlight Test Ray
+KDTree intersect, obj intersected : 
+Obj Tested : 1, 2, 9361960, 2103712, 39268928, 1619456769, 7, 69859076, 
+Obj Tested Total: 2
+Ray start : -0.337547, 7.65442, -1.60712
+Ray direction : 0.0517428, 0.936284, 0.347413
+Ray recursionRemaining : 2
+Ray AirRefractionIndex : 1.003
+Ray RefractiveIndex : 1.003
+Ray m_RequestFlags : 1
+Collision point : -1
+
+Refraction ray
+KDTree intersect, obj intersected : 
+Obj Tested : 1, 2, 0, 0, 2, 0, 72871084, 872415232, 
+Obj Tested Total: 2
+Ray start : 0.346021, 4.76837e-007, 17.6978
+Ray direction : 0.231827, 0.42159, -0.876652
+Ray recursionRemaining : 1
+Ray AirRefractionIndex : 1.003
+Ray RefractiveIndex : 1.003
+Ray m_RequestFlags : 8
+Collision point : -1
+
+Worldlight Test Ray
+KDTree intersect, obj intersected : 1, 2, 
+Obj Tested : 1, 2, -1082249542, 1062909236, -1094822610, 1052375150, 67828808, 6, 
+Obj Tested Total: 2
+Ray start : -0.534835, 3.90522, -3.9716
+Ray direction : 0.854327, -0.371744, 0.363223
+Ray recursionRemaining : 0
+Ray AirRefractionIndex : 1.003
+Ray RefractiveIndex : 1
+Ray m_RequestFlags : 8
+Collision point : 0.00893251
+
+KDTree intersect, obj intersected : 2, 
+Obj Tested : 1, 2, 1051840798, 1053662654, 1063745850, -1105923719, 66713504, 6, 
+Obj Tested Total: 2
+Ray start : 0.701913, 0.306442, 1.38919
+Ray direction : 0.401594, 0.904194, -0.145452
+Ray recursionRemaining : 1
+Ray AirRefractionIndex : 1.003
+Ray RefractiveIndex : 1
+Ray m_RequestFlags : 8
+Collision point : 0.00336208
+
+Worldlight Test Ray
+Worldlight Test Ray
+KDTree intersect, obj intersected : 
+Obj Tested : 1, 2, 0, 0, 2, 0, 72871084, 872415232, 
+Obj Tested Total: 2
+Ray start : 0.346021, 4.76837e-007, 17.6978
+Ray direction : 0.231827, 0.42159, -0.876652
+Ray recursionRemaining : 1
+Ray AirRefractionIndex : 1.003
+Ray RefractiveIndex : 1.003
+Ray m_RequestFlags : 8
+Collision point : -1
+
+Reflection ray
+KDTree intersect, obj intersected : 2, 
+Obj Tested : 1, 2, 1051840798, 1053662654, 1063745850, -1105923719, 66713504, 6, 
+Obj Tested Total: 2
+Ray start : 0.701913, 0.306442, 1.38919
+Ray direction : 0.401594, 0.904194, -0.145452
+Ray recursionRemaining : 1
+Ray AirRefractionIndex : 1.003
+Ray RefractiveIndex : 1
+Ray m_RequestFlags : 8
+Collision point : 0.00336208
+
+Worldlight Test Ray
+KDTree intersect, obj intersected : 1, 2, 
+Obj Tested : 1, 2, -1082249542, 1062909236, -1094822610, 1052375150, 67828808, 6, 
+Obj Tested Total: 2
+Ray start : -0.534835, 3.90522, -3.9716
+Ray direction : 0.854327, -0.371744, 0.363223
+Ray recursionRemaining : 0
+Ray AirRefractionIndex : 1.003
+Ray RefractiveIndex : 1
+Ray m_RequestFlags : 8
+Collision point : 0.00893251
+
+Worldlight Test Ray
+KDTree intersect, obj intersected : 
+Obj Tested : 1, 2, 9361960, 2103712, 39271520, 1619456769, 7, 72871436, 
+Obj Tested Total: 2
+Ray start : 0.346021, 4.76837e-007, 17.6978
+Ray direction : 0.0373458, 0.365308, 0.930137
+Ray recursionRemaining : 0
+Ray AirRefractionIndex : 1.003
+Ray RefractiveIndex : 1.003
+Ray m_RequestFlags : 3
+Collision point : -1
+
+Thread 1 rendered square at 224, 0
+
+DLL.GetRayCount
+Coretracer.GetRayCount
+DLL.GetKDCount
+Coretracer.GetKDCount
+DLL.GetIntersectionCount
+Coretracer.GetIntersectionCount
+DLL.GetPixels
+Coretracer.GetPixelCount
+DLL.GetPatchSamples
+Coretracer.GetPatchSamples
+DLL.CopyBuffer
+Coretracer.CopyBuffer
+Thread 0 rendered square at 208, 0
+
+Thread 3 rendered square at 192, 0
+
+Thread 1 rendered square at 256, 0
+
+Thread 0 rendered square at 272, 0
+
+Thread 2 rendered square at 240, 0
+
+Thread 2 rendered square at 384, 0
+
+DLL.GetRayCount
+Coretracer.GetRayCount
+DLL.GetKDCount
+Coretracer.GetKDCount
+DLL.GetIntersectionCount
+Coretracer.GetIntersectionCount
+DLL.GetPixels
+Coretracer.GetPixelCount
+DLL.GetPatchSamples
+Coretracer.GetPatchSamples
+DLL.CopyBuffer
+Coretracer.CopyBuffer
+Thread 3 rendered square at 320, 0
+
+Thread 1 rendered square at 304, 0
+
+Thread 1 rendered square at 416, 0
+
+Thread 1 rendered square at 448, 0
+
+Thread 1 rendered square at 464, 0
+
+Thread 1 rendered square at 480, 0
+
+Thread 1 rendered square at 0, 16
+
+Thread 1 rendered square at 16, 16
+
+Thread 2 rendered square at 400, 0
+
+Thread 0 rendered square at 336, 0
+
+Thread 2 rendered square at 32, 16
+
+Thread 0 rendered square at 48, 16
+
+Thread 2 rendered square at 64, 16
+
+Thread 0 rendered square at 432, 0
+
+Thread 2 rendered square at 80, 16
+
+Thread 1 rendered square at 352, 0
+
+Thread 0 rendered square at 368, 0
+
+Thread 3 rendered square at 288, 0
+
+Thread 2 rendered square at 96, 16
+
+Thread 1 rendered square at 128, 16
+
+Thread 0 rendered square at 112, 16
+
+Thread 2 rendered square at 160, 16
+
+DLL.StopRender
+Coretracer.StopRender
+Thread 3 rendered square at 144, 16
+
+Thread 1 rendered square at 176, 16
+
+Thread 0 rendered square at 224, 16
+
+Thread 2 rendered square at 240, 16
+
+Camera.Render ThreadsComplete
+Camera.Render ClearedHandles

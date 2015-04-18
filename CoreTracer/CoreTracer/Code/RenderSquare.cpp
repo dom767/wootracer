@@ -19,11 +19,11 @@ bool DRenderSquare::InternalIntersect(const DRayContext& rRayContext, DCollision
 		return false;
 
 	float a = -mNormal.Dot(rRayContext.m_Ray.GetStart())/mNormal.Dot(rRayContext.m_Ray.GetDirection());
-	out_Response.mHitPosition = rRayContext.m_Ray.GetStart() + rRayContext.m_Ray.GetDirection() * a;
+	out_Response.mObjectPosition = rRayContext.m_Ray.GetStart() + rRayContext.m_Ray.GetDirection() * a;
 
 	// Square test
-	if (!(out_Response.mHitPosition[0]>-0.5 && out_Response.mHitPosition[0]<0.5 &&
-		out_Response.mHitPosition[2]>-0.5 && out_Response.mHitPosition[2]<0.5))
+	if (!(out_Response.mObjectPosition[0]>-0.5 && out_Response.mObjectPosition[0]<0.5 &&
+		out_Response.mObjectPosition[2]>-0.5 && out_Response.mObjectPosition[2]<0.5))
 		return false;
 
 	// ray behind the origin?

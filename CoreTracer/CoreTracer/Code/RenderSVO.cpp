@@ -285,7 +285,7 @@ bool DSVO::InternalIntersectRec(const DRayContext& rRayContext, DCollisionRespon
 		bool hit = GetSVOCellIntersect(rRayContext.m_Ray, min, max, hp2, op2, n2, on2);
 		if (hit)
 		{
-			out_Response.mHitPosition = hp2;
+			out_Response.mObjectPosition = hp2;
 			out_Response.mNormal = n2;
 			out_Response.mColour = DColour(1,1,1);
 			return true;

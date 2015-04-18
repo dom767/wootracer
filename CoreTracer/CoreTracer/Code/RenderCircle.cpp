@@ -33,10 +33,10 @@ bool DRenderCircle::InternalIntersect(const DRayContext& rRayContext, DCollision
 	if (divisor==0) return false; // parallel to plane
 
 	float a = -mNormal.Dot(rRayContext.m_Ray.GetStart())/divisor;
-	out_Response.mHitPosition = rRayContext.m_Ray.GetStart() + rRayContext.m_Ray.GetDirection() * a;
+	out_Response.mObjectPosition = rRayContext.m_Ray.GetStart() + rRayContext.m_Ray.GetDirection() * a;
 
 	// circle test
-	if ((out_Response.mHitPosition).MagnitudeSquared()>mSize*mSize)
+	if ((out_Response.mObjectPosition).MagnitudeSquared()>mSize*mSize)
 		return false;
 
 	// ray behind the origin?
@@ -47,7 +47,7 @@ bool DRenderCircle::InternalIntersect(const DRayContext& rRayContext, DCollision
 	out_Response.mNormal = mNormal;
 
 	// zero the crap out of y component
-	out_Response.mHitPosition[1] = 0.0f;
+	out_Response.mObjectPosition[1] = 0.0f;
 
 	return true;
 }

@@ -63,6 +63,7 @@ public:
 	/// meat and 2 veg
 	void CalculateColour(DColour &out_colour,
 		const DVector3& hitPos,
+		const DVector3& objectPos,
 		const int hitId,
 		const DVector3& normal,
 		const DRayContext& rRayContext,

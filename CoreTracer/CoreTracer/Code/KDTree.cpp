@@ -276,16 +276,18 @@ DVector3 DKDTree::FindMedian(const std::vector<DRenderObject*> &objects)
 
 struct hit
 {
-	hit(float dist, DVector3& norm, DColour& hitcol, DVector3& hitpos, std::vector<DRenderObject*>::const_iterator i)
+	hit(float dist, DVector3& norm, DColour& hitcol, DVector3& hitpos, DVector3& objectpos, std::vector<DRenderObject*>::const_iterator i)
 		: distance(dist),
 		normal(norm),
 		hitColour(hitcol),
 		hitPosition(hitpos),
+		objectPosition(objectpos),
 		iter(i) {}
 	float distance;
 	DVector3 normal;
 	DColour hitColour;
 	DVector3 hitPosition;
+	DVector3 objectPosition;
 	std::vector<DRenderObject*>::const_iterator iter;
 };
 
@@ -382,6 +384,7 @@ int DKDTree::Intersect(const DRayContext& rRayContext, DCollisionResponse& out_R
 		}
 
 		out_Response.mDistance = nearestDistance;
+		out_Response.mObjectPosition = RenderCache.m_HitPoints[nearestObjectIdx].objectPosition;
 		out_Response.mHitPosition = RenderCache.m_HitPoints[nearestObjectIdx].hitPosition;
 		out_Response.mNormal = RenderCache.m_HitPoints[nearestObjectIdx].normal;
 		out_Response.mColour = RenderCache.m_HitPoints[nearestObjectIdx].hitColour;
@@ -442,7 +445,7 @@ void DKDTree::IntersectRecurse(DKDTreeNode* node, EAxis axis, const DVector3& st
 					if ((*iter)->Intersect(DRayContext(NULL, RenderCache.mRayContext.m_Ray, RequestDistance, 0, RenderCache.mRayContext.m_RefractiveIndex, RenderCache.mRayContext.mPixelIndex, RenderCache.mRayContext.mSubFrame), tempResponse)
 						&& (*iter)->GetObjectId()!=RenderCache.m_IgnoreObjectId)
 					{
-						RenderCache.m_HitPoints.push_back(hit(tempResponse.mDistance, tempResponse.mNormal, tempResponse.mColour, tempResponse.mHitPosition, iter));
+						RenderCache.m_HitPoints.push_back(hit(tempResponse.mDistance, tempResponse.mNormal, tempResponse.mColour, tempResponse.mHitPosition, tempResponse.mObjectPosition, iter));
 					}
 				}
 				RenderCache.Add((*iter)->GetObjectId());

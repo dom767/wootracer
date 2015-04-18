@@ -78,6 +78,7 @@ DFuncFactory::DFuncFactory()
 
 	mVariableList.push_back(new DVariable(Float, VNDistance, "distance"));
 	mVariableList.push_back(new DVariable(Vec, VNPosition, "pos"));
+	mVariableList.push_back(new DVariable(Vec, VNObjectPosition, "opos"));
 	mVariableList.push_back(new DVariable(Vec, VNDiffuse, "diff"));
 	mVariableList.push_back(new DVariable(Vec, VNSpecular, "spec"));
 	mVariableList.push_back(new DVariable(Vec, VNReflectivity, "refl"));
@@ -129,6 +130,8 @@ DVector3 DFuncFactory::GetVectorValue(DFunctionState& state, DVariable* var)
 	{
 	case VNPosition:
 		return state.mPosition;
+	case VNObjectPosition:
+		return state.mObjectPosition;
 	case VNDiffuse:
 		return state.mDiffuse.GetVector();
 	case VNSpecular:
@@ -176,6 +179,9 @@ void DFuncFactory::SetVectorValue(DFunctionState& state, DVariable* var, DVector
 	{
 	case VNPosition:
 		state.mPosition = val;
+		return;
+	case VNObjectPosition:
+		state.mObjectPosition = val;
 		return;
 	case VNDiffuse:
 		state.mDiffuse = val;

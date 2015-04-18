@@ -51,7 +51,7 @@ bool DRenderCylinder::InternalIntersect(const DRayContext& rRayContext, DCollisi
 				float th = t0 + (t1-t0) * (y0+1) / (y0-y1);
 				if (th<=0) return false;
 		
-				out_Response.mHitPosition = start + (direction*th);
+				out_Response.mObjectPosition = start + (direction*th);
 				out_Response.mNormal = DVector3(0, -1, 0);
 				return true;
 			}
@@ -61,8 +61,8 @@ bool DRenderCylinder::InternalIntersect(const DRayContext& rRayContext, DCollisi
 			// hit the cylinder bit
 			if (t0<=0) return false;
 		
-			out_Response.mHitPosition = start + (direction*t0);
-			out_Response.mNormal = DVector3(out_Response.mHitPosition.mComponent[0], 0, out_Response.mHitPosition.mComponent[2]);
+			out_Response.mObjectPosition = start + (direction*t0);
+			out_Response.mNormal = DVector3(out_Response.mObjectPosition.mComponent[0], 0, out_Response.mObjectPosition.mComponent[2]);
 			out_Response.mNormal.Normalise();
 			return true;
 		}
@@ -76,7 +76,7 @@ bool DRenderCylinder::InternalIntersect(const DRayContext& rRayContext, DCollisi
 				float th = t0 + (t1-t0) * (y0-1) / (y0-y1);
 				if (th<=0) return false;
 
-				out_Response.mHitPosition = start + (direction*th);
+				out_Response.mObjectPosition = start + (direction*th);
 				out_Response.mNormal = DVector3(0, 1, 0);
 				return true;
 			}
@@ -94,7 +94,7 @@ bool DRenderCylinder::InternalIntersect(const DRayContext& rRayContext, DCollisi
 				float th = t0 + (t1-t0) * (y0+1) / (y0-y1);
 				if (th<=0) return false;
 		
-				out_Response.mHitPosition = start + (direction*th);
+				out_Response.mObjectPosition = start + (direction*th);
 				out_Response.mNormal = DVector3(0, 1, 0);
 				return true;
 			}
@@ -104,8 +104,8 @@ bool DRenderCylinder::InternalIntersect(const DRayContext& rRayContext, DCollisi
 			// hit the cylinder bit
 			if (t1<=0) return false;
 		
-			out_Response.mHitPosition = start + (direction*t1);
-			out_Response.mNormal = DVector3(-out_Response.mHitPosition.mComponent[0], 0, -out_Response.mHitPosition.mComponent[2]);
+			out_Response.mObjectPosition = start + (direction*t1);
+			out_Response.mNormal = DVector3(-out_Response.mObjectPosition.mComponent[0], 0, -out_Response.mObjectPosition.mComponent[2]);
 			out_Response.mNormal.Normalise();
 			return true;
 		}
@@ -119,7 +119,7 @@ bool DRenderCylinder::InternalIntersect(const DRayContext& rRayContext, DCollisi
 				float th = t0 + (t1-t0) * (y0-1) / (y0-y1);
 				if (th<=0) return false;
 
-				out_Response.mHitPosition = start + (direction*th);
+				out_Response.mObjectPosition = start + (direction*th);
 				out_Response.mNormal = DVector3(0, -1, 0);
 				return true;
 			}

@@ -94,6 +94,7 @@ class DFunctionState
 public:
 	float mDistance; // return type
 	DVector3 mPosition;
+	DVector3 mObjectPosition;
 	DColour mDiffuse;
 	DColour mSpecular;
 	DColour mReflectivity;

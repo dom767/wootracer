@@ -46,7 +46,7 @@ bool DRenderSphere::InternalIntersect(const DRayContext& rRayContext, DCollision
 		DVector3 HitPos = oc + (rRayContext.m_Ray.GetDirection()*h2); // object space
 		DVector3 normal = HitPos.GetNegate();
 		normal.Normalise();
-		out_Response.mHitPosition = HitPos + DVector3(0,0,0);
+		out_Response.mObjectPosition = HitPos + DVector3(0,0,0);
 		out_Response.mNormal = normal;
 	}
 	else
@@ -57,7 +57,7 @@ bool DRenderSphere::InternalIntersect(const DRayContext& rRayContext, DCollision
 		DVector3 HitPos = oc + (rRayContext.m_Ray.GetDirection()*h1); // object space
 		DVector3 normal = HitPos;
 		normal.Normalise();
-		out_Response.mHitPosition = HitPos + DVector3(0,0,0);
+		out_Response.mObjectPosition = HitPos + DVector3(0,0,0);
 		out_Response.mNormal = normal;
 	}
 

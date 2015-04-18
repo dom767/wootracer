@@ -103,6 +103,7 @@ DVector3 digetSampleBiased(const DScene* scene, const DRayContext& rayContext, D
 
 void DMaterial::CalculateColour(DColour &out_colour,
 	const DVector3& hitPos,
+	const DVector3& objectPos,
 	const int hitId,
 	const DVector3& in_normal,
 	const DRayContext &rRayContext,
@@ -156,6 +157,7 @@ void DMaterial::CalculateColour(DColour &out_colour,
 
 	DFunctionState funcState;
 	funcState.mPosition = hitPos;
+	funcState.mObjectPosition = objectPos;
 	funcState.mDiffuse = mDiffuseColour->GetColour(hitPos) * out_colour;
 	funcState.mSpecular = mSpecularColour->GetColour(hitPos);
 	funcState.mReflectivity = reflectivity;
