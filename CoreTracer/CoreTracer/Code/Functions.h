@@ -263,7 +263,7 @@ BEGIN_FUNC(DDistMandelBox, "mandelbox");
                 mpos[2] = 2 - mpos[2];
             else if (mpos[2] < -1)
                 mpos[2] = -2 - mpos[2];
-
+			/*
             float r2 = mpos.MagnitudeSquared();
 
             if (r2 < 1)
@@ -278,7 +278,15 @@ BEGIN_FUNC(DDistMandelBox, "mandelbox");
                     mpos /= r2;
                     dr /= r2;
                 }
-            }
+            }*/
+
+            float radiusSquared = mpos.MagnitudeSquared();
+			if (radiusSquared<1)
+			{
+				float radius = sqrtf(radiusSquared);
+				mpos = mpos * (2-radius) / radius;
+			}
+
 
             mpos = mpos * mScale + c;
             dr = dr * mScale + 1.0f;
