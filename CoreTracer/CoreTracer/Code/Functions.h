@@ -355,6 +355,23 @@ BEGIN_FUNC(DDistSignedBox, "box");
 	}
 END_FUNC
 
+BEGIN_FUNC(DDistTetra, "tetra");
+	DDistTetra()
+	{
+		mParam.push_back(new DFuncParam("mPos", Vec));
+	}
+
+	float DistanceFromPlane(DVector3 pos)
+	{
+	}
+
+	virtual float Evaluate(DFunctionState& state)
+	{
+		DVector3 pos = mParam[0]->EvaluateVec(state);
+		return pos[0];
+	}
+END_FUNC
+
 BEGIN_FUNC(DDistSignedTorus, "torus");
 	DDistSignedTorus()
 	{
@@ -1355,6 +1372,30 @@ BEGIN_FUNC(DDistSingleFold, "singlefold");
 		float fold = mParam[1]->Evaluate(state);
 		if (val>fold) val = fold*2 - val;
 		return val;
+	}
+END_FUNC
+
+BEGIN_VECFUNC(DDistSingleFold3D, "singlefold3d");
+	DDistSingleFold3D()
+	{
+		mParam.push_back(new DFuncParam("mPos", Vec));
+		mParam.push_back(new DFuncParam("mPlanePoint", Vec));
+		mParam.push_back(new DFuncParam("mNormal", Vec));
+	}
+
+	virtual DVector3 Evaluate(DFunctionState& state)
+	{
+		DVector3 pos = mParam[0]->EvaluateVec(state);
+		DVector3 planepoint = mParam[1]->EvaluateVec(state);
+		DVector3 normal = mParam[2]->EvaluateVec(state);
+		normal.Normalise();
+		DVector3 planevec = planepoint - pos;
+		float distance = planevec.Dot(normal);
+		if (distance>0)
+		{
+			return pos + normal*distance*2;
+		}
+		return pos;
 	}
 END_FUNC
 
