@@ -227,7 +227,7 @@ bool DScene::Intersect(DRayContext& RayContext, DCollisionResponse& out_Response
 					RayContext.m_RequestFlags = oldFlags|RequestBackface|RequestDistance;
 //					RayContext.mWithinIdx.erase(RayContext.mWithinIdx.begin()); 
 					object->CalculateColour(RayContext, within_Response);
-//					out_Response = within_Response;
+					out_Response = within_Response;
 				}
 				else
 				{
