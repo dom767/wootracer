@@ -29,6 +29,7 @@ void DCamera::Read(TiXmlElement* element)
 	Convert::StrToInt(element->Attribute("minSamples"), mMinSamples);
 	Convert::StrToInt(element->Attribute("maxSamples"), mMaxSamples);
 	Convert::StrToFloat(element->Attribute("spherical"), mSpherical);
+	Convert::StrToFloat(element->Attribute("stereographic"), mStereographic);
 }
 
 struct ThreadArgs
@@ -99,7 +100,8 @@ DCamera::DCamera() : mProgressMonitor(0),
 	mApertureSize(0.0),
 	mPixelCount(0),
 	mPatchSampleCount(0),
-	mSpherical(0)
+	mSpherical(0),
+	mStereographic(0)
 {
 	InitializeCriticalSection(&mCS);
 	mRenderHandle = CreateEvent(NULL, TRUE, TRUE, _T("RenderHandle"));
@@ -228,10 +230,6 @@ void DCamera::LockingCopy(DColour* dest, DColour* source, int offset, int size)
 
 bool DCamera::GetRay(DRay& out_ray, const DVector3 from, const int width, const int height, const float x, const float y, const DVector3& jitter)
 {
-	// calculate ray origin
-	DVector3 jitterWorld = mViewMatrix*jitter;
-	out_ray.SetStart(from+jitterWorld);
-
 	// calculate vector away from camera
 	float aspectRatio = float(width)/float(height);
 	DVector3 direction = DVector3((float(x)/float(width)-0.5f)*mFOV,
@@ -260,12 +258,52 @@ bool DCamera::GetRay(DRay& out_ray, const DVector3 from, const int width, const 
 		direction += (sDirection - direction) * mSpherical;
 	}
 
+	if (abs(mStereographic)>0.0001f)
+	{
+		float sx = (mFOV/22.5f) * 2*(float(x)/float(width) - 0.5f);
+		float sy = (mFOV/22.5f) * 2*(float(y)/float(width) - 0.5f/aspectRatio);
+
+		float s = 4 / (sx*sx + sy*sy + 1);
+
+		DVector3 sDirection;
+		sDirection[0] = s*sx;
+		sDirection[1] = s*sy;
+		sDirection[2] = 2*s - 1;
+
+		sDirection.Normalise();
+		direction += (sDirection - direction) * mStereographic;
+	}
+
+	// translate jitter to local coordinate system
+	DVector3 jitterRight, jitterUp;
+	DMatrix4 jitterMatrix;
+	if (direction.Dot(DVector3(0,1,0))>0.999f)
+	{
+		jitterRight = DVector3(1,0,0).Cross(direction);
+		jitterRight.Normalise();
+		jitterUp = jitterRight.Cross(direction);
+		jitterUp.Normalise();
+	}
+	else
+	{
+		jitterRight = DVector3(0,1,0).Cross(direction);
+		jitterRight.Normalise();
+		jitterUp = jitterRight.Cross(direction);
+		jitterUp.Normalise();
+	}
+
+	jitterMatrix.MakeFromRightUpTo(jitterRight, jitterUp, direction);
+	DVector3 jitterWorld = jitterMatrix*jitter;
+
+	// set ray origin
+	out_ray.SetStart(from+mViewMatrix*jitterWorld);
+
 	// Find focus point
-	float scale = mFocusDepth / direction.mComponent[2];
-	DVector3 focusedPoint = direction * scale;
+//	float scale = mFocusDepth / direction.mComponent[2];
+	DVector3 focusedPoint = direction * mFocusDepth;
 	
 	// Calculate new direction from origin to focus point
-	DVector3 jitterDirection = focusedPoint - jitter;
+	DVector3 jitterDirection = focusedPoint - jitterWorld;
 	jitterDirection.Normalise();
 
 	// rotate direction into view space

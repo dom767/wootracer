@@ -37,6 +37,7 @@ public:
 	float mFocusDepth;
 	float mApertureSize;
 	float mSpherical;
+	float mStereographic;
 	int mMinSamples;
 	int mMaxSamples;
 	DProgressMonitor* mProgressMonitor;
