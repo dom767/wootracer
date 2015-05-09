@@ -77,6 +77,25 @@ public:
 		mVal[3][2] = 0.0f;
 		mVal[3][3] = 1.0f;
 	}
+	void MakeFromRightUpTo(const DVector3& right, const DVector3& up, const DVector3& to)
+	{
+		mVal[0][0] = right[0];
+		mVal[0][1] = right[1];
+		mVal[0][2] = right[2];
+		mVal[0][3] = 0.0f;
+		mVal[1][0] = up[0];
+		mVal[1][1] = up[1];
+		mVal[1][2] = up[2];
+		mVal[1][3] = 0.0f;
+		mVal[2][0] = to[0];
+		mVal[2][1] = to[1];
+		mVal[2][2] = to[2];
+		mVal[2][3] = 0.0f;
+		mVal[3][0] = 0.0f;
+		mVal[3][1] = 0.0f;
+		mVal[3][2] = 0.0f;
+		mVal[3][3] = 1.0f;
+	}
 	void Invert()
 	{
 		//
