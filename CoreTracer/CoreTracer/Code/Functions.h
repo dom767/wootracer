@@ -568,7 +568,7 @@ BEGIN_VECFUNC(DDistKaleidoCol, "kaleidocol");
 			mRot2 = rot2;
 		}
 
-		float bailout = 1000;
+		float bailout = 1000000;
 		float r=pos.MagnitudeSquared();
 		int i;
 		float acc[3];
@@ -591,10 +591,13 @@ BEGIN_VECFUNC(DDistKaleidoCol, "kaleidocol");
 			pos[2]=scale*pos[2]-offset[2]*(scale-1);
 			r=pos.MagnitudeSquared();
 		}
+
 		DVector3 ret;
-		ret[0] = fabsf(acc[0]-(float(iterations)*0.5f))/(float(iterations)*0.5f);
-		ret[1] = fabsf(acc[1]-(float(iterations)*0.5f))/(float(iterations)*0.5f);
-		ret[2] = fabsf(acc[2]-(float(iterations)*0.5f))/(float(iterations)*0.5f);
+		acc[0] = fabsf(acc[0]-float(i)*0.5f)/float(i);
+		acc[1] = fabsf(acc[1]-float(i)*0.5f)/float(i);
+		acc[2] = fabsf(acc[2]-float(i)*0.5f)/float(i);
+
+		ret[0] = ret[1] = ret[2] = (acc[0] + acc[1] + acc[2]) / 1.5f;
 		return ret;
 	}
 END_FUNC
@@ -643,6 +646,19 @@ BEGIN_FUNC(DMod, "mod");
 		float ret = fmod(val1, modAmt);
 		if (ret<0) ret += modAmt;
 		return ret;
+	}
+END_FUNC
+
+BEGIN_FUNC(DAbs, "abs");
+	DAbs()
+	{
+		mParam.push_back(new DFuncParam("mVal1", Float));
+	}
+	
+	virtual float Evaluate(DFunctionState& state)
+	{
+		float val1 = mParam[0]->Evaluate(state);
+		return fabsf(val1);
 	}
 END_FUNC
 
