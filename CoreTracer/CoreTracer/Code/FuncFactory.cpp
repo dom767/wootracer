@@ -34,6 +34,7 @@ DFuncFactory::DFuncFactory()
 	mFuncList.push_back(new DDistDiv());
 	mFuncList.push_back(new DRound());
 	mFuncList.push_back(new DMod());
+	mFuncList.push_back(new DAbs());
 	mFuncList.push_back(new DMad());
 	mFuncList.push_back(new DFloor());
 	mFuncList.push_back(new DDistPerlinXYZ());
