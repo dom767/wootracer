@@ -252,7 +252,7 @@ float DRenderDistance::DistanceEstimator(DVector3& pos) const
 //	return mandelbulb(pos);
 //	return sierpinski3(pos);
 	DFunctionState funcState;
-	funcState.mPosition = pos;
+	funcState.mObjectPosition = pos;
 	funcState.mDistance = 0.0f;
 	mDistanceProgram.Run(funcState);
 	return funcState.mDistance;

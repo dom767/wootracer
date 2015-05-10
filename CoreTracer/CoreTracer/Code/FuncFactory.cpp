@@ -81,8 +81,8 @@ DFuncFactory::DFuncFactory()
 	mFuncList.push_back(new DSetV());
 
 	mVariableList.push_back(new DVariable(Float, VNDistance, "distance"));
-	mVariableList.push_back(new DVariable(Vec, VNPosition, "pos"));
-	mVariableList.push_back(new DVariable(Vec, VNObjectPosition, "opos"));
+	mVariableList.push_back(new DVariable(Vec, VNPosition, "wpos"));
+	mVariableList.push_back(new DVariable(Vec, VNObjectPosition, "pos"));
 	mVariableList.push_back(new DVariable(Vec, VNDiffuse, "diff"));
 	mVariableList.push_back(new DVariable(Vec, VNSpecular, "spec"));
 	mVariableList.push_back(new DVariable(Vec, VNReflectivity, "refl"));
