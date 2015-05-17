@@ -100,6 +100,7 @@ public:
 	DColour mReflectivity;
 	DColour mEmissive;
 	DColour mAbsorption;
+	DVector3 mTrapPosition;
 };
 
 class DFuncParam
@@ -115,6 +116,7 @@ public:
 
 	float Evaluate(DFunctionState& state);
 	DVector3 EvaluateVec(DFunctionState& state);
+	void EvaluateNull(DFunctionState& state);
 
 	DDistFunc* mVar;
 	char* mName;

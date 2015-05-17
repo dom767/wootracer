@@ -28,6 +28,8 @@ DFuncFactory::DFuncFactory()
 	mFuncList.push_back(new DDistGetZ());
 	mFuncList.push_back(new DDistKaleido());
 	mFuncList.push_back(new DDistKaleidoCol());
+	mFuncList.push_back(new DDistKaleidoTrap());
+	mFuncList.push_back(new DDistKaleidoDETrap());
 	mFuncList.push_back(new DAdd());
 	mFuncList.push_back(new DDistSub());
 	mFuncList.push_back(new DDistMul());
@@ -79,6 +81,7 @@ DFuncFactory::DFuncFactory()
 
 	mFuncList.push_back(new DSet());
 	mFuncList.push_back(new DSetV());
+	mFuncList.push_back(new DDistRepeat());
 
 	mVariableList.push_back(new DVariable(Float, VNDistance, "distance"));
 	mVariableList.push_back(new DVariable(Vec, VNPosition, "wpos"));
@@ -88,6 +91,7 @@ DFuncFactory::DFuncFactory()
 	mVariableList.push_back(new DVariable(Vec, VNReflectivity, "refl"));
 	mVariableList.push_back(new DVariable(Vec, VNEmissive, "emi"));
 	mVariableList.push_back(new DVariable(Vec, VNAbsorption, "absorb"));
+	mVariableList.push_back(new DVariable(Vec, VNTrapPosition, "trappos"));
 
 	BuildSchema();
 }
@@ -146,6 +150,8 @@ DVector3 DFuncFactory::GetVectorValue(DFunctionState& state, DVariable* var)
 		return state.mEmissive.GetVector();
 	case VNAbsorption:
 		return state.mAbsorption.GetVector();
+	case VNTrapPosition:
+		return state.mTrapPosition;
 	}
 
 	LOG(Error, "Missing variable in GetVectorValue");
@@ -201,6 +207,9 @@ void DFuncFactory::SetVectorValue(DFunctionState& state, DVariable* var, DVector
 		return;
 	case VNAbsorption:
 		state.mAbsorption = val;
+		return;
+	case VNTrapPosition:
+		state.mTrapPosition = val;
 		return;
 	}
 
@@ -303,6 +312,20 @@ bool DFuncFactory::IsVectorVar(std::string& token)
 		return false;
 }
 
+bool DFuncFactory::IsNullFunction(std::string& token)
+{
+	for (unsigned int i=0; i<mFuncList.size(); i++)
+	{
+		if (mFuncList[i]->GetType()==Null
+			&& token.compare(mFuncList[i]->GetName())==0)
+		{
+			return true;
+		}
+	}
+
+	return false;
+}
+
 DDistFunc* DFuncFactory::CreateFunction(std::string& arg)
 {
 	std::string token = ParseUtils::GetToken(arg);
@@ -329,6 +352,13 @@ DDistFunc* DFuncFactory::CreateFunction(std::string& arg)
 			DDistVectorVar* vectorVar = new DDistVectorVar();
 			vectorVar->SetVariable(GetVariable(token));
 			return vectorVar;
+		}
+		else if (token.compare("{")==0)
+		{
+			DDistCodeblock* codeblock = new DDistCodeblock();
+			arg = std::string("{").append(arg);
+			codeblock->Parse(arg);
+			return codeblock;
 		}
 	}
 	else
@@ -375,9 +405,21 @@ DDistFunc* DFuncFactory::CreateFunction(std::string& arg)
 std::vector<DNullFunc*> DFuncFactory::Create(std::string& arg)
 {
 	std::vector<DNullFunc*> ret;
+	bool inParanthesis = false;
 
-	while (arg.length()>1)
+	while (arg.length()>0)
 	{
+		std::string token = ParseUtils::PeekToken(arg);
+		if (token.compare("{")==0)
+		{
+			inParanthesis = true;
+			token = ParseUtils::GetToken(arg);
+		}
+		if (token.compare("}")==0 && inParanthesis)
+		{
+			token = ParseUtils::GetToken(arg);
+			return ret;
+		}
 		DDistFunc* func = CreateFunction(arg);
 		if (func->GetType() == Null)
 			ret.push_back((DNullFunc*)func);

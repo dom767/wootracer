@@ -24,6 +24,7 @@ enum EVariableName
 	VNReflectivity,
 	VNEmissive,
 	VNAbsorption,
+	VNTrapPosition,
 	END_VARIABLE_NAME
 };
 
@@ -65,6 +66,7 @@ public:
 	DVector3 GetVectorValue(DFunctionState& state, DVariable* var);
 	void SetFloatValue(DFunctionState& state, DVariable* var, float val);
 	void SetVectorValue(DFunctionState& state, DVariable* var, DVector3& val);
+	bool IsFloatVar(std::string& token);
 
 	DVariable* GetVariable(std::string& arg);
 
@@ -76,6 +78,6 @@ private:
 	std::vector<DDistFunc*> mFuncList;
 	std::string mSchema;
 
-	bool IsFloatVar(std::string& token);
 	bool IsVectorVar(std::string& token);
+	bool IsNullFunction(std::string& token);
 };

@@ -233,6 +233,40 @@ BEGIN_FUNC(DDistFloat, "float");
 	float mFloat;
 END_FUNC
 
+BEGIN_NULLFUNC(DDistCodeblock, "codeblock");
+	DDistCodeblock()
+	{
+	}
+
+	virtual void Evaluate(DFunctionState& state)
+	{
+		mProgram.Run(state);
+	}
+
+	void Parse(std::string& arg)
+	{
+		mProgram.Create(arg);
+	}
+
+	DProgram mProgram;
+END_FUNC
+
+BEGIN_NULLFUNC(DDistRepeat, "repeat");
+	DDistRepeat()
+	{
+		mParam.push_back(new DFuncParam("mRepeats", Float));
+		mParam.push_back(new DFuncParam("mCodeblock", Null));
+	}
+
+	virtual void Evaluate(DFunctionState& state)
+	{
+		for (int i=0; i<mParam[0]->Evaluate(state); i++)
+		{
+			mParam[1]->EvaluateNull(state);
+		}
+	}
+END_FUNC
+
 BEGIN_FUNC(DDistMandelBox, "mandelbox");
 	DDistMandelBox()
 	{
@@ -599,6 +633,166 @@ BEGIN_VECFUNC(DDistKaleidoCol, "kaleidocol");
 
 		ret[0] = ret[1] = ret[2] = (acc[0] + acc[1] + acc[2]) / 1.5f;
 		return ret;
+	}
+END_FUNC
+
+BEGIN_VECFUNC(DDistKaleidoTrap, "kaleidotrap");
+	DDistKaleidoTrap()
+	{
+		mParam.push_back(new DFuncParam("mPos", Vec));
+		mParam.push_back(new DFuncParam("mRot1", Vec));
+		mParam.push_back(new DFuncParam("mRot2", Vec));
+		mParam.push_back(new DFuncParam("mOffset", Vec));
+		mParam.push_back(new DFuncParam("mIterations", Float));
+		mParam.push_back(new DFuncParam("mScale", Float));
+		mParam.push_back(new DFuncParam("mTrap", Float));
+		mRot1 = mRot2 = DVector3(0,0,0);
+		matRot1.MakeIdentity();
+		matRot2.MakeIdentity();
+	}
+
+	DMatrix4 rotate1(const DVector3& rot)
+	{
+		DMatrix4 mat;
+		mat.MakeFromRPY(rot[0],rot[1],rot[2]);
+		return mat;
+	}
+
+	DVector3 mRot1;
+	DVector3 mRot2;
+	DMatrix4 matRot1;
+	DMatrix4 matRot2;
+
+	virtual DVector3 Evaluate(DFunctionState& state)
+	{
+		DVector3 pos = mParam[0]->EvaluateVec(state);
+		DVector3 rot1 = mParam[1]->EvaluateVec(state);
+		DVector3 rot2 = mParam[2]->EvaluateVec(state);
+		DVector3 offset = mParam[3]->EvaluateVec(state);
+		int iterations = int(0.5f + mParam[4]->Evaluate(state));
+		float scale = mParam[5]->Evaluate(state);
+
+		if (mRot1[0]!=rot1[0] || mRot1[1]!=rot1[1] || mRot1[2]!=rot1[2])
+		{
+			matRot1 = rotate1(rot1);
+			mRot1 = rot1;
+		}
+		if (mRot2[0]!=rot2[0] || mRot2[1]!=rot2[1] || mRot2[2]!=rot2[2])
+		{
+			matRot2 = rotate1(rot2);
+			mRot2 = rot2;
+		}
+
+		float bailout = 1000000;
+		float r=pos.MagnitudeSquared();
+		int i;
+		float acc[3];
+		acc[0] = acc[1] = acc[2] = 0;
+		float scaleAcc = 1;
+		float trap = 10000000;
+		for(i=0;i<iterations && r<bailout;i++){
+			//Folding... These are some of the symmetry planes of the tetrahedron
+			float tmp;
+
+			pos = matRot1 * pos;
+
+			if(pos[0]+pos[1]<0){acc[0]++;tmp=-pos[1];pos[1]=-pos[0];pos[0]=tmp;}
+			if(pos[0]+pos[2]<0){acc[1]++;tmp=-pos[2];pos[2]=-pos[0];pos[0]=tmp;}
+			if(pos[1]+pos[2]<0){acc[2]++;tmp=-pos[2];pos[2]=-pos[1];pos[1]=tmp;}
+      
+			pos = matRot2 * pos;
+
+			//Stretche about the point [1,1,1]*(scale-1)/scale; The "(scale-1)/scale" is here in order to keep the size of the fractal constant wrt scale
+			pos[0]=scale*pos[0]-offset[0]*(scale-1);//equivalent to: x=scale*(x-cx); where cx=(scale-1)/scale;
+			pos[1]=scale*pos[1]-offset[1]*(scale-1);
+			pos[2]=scale*pos[2]-offset[2]*(scale-1);
+			r=pos.MagnitudeSquared();
+
+			scaleAcc *= scale;
+			state.mTrapPosition = pos;
+			trap = min(trap, mParam[6]->Evaluate(state));
+		}
+
+		DVector3 ret;
+		ret[0] = ret[1] = ret[2] = trap;
+		return ret;
+	}
+END_FUNC
+
+BEGIN_FUNC(DDistKaleidoDETrap, "kaleidodetrap");
+	DDistKaleidoDETrap()
+	{
+		mParam.push_back(new DFuncParam("mPos", Vec));
+		mParam.push_back(new DFuncParam("mRot1", Vec));
+		mParam.push_back(new DFuncParam("mRot2", Vec));
+		mParam.push_back(new DFuncParam("mOffset", Vec));
+		mParam.push_back(new DFuncParam("mIterations", Float));
+		mParam.push_back(new DFuncParam("mScale", Float));
+		mParam.push_back(new DFuncParam("mTrap", Float));
+		mRot1 = mRot2 = DVector3(0,0,0);
+		matRot1.MakeIdentity();
+		matRot2.MakeIdentity();
+	}
+
+	DMatrix4 rotate1(const DVector3& rot)
+	{
+		DMatrix4 mat;
+		mat.MakeFromRPY(rot[0],rot[1],rot[2]);
+		return mat;
+	}
+
+	DVector3 mRot1;
+	DVector3 mRot2;
+	DMatrix4 matRot1;
+	DMatrix4 matRot2;
+
+	virtual float Evaluate(DFunctionState& state)
+	{
+		DVector3 pos = mParam[0]->EvaluateVec(state);
+		DVector3 rot1 = mParam[1]->EvaluateVec(state);
+		DVector3 rot2 = mParam[2]->EvaluateVec(state);
+		DVector3 offset = mParam[3]->EvaluateVec(state);
+		int iterations = int(0.5f + mParam[4]->Evaluate(state));
+		float scale = mParam[5]->Evaluate(state);
+
+		if (mRot1[0]!=rot1[0] || mRot1[1]!=rot1[1] || mRot1[2]!=rot1[2])
+		{
+			matRot1 = rotate1(rot1);
+			mRot1 = rot1;
+		}
+		if (mRot2[0]!=rot2[0] || mRot2[1]!=rot2[1] || mRot2[2]!=rot2[2])
+		{
+			matRot2 = rotate1(rot2);
+			mRot2 = rot2;
+		}
+
+		float bailout = 1000;
+		float r=pos.MagnitudeSquared();
+		int i;
+		float trap = 1000000;
+		for(i=0;i<iterations && r<bailout;i++){
+			//Folding... These are some of the symmetry planes of the tetrahedron
+			float tmp;
+
+			pos = matRot1 * pos;
+
+			if(pos[0]+pos[1]<0){tmp=-pos[1];pos[1]=-pos[0];pos[0]=tmp;}
+			if(pos[0]+pos[2]<0){tmp=-pos[2];pos[2]=-pos[0];pos[0]=tmp;}
+			if(pos[1]+pos[2]<0){tmp=-pos[2];pos[2]=-pos[1];pos[1]=tmp;}
+      
+			pos = matRot2 * pos;
+
+			//Stretche about the point [1,1,1]*(scale-1)/scale; The "(scale-1)/scale" is here in order to keep the size of the fractal constant wrt scale
+			pos[0]=scale*pos[0]-offset[0]*(scale-1);//equivalent to: x=scale*(x-cx); where cx=(scale-1)/scale;
+			pos[1]=scale*pos[1]-offset[1]*(scale-1);
+			pos[2]=scale*pos[2]-offset[2]*(scale-1);
+			r=pos.MagnitudeSquared();
+
+			state.mTrapPosition = pos;
+			float orbit = mParam[6]->Evaluate(state);
+			trap = min(trap, orbit*powf(scale,-float(i)));
+		}	
+		return trap;//(sqrtf(trap)-2)*powf(scale,-float(i));//the estimated distance
 	}
 END_FUNC
 
@@ -1670,7 +1864,7 @@ BEGIN_VECFUNC(DLerp, "lerp");
 	{
 		DVector3 mVec1 = mParam[0]->EvaluateVec(state);
 		DVector3 mVec2 = mParam[1]->EvaluateVec(state);
-		float mAmount = mParam[2]->Evaluate(state);
+		float mAmount = clamp(mParam[2]->Evaluate(state),0,1);
 		float invAmount = 1-mAmount;
 
 		return DVector3(mVec1[0]*invAmount + mVec2[0]*mAmount,
@@ -1689,7 +1883,6 @@ BEGIN_NULLFUNC(DSet, "set");
 	virtual void Evaluate(DFunctionState& state)
 	{
 		((DDistFloatVar*)(mParam[0]->mVar))->Set(state, mParam[1]->Evaluate(state));
-
 	}
 END_NULLFUNC
 

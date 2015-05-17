@@ -9,6 +9,12 @@ int ParseUtils::GetIndex(const std::string &arg, char findchar)
 	return nextspace;
 }
 
+std::string ParseUtils::PeekToken(const std::string& arg)
+{
+	std::string tmp = arg;
+	return GetToken(tmp);
+}
+
 std::string ParseUtils::GetToken(std::string& arg)
 {
 	while(arg[0]==' ') arg = arg.substr(1, arg.length());
@@ -16,8 +22,10 @@ std::string ParseUtils::GetToken(std::string& arg)
 	int nextspace = GetIndex(arg, ' ');
 	int nextopenbracket = GetIndex(arg, '(');
 	int nextclosebracket = GetIndex(arg, ')');
+	int nextopenparen = GetIndex(arg, '{');
+	int nextcloseparen = GetIndex(arg, '}');
 	int nextcomma = GetIndex(arg, ',');
-	int idx = min(nextspace, min(nextopenbracket, min(nextclosebracket, nextcomma)));
+	int idx = min(nextspace, min(nextopenbracket, min(nextclosebracket, min(nextcomma, min(nextopenparen, nextcloseparen)))));
 		
 	if (idx==0) idx=1;
 	std::string ret = arg.substr(0, idx);

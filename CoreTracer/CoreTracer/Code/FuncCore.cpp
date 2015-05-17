@@ -2,6 +2,7 @@
 #include "FuncCore.h"
 #include "ParseUtils.h"
 #include "FuncFactory.h"
+#include "Functions.h"
 #include "Vector3.h"
 #include "Log.h"
 
@@ -79,4 +80,9 @@ float DFuncParam::Evaluate(DFunctionState& state)
 DVector3 DFuncParam::EvaluateVec(DFunctionState& state)
 {
 	return ((DVecFunc*)mVar)->Evaluate(state);
+}
+
+void DFuncParam::EvaluateNull(DFunctionState& state)
+{
+	((DNullFunc*)mVar)->Evaluate(state);
 }
