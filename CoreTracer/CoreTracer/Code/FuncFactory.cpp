@@ -265,6 +265,8 @@ void DFuncFactory::BuildSchema()
 			mSchema.append("<FLOATFUNC name=\"" + mFuncList[i]->GetName() + "\">\n");
 		else if (mFuncList[i]->GetType()==Vec)
 			mSchema.append("<VECFUNC name=\"" + mFuncList[i]->GetName() + "\">\n");
+		else if (mFuncList[i]->GetType()==Null)
+			mSchema.append("<NULLFUNC name=\"" + mFuncList[i]->GetName() + "\">\n");
 
 		mSchema.append(WriteParams(mFuncList[i]->mParam));
 
@@ -272,6 +274,8 @@ void DFuncFactory::BuildSchema()
 			mSchema.append("</FLOATFUNC>");
 		else if (mFuncList[i]->GetType()==Vec)
 			mSchema.append("</VECFUNC>");
+		else if (mFuncList[i]->GetType()==Null)
+			mSchema.append("</NULLFUNC>");
 	}
 	for (i=0; i<mVariableList.size(); i++)
 	{
