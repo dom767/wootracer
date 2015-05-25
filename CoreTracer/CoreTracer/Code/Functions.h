@@ -531,28 +531,24 @@ BEGIN_FUNC(DDistKaleido, "kaleido");
 			mRot2 = rot2;
 		}
 
-		float bailout = 1000;
-		float r=pos.MagnitudeSquared();
-		int i;
-		for(i=0;i<iterations && r<bailout;i++){
-			//Folding... These are some of the symmetry planes of the tetrahedron
-			float tmp;
-
-			pos = matRot1 * pos;
+		float rScale = 1;
+		DVector3 pOffset = offset*(scale-1);
+		float tmp;
+		for(int i=0;i<iterations;i++)
+		{
+			pos.Mul(matRot1);
 
 			if(pos[0]+pos[1]<0){tmp=-pos[1];pos[1]=-pos[0];pos[0]=tmp;}
 			if(pos[0]+pos[2]<0){tmp=-pos[2];pos[2]=-pos[0];pos[0]=tmp;}
 			if(pos[1]+pos[2]<0){tmp=-pos[2];pos[2]=-pos[1];pos[1]=tmp;}
       
-			pos = matRot2 * pos;
+			pos.Mul(matRot2);
 
-			//Stretche about the point [1,1,1]*(scale-1)/scale; The "(scale-1)/scale" is here in order to keep the size of the fractal constant wrt scale
-			pos[0]=scale*pos[0]-offset[0]*(scale-1);//equivalent to: x=scale*(x-cx); where cx=(scale-1)/scale;
-			pos[1]=scale*pos[1]-offset[1]*(scale-1);
-			pos[2]=scale*pos[2]-offset[2]*(scale-1);
-			r=pos.MagnitudeSquared();
+			pos = pos*scale - pOffset;
+			rScale *= scale;
 		}	
-		return (sqrtf(r)-2)*powf(scale,-float(i));//the estimated distance
+
+		return (pos.Magnitude()-2)/rScale;//*powf(scale,-float(i));//the estimated distance
 	}
 END_FUNC
 
@@ -602,29 +598,23 @@ BEGIN_VECFUNC(DDistKaleidoCol, "kaleidocol");
 			mRot2 = rot2;
 		}
 
-		float bailout = 1000000;
-		float r=pos.MagnitudeSquared();
-		int i;
+		DVector3 pOffset = offset*(scale-1);
+		float tmp;
 		float acc[3];
 		acc[0] = acc[1] = acc[2] = 0;
-		for(i=0;i<iterations && r<bailout;i++){
-			//Folding... These are some of the symmetry planes of the tetrahedron
-			float tmp;
-
-			pos = matRot1 * pos;
+		int i;
+		for(i=0;i<iterations;i++)
+		{
+			pos.Mul(matRot1);
 
 			if(pos[0]+pos[1]<0){acc[0]++;tmp=-pos[1];pos[1]=-pos[0];pos[0]=tmp;}
 			if(pos[0]+pos[2]<0){acc[1]++;tmp=-pos[2];pos[2]=-pos[0];pos[0]=tmp;}
 			if(pos[1]+pos[2]<0){acc[2]++;tmp=-pos[2];pos[2]=-pos[1];pos[1]=tmp;}
       
-			pos = matRot2 * pos;
+			pos.Mul(matRot2);
 
-			//Stretche about the point [1,1,1]*(scale-1)/scale; The "(scale-1)/scale" is here in order to keep the size of the fractal constant wrt scale
-			pos[0]=scale*pos[0]-offset[0]*(scale-1);//equivalent to: x=scale*(x-cx); where cx=(scale-1)/scale;
-			pos[1]=scale*pos[1]-offset[1]*(scale-1);
-			pos[2]=scale*pos[2]-offset[2]*(scale-1);
-			r=pos.MagnitudeSquared();
-		}
+			pos = pos*scale - pOffset;
+		}	
 
 		DVector3 ret;
 		acc[0] = fabsf(acc[0]-float(i)*0.5f)/float(i);
@@ -683,32 +673,21 @@ BEGIN_VECFUNC(DDistKaleidoTrap, "kaleidotrap");
 			mRot2 = rot2;
 		}
 
-		float bailout = 1000000;
-		float r=pos.MagnitudeSquared();
-		int i;
-		float acc[3];
-		acc[0] = acc[1] = acc[2] = 0;
-		float scaleAcc = 1;
+		DVector3 pOffset = offset*(scale-1);
 		float trap = 10000000;
-		for(i=0;i<iterations && r<bailout;i++){
-			//Folding... These are some of the symmetry planes of the tetrahedron
-			float tmp;
+		float tmp;
+		for(int i=0; i<iterations; i++)
+		{
+			pos.Mul(matRot1);
 
-			pos = matRot1 * pos;
-
-			if(pos[0]+pos[1]<0){acc[0]++;tmp=-pos[1];pos[1]=-pos[0];pos[0]=tmp;}
-			if(pos[0]+pos[2]<0){acc[1]++;tmp=-pos[2];pos[2]=-pos[0];pos[0]=tmp;}
-			if(pos[1]+pos[2]<0){acc[2]++;tmp=-pos[2];pos[2]=-pos[1];pos[1]=tmp;}
+			if(pos[0]+pos[1]<0){tmp=-pos[1];pos[1]=-pos[0];pos[0]=tmp;}
+			if(pos[0]+pos[2]<0){tmp=-pos[2];pos[2]=-pos[0];pos[0]=tmp;}
+			if(pos[1]+pos[2]<0){tmp=-pos[2];pos[2]=-pos[1];pos[1]=tmp;}
       
-			pos = matRot2 * pos;
+			pos.Mul(matRot2);
 
-			//Stretche about the point [1,1,1]*(scale-1)/scale; The "(scale-1)/scale" is here in order to keep the size of the fractal constant wrt scale
-			pos[0]=scale*pos[0]-offset[0]*(scale-1);//equivalent to: x=scale*(x-cx); where cx=(scale-1)/scale;
-			pos[1]=scale*pos[1]-offset[1]*(scale-1);
-			pos[2]=scale*pos[2]-offset[2]*(scale-1);
-			r=pos.MagnitudeSquared();
+			pos = pos*scale - pOffset;
 
-			scaleAcc *= scale;
 			state.mTrapPosition = pos;
 			trap = min(trap, mParam[6]->Evaluate(state));
 		}
@@ -766,33 +745,29 @@ BEGIN_FUNC(DDistKaleidoDETrap, "kaleidodetrap");
 			mRot2 = rot2;
 		}
 
-		float bailout = 1000;
-		float r=pos.MagnitudeSquared();
-		int i;
+		float rScale = 1;
+		DVector3 pOffset = offset*(scale-1);
 		float trap = 1000000;
-		for(i=0;i<iterations && r<bailout;i++){
-			//Folding... These are some of the symmetry planes of the tetrahedron
-			float tmp;
-
-			pos = matRot1 * pos;
+		float tmp;
+		for(int i=0;i<iterations;i++)
+		{
+			pos.Mul(matRot1);
 
 			if(pos[0]+pos[1]<0){tmp=-pos[1];pos[1]=-pos[0];pos[0]=tmp;}
 			if(pos[0]+pos[2]<0){tmp=-pos[2];pos[2]=-pos[0];pos[0]=tmp;}
 			if(pos[1]+pos[2]<0){tmp=-pos[2];pos[2]=-pos[1];pos[1]=tmp;}
       
-			pos = matRot2 * pos;
+			pos.Mul(matRot2);
 
-			//Stretche about the point [1,1,1]*(scale-1)/scale; The "(scale-1)/scale" is here in order to keep the size of the fractal constant wrt scale
-			pos[0]=scale*pos[0]-offset[0]*(scale-1);//equivalent to: x=scale*(x-cx); where cx=(scale-1)/scale;
-			pos[1]=scale*pos[1]-offset[1]*(scale-1);
-			pos[2]=scale*pos[2]-offset[2]*(scale-1);
-			r=pos.MagnitudeSquared();
+			pos = pos*scale - pOffset;
+
+			rScale *= scale;
 
 			state.mTrapPosition = pos;
 			float orbit = mParam[6]->Evaluate(state);
-			trap = min(trap, orbit*powf(scale,-float(i)));
+			trap = min(trap, orbit/rScale);
 		}	
-		return trap;//(sqrtf(trap)-2)*powf(scale,-float(i));//the estimated distance
+		return trap;
 	}
 END_FUNC
 
