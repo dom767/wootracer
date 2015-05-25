@@ -1593,11 +1593,53 @@ BEGIN_VECFUNC(DDistSingleFold3D, "singlefold3d");
 		mParam.push_back(new DFuncParam("mNormal", Vec));
 	}
 
+	int mCacheMode;
+	DVector3 mCacheNormal;
+
 	virtual DVector3 Evaluate(DFunctionState& state)
 	{
 		DVector3 pos = mParam[0]->EvaluateVec(state);
 		DVector3 planepoint = mParam[1]->EvaluateVec(state);
 		DVector3 normal = mParam[2]->EvaluateVec(state);
+
+		if (planepoint[0]==0.0 && planepoint[1]==0.0 && planepoint[2]==0.0)
+		{
+			if (normal[0]==mCacheNormal[0] && normal[1]==mCacheNormal[1] && normal[2]==mCacheNormal[2])
+			{
+				switch (mCacheMode)
+				{
+				case 0:
+					{
+					float distance = -pos.Dot(mCacheNormal);
+					if (distance>0)
+					{
+						pos += normal*distance*2;
+					}
+					}
+					break;
+				case 1:
+					if(pos[0]+pos[1]<0){float tmp=-pos[1];pos[1]=-pos[0];pos[0]=tmp;}
+					break;
+				case 2:
+					if(pos[0]+pos[2]<0){float tmp=-pos[2];pos[2]=-pos[0];pos[0]=tmp;}
+					break;
+				case 3:
+					if(pos[1]+pos[2]<0){float tmp=-pos[2];pos[2]=-pos[1];pos[1]=tmp;}
+					break;
+				}
+
+				return pos;
+			}
+			else
+			{
+				mCacheNormal = normal;
+				mCacheMode = 0;
+				if (mCacheNormal[0] == 1 && mCacheNormal[1] == 1 && mCacheNormal[2] == 0) {mCacheMode = 1;}
+				if (mCacheNormal[0] == 1 && mCacheNormal[1] == 0 && mCacheNormal[2] == 1) {mCacheMode = 2;}
+				if (mCacheNormal[0] == 0 && mCacheNormal[1] == 1 && mCacheNormal[2] == 1) {mCacheMode = 3;}
+			}
+		}
+
 		normal.Normalise();
 		DVector3 planevec = planepoint - pos;
 		float distance = planevec.Dot(normal);
