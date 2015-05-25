@@ -278,6 +278,9 @@
     <ClCompile Include="Code\FFT.cpp">
       <Filter>Core\Helper</Filter>
     </ClCompile>
+    <ClCompile Include="Code\Vector3.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="DebugExeTest.rc">

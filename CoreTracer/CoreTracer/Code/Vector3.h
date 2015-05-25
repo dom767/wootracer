@@ -3,6 +3,8 @@
 
 #include <math.h>
 
+class DMatrix4;
+
 enum EAxis
 {
 	XAxis=0,
@@ -106,6 +108,7 @@ public:
 	{
 		return mComponent[0]*rhs.mComponent[0] + mComponent[1]*rhs.mComponent[1] + mComponent[2]*rhs.mComponent[2];
 	}
+	void Mul(const DMatrix4& rhs);
 	float Magnitude()
 	{
 		return sqrtf(mComponent[0]*mComponent[0]+mComponent[1]*mComponent[1]+mComponent[2]*mComponent[2]);
