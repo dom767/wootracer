@@ -132,6 +132,12 @@ public:
 		mComponent[1] = -mComponent[1];
 		mComponent[2] = -mComponent[2];
 	}
+	void SetAbs()
+	{
+		mComponent[0] = abs(mComponent[0]);
+		mComponent[1] = abs(mComponent[1]);
+		mComponent[2] = abs(mComponent[2]);
+	}
 };
 
 #endif // DVECTOR3_H
