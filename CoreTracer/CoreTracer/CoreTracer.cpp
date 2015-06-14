@@ -384,7 +384,8 @@ void StartRayTracer()
 	
 //	ss << my_documents << L"\\Wooscripter\\XML\\simplebox.xml";
 //	ss << my_documents << L"\\Wooscripter\\XML\\pedestal.xml";
-	ss << my_documents << L"\\Wooscripter\\XML\\detransparentsphere.xml";
+	ss << my_documents << L"\\Wooscripter\\XML\\kaliters.xml";
+//	ss << my_documents << L"\\Wooscripter\\XML\\tetraraw.xml";
 //	ss << my_documents << L"\\Wooscripter\\XML\\diffuseFunction2.xml";
 
 	std::ifstream sceneDesc;

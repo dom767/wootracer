@@ -88,7 +88,7 @@ public:
 	void PrepareRender();
 	void RenderRow(int width, int height, int row, DColour *renderBuffer);
 	void CalculateLighting(DRayContext &rayContext, int hitId, const DVector3& reflection, float specularPower,
-		const DColour& specularColour, DColour& out_diffuseLight, DColour& out_specularLight, int recursionRemaining) const;
+		const DColour& specularColour, DColour& out_diffuseLight, DColour& out_specularLight) const;
 	DColour GetFogColour(const DRay &ray);
 	void Reset();
 	void RegisterSceneObjects();

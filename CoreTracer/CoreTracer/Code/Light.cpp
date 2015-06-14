@@ -41,7 +41,7 @@ void DAmbientLight::Read(TiXmlElement* element)
 	Convert::StrToCol(element->Attribute("colour"), mColour);
 }
 
-bool DAmbientLight::GetLighting(const DScene& scene, const DRayContext &rayContext, const DVector3& reflection, const float specularPower, const DColour& specularColour, DColour& out_Diffuse, DColour& out_Specular, int recursionRemaining)
+bool DAmbientLight::GetLighting(const DScene& scene, const DRayContext &rayContext, const DVector3& reflection, const float specularPower, const DColour& specularColour, DColour& out_Diffuse, DColour& out_Specular)
 {
 	out_Diffuse = mColour;
 	out_Specular = DColour(0,0,0);
@@ -58,7 +58,7 @@ void DPointLight::Read(TiXmlElement* element)
 	Convert::StrToCol(element->Attribute("colour"), mColour);
 }
 
-bool DPointLight::GetLighting(const DScene& scene, const DRayContext &rayContext, const DVector3& reflection, const float specularPower, const DColour& specularColour, DColour& out_Diffuse, DColour& out_Specular, int recursionRemaining)
+bool DPointLight::GetLighting(const DScene& scene, const DRayContext &rayContext, const DVector3& reflection, const float specularPower, const DColour& specularColour, DColour& out_Diffuse, DColour& out_Specular)
 {
 	const DRay& ray = rayContext.m_Ray;
 
@@ -132,7 +132,7 @@ DVector3 getSampleBiased(const DRayContext &rayContext, const DScene& scene, DVe
 	return o1*cosf(rx)*oneminus+o2*sin(rx)*oneminus+dir*ry;
 }
 
-bool DWorldLight::GetLighting(const DScene& scene, const DRayContext &rayContext, const DVector3& reflection, const float specularPower, const DColour& specularColour, DColour& out_Diffuse, DColour& out_Specular, int recursionRemaining)
+bool DWorldLight::GetLighting(const DScene& scene, const DRayContext &rayContext, const DVector3& reflection, const float specularPower, const DColour& specularColour, DColour& out_Diffuse, DColour& out_Specular)
 {
 	const DRay& ray = rayContext.m_Ray;
 	bool ret = false;
@@ -179,7 +179,7 @@ void DDirectionalLight::Read(TiXmlElement* element)
 	Convert::StrToFloat(element->Attribute("area"), mArea);
 }
 
-bool DDirectionalLight::GetLighting(const DScene& scene, const DRayContext &rayContext, const DVector3& reflection, const float specularPower, const DColour& specularColour, DColour& out_Diffuse, DColour& out_Specular, int recursionRemaining)
+bool DDirectionalLight::GetLighting(const DScene& scene, const DRayContext &rayContext, const DVector3& reflection, const float specularPower, const DColour& specularColour, DColour& out_Diffuse, DColour& out_Specular)
 {
 	const DRay& ray = rayContext.m_Ray;
 	DRay lightHit;
@@ -232,7 +232,7 @@ void DSphereLight::Read(TiXmlElement* element)
 	Convert::StrToInt(element->Attribute("samples"), mSamples);
 }
 
-bool DSphereLight::GetLighting(const DScene& scene, const DRayContext &rayContext, const DVector3& reflection, const float specularPower, const DColour& specularColour, DColour& out_Diffuse, DColour& out_Specular, int recursionRemaining)
+bool DSphereLight::GetLighting(const DScene& scene, const DRayContext &rayContext, const DVector3& reflection, const float specularPower, const DColour& specularColour, DColour& out_Diffuse, DColour& out_Specular)
 {
 	const DRay& ray = rayContext.m_Ray;
 	DRay lightHit;

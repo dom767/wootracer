@@ -286,14 +286,14 @@ bool DScene::Intersect(DRayContext& RayContext, DCollisionResponse& out_Response
 	return hit;
 }
 
-void DScene::CalculateLighting(DRayContext &rayContext, int hitId, const DVector3& reflection, float specularPower, const DColour& specularColour, DColour& out_diffuseLight, DColour& out_specularLight, int recursionRemaining) const
+void DScene::CalculateLighting(DRayContext &rayContext, int hitId, const DVector3& reflection, float specularPower, const DColour& specularColour, DColour& out_diffuseLight, DColour& out_specularLight) const
 {
 	std::vector<DLight*>::const_iterator iter = mLights.begin(), iterEnd = mLights.end();
 
 	while (iter!=iterEnd)
 	{
 		DColour diffuse, specular;
-		if ((*iter)->GetLighting(*this, rayContext, reflection, specularPower, specularColour, diffuse, specular, recursionRemaining))
+		if ((*iter)->GetLighting(*this, rayContext, reflection, specularPower, specularColour, diffuse, specular))
 		{
 			out_diffuseLight += diffuse;
 			out_specularLight += specular;

@@ -183,6 +183,7 @@ void DMaterial::CalculateColour(DColour &out_colour,
 	colourContext.m_RequestFlags &= ~RequestBackface;
 	if (exiting)
 		colourContext.RemoveWithin(hitId);
+	colourContext.m_RecursionRemaining--;
 
 	LOG(Info, "Shadow test ray");
 	if (scene && !ignoreLighting)
@@ -192,8 +193,7 @@ void DMaterial::CalculateColour(DColour &out_colour,
 			mSpecularPower,
 			funcState.mSpecular,
 			diffuseLight,
-			specularLight,
-			recursionRemaining);
+			specularLight);
 
 	// multiply the diffuse colour by the surface colour
 	diffuseLight *= funcState.mDiffuse;
@@ -213,7 +213,7 @@ void DMaterial::CalculateColour(DColour &out_colour,
 		DRayContext pathTrace(rRayContext);
 		pathTrace.m_RequestFlags &= ~RequestBackface;
 		pathTrace.m_Ray = DRay(hitPos, randomInter);
-		pathTrace.m_RecursionRemaining = recursionRemaining==0 ? -1 : recursionRemaining-1;
+		pathTrace.m_RecursionRemaining--;
 		pathTrace.m_RequestFlags |= RequestZeroLighting;
 		LOG(Info, "Pathtracing test ray");
 		scene->Intersect(pathTrace, response);
@@ -232,7 +232,7 @@ void DMaterial::CalculateColour(DColour &out_colour,
 		reflectionContext.m_Ray = DRay(hitPos, reflection);
 		if (scene->IsCaustics())
 			reflectionContext.m_RequestFlags &= ~RequestZeroLighting;
-		reflectionContext.m_RecursionRemaining = recursionRemaining-1;
+		reflectionContext.m_RecursionRemaining--;
 
 		LOG(Info, "Reflection ray");
 		scene->Intersect(reflectionContext, response);
