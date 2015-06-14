@@ -20,6 +20,7 @@ DFuncFactory::DFuncFactory()
 	mFuncList.push_back(new DDistMag());
 //	mFuncList.push_back(new DDistFloat());
 	mFuncList.push_back(new DDistMandelBox());
+	mFuncList.push_back(new DDistMandelBoxStep());
 	mFuncList.push_back(new DDistMandelBulb());
 	mFuncList.push_back(new DDistSignedBox());
 	mFuncList.push_back(new DDistSignedTorus());
@@ -30,6 +31,9 @@ DFuncFactory::DFuncFactory()
 	mFuncList.push_back(new DDistKaleidoCol());
 	mFuncList.push_back(new DDistKaleidoTrap());
 	mFuncList.push_back(new DDistKaleidoDETrap());
+	mFuncList.push_back(new DDistKalTetraStep());
+	mFuncList.push_back(new DDistKalCubeStep());
+	mFuncList.push_back(new DDistKalMengerStep());
 	mFuncList.push_back(new DAdd());
 	mFuncList.push_back(new DDistSub());
 	mFuncList.push_back(new DDistMul());

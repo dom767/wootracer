@@ -74,12 +74,36 @@ void DDistFunc::Read(std::string& arg)
 
 float DFuncParam::Evaluate(DFunctionState& state)
 {
-	return ((DFloatFunc*)mVar)->Evaluate(state);
+	DFloatFunc* var = (DFloatFunc*)mVar;
+
+	if (var->mConstant)
+	{
+		if (!var->mSet)
+		{
+			var->mSet = true;
+			mCacheFloat = var->Evaluate(state);
+		}
+		return mCacheFloat;
+	}
+
+	return var->Evaluate(state);
 }
 	
 DVector3 DFuncParam::EvaluateVec(DFunctionState& state)
 {
-	return ((DVecFunc*)mVar)->Evaluate(state);
+	DVecFunc* var = (DVecFunc*)mVar;
+
+	if (var->mConstant)
+	{
+		if (!var->mSet)
+		{
+			var->mSet = true;
+			mCacheVector3= var->Evaluate(state);
+		}
+		return mCacheVector3;
+	}
+
+	return var->Evaluate(state);
 }
 
 void DFuncParam::EvaluateNull(DFunctionState& state)

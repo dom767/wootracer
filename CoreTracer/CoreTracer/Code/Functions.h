@@ -180,6 +180,7 @@ END_FUNC
 BEGIN_FUNC(DDistFloatVar, "floatVar");
 	DDistFloatVar()
 	{
+		mConstant = false;
 	}
 
 	virtual float Evaluate(DFunctionState& state)
@@ -200,6 +201,7 @@ END_FUNC
 BEGIN_VECFUNC(DDistVectorVar, "vecVar");
 	DDistVectorVar()
 	{
+		mConstant = false;
 	}
 
 	virtual DVector3 Evaluate(DFunctionState& state)
@@ -283,7 +285,12 @@ BEGIN_FUNC(DDistMandelBox, "mandelbox");
 
         DVector3 c = mpos;
         float dr = 1.0f;
-        for (int n = 0; n < mIterations; n++)
+		float fixedRadius = 1.0;
+		float fR2 = fixedRadius * fixedRadius;
+		float minRadius = 0.5f;
+		float mR2 = minRadius * minRadius;
+
+		for (int n = 0; n < mIterations; n++)
         {
             if (mpos[0] > 1)
                 mpos[0] = 2 - mpos[0];
@@ -313,19 +320,103 @@ BEGIN_FUNC(DDistMandelBox, "mandelbox");
                     dr /= r2;
                 }
             }*/
-
+			/*
             float radiusSquared = mpos.MagnitudeSquared();
 			if (radiusSquared<1)
 			{
 				float radius = sqrtf(radiusSquared);
 				mpos = mpos * (2-radius) / radius;
-			}
+			}*/
 
+			float r2 = mpos.MagnitudeSquared();
+
+			if (r2 < mR2)
+			{
+				mpos *= fR2 / mR2;
+				dr*= fR2 / mR2;
+			}
+			else if (r2 < fR2)
+			{
+				mpos *= fR2 / r2;
+				dr*= fR2 / r2;
+			}
 
             mpos = mpos * mScale + c;
             dr = dr * mScale + 1.0f;
         }
         return mpos.Magnitude() / abs(dr);
+	}
+END_FUNC
+
+BEGIN_VECFUNC(DDistMandelBoxStep, "mandelboxstep");
+	DDistMandelBoxStep()
+	{
+		mParam.push_back(new DFuncParam("mPos", Vec));
+		mParam.push_back(new DFuncParam("mNewPos", Vec));
+		mParam.push_back(new DFuncParam("mScale", Float));
+	}
+
+	virtual DVector3 Evaluate(DFunctionState& state)
+	{
+		DVector3 mOldPos = mParam[0]->EvaluateVec(state);
+		DVector3 mpos = mParam[1]->EvaluateVec(state);
+		float mScale = mParam[2]->Evaluate(state);
+
+        DVector3 c = mOldPos;
+        float dr = 1.0f;
+
+		if (mpos[0] > 1)
+            mpos[0] = 2 - mpos[0];
+        else if (mpos[0] < -1)
+            mpos[0] = -2 - mpos[0];
+        if (mpos[1] > 1)
+            mpos[1] = 2 - mpos[1];
+        else if (mpos[1] < -1)
+            mpos[1] = -2 - mpos[1];
+        if (mpos[2] > 1)
+            mpos[2] = 2 - mpos[2];
+        else if (mpos[2] < -1)
+            mpos[2] = -2 - mpos[2];
+
+		/*
+            float r2 = mpos.MagnitudeSquared();
+
+            if (r2 < 1)
+            {
+                if (r2 < 0.25f) // 0.5 squared
+                {
+                    mpos *= 4;
+                    dr *= 4;
+                }
+                else
+                {
+                    mpos /= r2;
+                    dr /= r2;
+                }
+            }*/
+/*
+        float radiusSquared = mpos.MagnitudeSquared();
+		if (radiusSquared<1)
+		{
+//			float radius = sqrtf(radiusSquared);
+			mpos = mpos / radiusSquared;//* (2-radius) / radius;
+		}*/
+
+		float fR2 = 1;
+		float mR2 = 0.5f * 0.5f;
+		float r2 = mpos.MagnitudeSquared();
+		if (r2 < mR2)
+		{
+			mpos *= fR2 / mR2;
+		}
+		else if (r2 < fR2)
+		{
+			mpos *= fR2 / r2;
+		}
+
+        mpos = mpos * mScale + c;
+
+		return mpos;
 	}
 END_FUNC
 
@@ -552,6 +643,188 @@ BEGIN_FUNC(DDistKaleido, "kaleido");
 	}
 END_FUNC
 
+BEGIN_VECFUNC(DDistKalTetraStep, "kaltetrastep");
+	DDistKalTetraStep()
+	{
+		mParam.push_back(new DFuncParam("mPos", Vec));
+		mParam.push_back(new DFuncParam("mRot1", Vec));
+		mParam.push_back(new DFuncParam("mRot2", Vec));
+		mParam.push_back(new DFuncParam("mOffset", Vec));
+		mParam.push_back(new DFuncParam("mScale", Float));
+		matRot1.MakeIdentity();
+		matRot2.MakeIdentity();
+		mInitialised = false;
+	}
+
+	DMatrix4 rotate1(const DVector3& rot)
+	{
+		DMatrix4 mat;
+		mat.MakeFromRPY(rot[0],rot[1],rot[2]);
+		return mat;
+	}
+
+	DMatrix4 matRot1;
+	DMatrix4 matRot2;
+	DVector3 mOffset;
+	DVector3 mPOffset;
+	float mScale;
+	bool mInitialised;
+
+	virtual DVector3 Evaluate(DFunctionState& state)
+	{
+		DVector3 pos = mParam[0]->EvaluateVec(state);
+
+		if (!mInitialised)
+		{
+			DVector3 rot1 = mParam[1]->EvaluateVec(state);
+			matRot1 = rotate1(rot1);
+			DVector3 rot2 = mParam[2]->EvaluateVec(state);
+			matRot2 = rotate1(rot2);
+			mOffset = mParam[3]->EvaluateVec(state);
+			mScale = mParam[4]->Evaluate(state);
+			mPOffset = mOffset*(mScale-1);
+			mInitialised = true;
+		}
+
+		float tmp;
+
+		pos.Mul(matRot1);
+
+		if(pos[0]+pos[1]<0){tmp=-pos[1];pos[1]=-pos[0];pos[0]=tmp;}
+		if(pos[0]+pos[2]<0){tmp=-pos[2];pos[2]=-pos[0];pos[0]=tmp;}
+		if(pos[1]+pos[2]<0){tmp=-pos[2];pos[2]=-pos[1];pos[1]=tmp;}
+      
+		pos.Mul(matRot2);
+
+		pos = pos*mScale - mPOffset;
+
+		return pos;
+	}
+END_FUNC
+
+BEGIN_VECFUNC(DDistKalCubeStep, "kalcubestep");
+	DDistKalCubeStep()
+	{
+		mParam.push_back(new DFuncParam("mPos", Vec));
+		mParam.push_back(new DFuncParam("mRot1", Vec));
+		mParam.push_back(new DFuncParam("mRot2", Vec));
+		mParam.push_back(new DFuncParam("mOffset", Vec));
+		mParam.push_back(new DFuncParam("mScale", Float));
+		matRot1.MakeIdentity();
+		matRot2.MakeIdentity();
+		mInitialised = false;
+	}
+
+	DMatrix4 rotate1(const DVector3& rot)
+	{
+		DMatrix4 mat;
+		mat.MakeFromRPY(rot[0],rot[1],rot[2]);
+		return mat;
+	}
+
+	DMatrix4 matRot1;
+	DMatrix4 matRot2;
+	DVector3 mOffset;
+	DVector3 mPOffset;
+	float mScale;
+	bool mInitialised;
+
+	virtual DVector3 Evaluate(DFunctionState& state)
+	{
+		DVector3 pos = mParam[0]->EvaluateVec(state);
+
+		if (!mInitialised)
+		{
+			DVector3 rot1 = mParam[1]->EvaluateVec(state);
+			matRot1 = rotate1(rot1);
+			DVector3 rot2 = mParam[2]->EvaluateVec(state);
+			matRot2 = rotate1(rot2);
+			mOffset = mParam[3]->EvaluateVec(state);
+			mScale = mParam[4]->Evaluate(state);
+			mPOffset = mOffset*(mScale-1);
+			mInitialised = true;
+		}
+
+		pos.Mul(matRot1);
+
+		pos[0] = abs(pos[0]);
+		pos[1] = abs(pos[1]);
+		pos[2] = abs(pos[2]);
+      
+		pos.Mul(matRot2);
+
+		pos = pos*mScale - mPOffset;
+
+		return pos;
+	}
+END_FUNC
+
+BEGIN_VECFUNC(DDistKalMengerStep, "kalmengerstep");
+	DDistKalMengerStep()
+	{
+		mParam.push_back(new DFuncParam("mPos", Vec));
+		mParam.push_back(new DFuncParam("mRot1", Vec));
+		mParam.push_back(new DFuncParam("mRot2", Vec));
+		mParam.push_back(new DFuncParam("mOffset", Vec));
+		mParam.push_back(new DFuncParam("mScale", Float));
+		matRot1.MakeIdentity();
+		matRot2.MakeIdentity();
+		mInitialised = false;
+	}
+
+	DMatrix4 rotate1(const DVector3& rot)
+	{
+		DMatrix4 mat;
+		mat.MakeFromRPY(rot[0],rot[1],rot[2]);
+		return mat;
+	}
+
+	DMatrix4 matRot1;
+	DMatrix4 matRot2;
+	DVector3 mOffset;
+	DVector3 mPOffset;
+	float mScale;
+	bool mInitialised;
+
+	virtual DVector3 Evaluate(DFunctionState& state)
+	{
+		DVector3 pos = mParam[0]->EvaluateVec(state);
+
+		if (!mInitialised)
+		{
+			DVector3 rot1 = mParam[1]->EvaluateVec(state);
+			matRot1 = rotate1(rot1);
+			DVector3 rot2 = mParam[2]->EvaluateVec(state);
+			matRot2 = rotate1(rot2);
+			mOffset = mParam[3]->EvaluateVec(state);
+			mScale = mParam[4]->Evaluate(state);
+			mPOffset = mOffset*(mScale-1);
+			mInitialised = true;
+		}
+
+		pos.Mul(matRot1);
+
+		float tmp;
+
+		pos.SetAbs();
+		if(pos[0]-pos[1]<0){tmp=pos[1];pos[1]=pos[0];pos[0]=tmp;}
+		if(pos[0]-pos[2]<0){tmp=pos[2];pos[2]=pos[0];pos[0]=tmp;}
+		if(pos[1]-pos[2]<0){tmp=pos[2];pos[2]=pos[1];pos[1]=tmp;}
+      
+		pos[2]-=0.5f*mOffset[2]*(mScale-1)/mScale;
+		pos[2]=-abs(-pos[2]);
+		pos[2]+=0.5f*mOffset[2]*(mScale-1)/mScale;
+      
+		pos.Mul(matRot2);
+
+		pos[0]=mScale*pos[0]-mOffset[0]*(mScale-1);
+		pos[1]=mScale*pos[1]-mOffset[1]*(mScale-1);
+		pos[2]=mScale*pos[2];
+
+		return pos;
+	}
+END_FUNC
+
 BEGIN_VECFUNC(DDistKaleidoCol, "kaleidocol");
 	DDistKaleidoCol()
 	{
@@ -764,8 +1037,7 @@ BEGIN_FUNC(DDistKaleidoDETrap, "kaleidodetrap");
 			rScale *= scale;
 
 			state.mTrapPosition = pos;
-			float orbit = mParam[6]->Evaluate(state);
-			trap = min(trap, orbit/rScale);
+			trap = min(trap, mParam[6]->Evaluate(state)/rScale);
 		}	
 		return trap;
 	}

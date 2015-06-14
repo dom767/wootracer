@@ -121,25 +121,33 @@ public:
 	DDistFunc* mVar;
 	char* mName;
 	EType mType;
+	DVector3 mCacheVector3;
+	float mCacheFloat;
 };
 
 class DDistFunc
 {
 public:
+	DDistFunc() : mConstant(true), mSet(false) {}
 	virtual ~DDistFunc();
 	virtual void Read(std::string& arg);
 	virtual EType GetType()=0;
 	virtual std::string GetName()=0;
 	virtual DDistFunc* Clone()=0;
+
 	void SetParams(std::vector<DDistFunc*> params)
 	{
 		for (unsigned int i=0; i<params.size(); i++)
 		{
 			mParam[i]->mVar = params[i];
+			if (!params[i]->mConstant)
+				mConstant = false;
 		}
 	}
 
 	std::vector<DFuncParam*> mParam;
+	bool mConstant;
+	bool mSet;
 };
 
 class DVecFunc : public DDistFunc
