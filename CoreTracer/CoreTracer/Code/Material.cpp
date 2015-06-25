@@ -183,7 +183,6 @@ void DMaterial::CalculateColour(DColour &out_colour,
 	colourContext.m_RequestFlags &= ~RequestBackface;
 	if (exiting)
 		colourContext.RemoveWithin(hitId);
-	colourContext.m_RecursionRemaining--;
 
 	LOG(Info, "Shadow test ray");
 	if (scene && !ignoreLighting)

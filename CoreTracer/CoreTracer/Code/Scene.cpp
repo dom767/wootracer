@@ -22,6 +22,7 @@ DScene::DScene() : mMaximumRecursion(2), mCanvasWidth(400), mCanvasHeight(300), 
 {
 	mPathTracer = false;
 	mCaustics = false;
+	mShadows = true;
 	mRayCount=0;
 	mRandomSequence.GenerateSequences();
 }
@@ -70,6 +71,8 @@ void DScene::Read(TiXmlElement* element)
     Convert::StrToInt(element->Attribute("pathTracer"), mPathTracer);
 	
 	Convert::StrToBool(element->Attribute("caustics"), mCaustics);
+
+	Convert::StrToBool(element->Attribute("shadows"), mShadows);
 
 	Convert::StrToInt(element->Attribute("recursions"), mMaximumRecursion);
 

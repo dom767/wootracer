@@ -68,18 +68,23 @@ bool DPointLight::GetLighting(const DScene& scene, const DRayContext &rayContext
 	// cache this for attenuation
 	float lightDistanceSquared = direction.MagnitudeSquared();
 	
+	bool hit = false;
+
 	// build ray for shadow detection
 	direction.Normalise();
 	lightHit.SetDirection(direction);
 	lightHit.SetStart(ray.GetStart());
 
-	DRayContext lightContext(rayContext);
-	lightContext.m_RequestFlags = RequestLighting;
-	lightContext.m_Ray = lightHit;
-
 	DCollisionResponse response;
-	response.mIgnoreObjectId = 0;
-	bool hit = scene.Intersect(lightContext, response);
+	if (scene.ShadowsEnabled())
+	{
+		DRayContext lightContext(rayContext);
+		lightContext.m_RequestFlags = RequestLighting;
+		lightContext.m_Ray = lightHit;
+
+		response.mIgnoreObjectId = 0;
+		hit = scene.Intersect(lightContext, response);
+	}
 	if (!hit || ((response.mDistance*response.mDistance)>lightDistanceSquared))
 	{
 		float diffuse = lightHit.GetDirection().Dot(ray.GetDirection());
@@ -160,7 +165,12 @@ bool DWorldLight::GetLighting(const DScene& scene, const DRayContext &rayContext
 		DCollisionResponse response;
 		response.mIgnoreObjectId = 0;
 		LOG(Info, "Worldlight Test Ray");
-		if (!scene.Intersect(lightContext, response))
+		bool hit = false;
+		if (scene.ShadowsEnabled())
+		{
+			hit = scene.Intersect(lightContext, response);
+		}
+		if (!hit)
 		{
 			out_Diffuse += mColour;
 			ret = true;
@@ -188,19 +198,24 @@ bool DDirectionalLight::GetLighting(const DScene& scene, const DRayContext &rayC
 	jitter *= mArea;
 	direction += jitter;
 	direction.Normalise();
-	
+
 	// build ray for shadow detection
 	lightHit.SetDirection(direction);
 	lightHit.SetStart(ray.GetStart());
 
-	DRayContext lightContext(rayContext);
-	lightContext.m_RequestFlags = RequestLighting;
-	lightContext.m_Ray = lightHit;
+	bool hit = false;
+	if (scene.ShadowsEnabled())
+	{
+		DRayContext lightContext(rayContext);
+		lightContext.m_RequestFlags = RequestLighting;
+		lightContext.m_Ray = lightHit;
 
-	DCollisionResponse response;
-	response.mIgnoreObjectId = 0;
-	LOG(Info, "Directional light test ray");
-	bool hit = scene.Intersect(lightContext, response);
+		DCollisionResponse response;
+		response.mIgnoreObjectId = 0;
+		LOG(Info, "Directional light test ray");
+		hit = scene.Intersect(lightContext, response);
+	}
+
 	if (!hit)
 	{
 		float diffuse = lightHit.GetDirection().Dot(ray.GetDirection());
@@ -274,7 +289,11 @@ bool DSphereLight::GetLighting(const DScene& scene, const DRayContext &rayContex
 
 			DCollisionResponse response;
 			response.mIgnoreObjectId = 0;
-			bool hit = scene.Intersect(lightContext, response);
+			bool hit = false;
+			if (scene.ShadowsEnabled())
+			{
+				hit = scene.Intersect(lightContext, response);
+			}
 			if (!hit || ((response.mDistance*response.mDistance)>lightDistanceSquared))
 			{
 				float diffuse = lightHit.GetDirection().Dot(ray.GetDirection());

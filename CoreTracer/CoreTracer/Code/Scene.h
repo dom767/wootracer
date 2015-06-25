@@ -100,6 +100,7 @@ public:
 	DVector3 GetRandomDirection3d(const DRayContext &rayContext) const;
 	bool IsPathTracer() const {return mPathTracer>0;}
 	bool IsCaustics() const {return mCaustics;}
+	bool ShadowsEnabled() const {return mShadows;}
 	DRenderObject* GetObject(int idx) const;
 
 	mutable __int64 mRayCount;
@@ -116,4 +117,5 @@ private:
 	DRandomSequence mRandomSequence;
 	int mPathTracer;
 	bool mCaustics;
+	bool mShadows;
 };
