@@ -47,6 +47,7 @@ DFuncFactory::DFuncFactory()
 	mFuncList.push_back(new DDistTurb3d());
 	mFuncList.push_back(new DDistVoronoi());
 	mFuncList.push_back(new DDistWaves());
+	mFuncList.push_back(new DDistVecMin());
 
 	mFuncList.push_back(new DDistPos());
 	mFuncList.push_back(new DDistVec());

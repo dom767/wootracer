@@ -78,6 +78,23 @@ BEGIN_FUNC(DDistMin, "min");
 	}
 END_FUNC
 
+BEGIN_VECFUNC(DDistVecMin, "min");
+	DDistVecMin()
+	{
+		mParam.push_back(new DFuncParam("mFunc1", Vec));
+		mParam.push_back(new DFuncParam("mFunc2", Vec));
+	}
+
+	virtual DVector3 Evaluate(DFunctionState& state)
+	{
+		DVector3 arg1 = mParam[0]->EvaluateVec(state);
+		DVector3 arg2 = mParam[1]->EvaluateVec(state);
+		return DVector3(min(arg1[0], arg2[0]),
+			min(arg1[1], arg2[1]),
+			min(arg1[2], arg2[2]));
+	}
+END_FUNC
+
 BEGIN_FUNC(DDistSMin, "smin");
 	DDistSMin()
 	{
