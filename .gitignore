@@ -55,7 +55,6 @@ Temporary Items
 *.log
 *.lastbuildstate
 *.pch
-*.rc
 *.idb
 *.cache
 *.ipch
