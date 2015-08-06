@@ -134,13 +134,16 @@ void DCamera::Render(const DScene& scene, const int width, const int height, DCo
 #ifdef _DEBUG
 	const int NumThreads = 1;
 #else
-	const int NumThreads = 4;
+	SYSTEM_INFO sysinfo;
+	GetSystemInfo( &sysinfo );
+
+	int NumThreads = sysinfo.dwNumberOfProcessors;
 #endif
 //	DScene sceneClones[NumThreads];
 	CalculateCameraMatrix();
 
-	HANDLE threadHandle[NumThreads];
-	DWORD threadId[NumThreads];
+	std::vector<HANDLE> threadHandle;
+	std::vector<DWORD> threadId;
 	int row = 0;
 	std::vector<ThreadArgs*> args;
 	for (int i=0; i<NumThreads; i++)
@@ -153,7 +156,8 @@ void DCamera::Render(const DScene& scene, const int width, const int height, DCo
 		scene.SetRandomSeed((rand()<<16)|rand());
 //		sceneClones[i].SetRandomSeed((rand()<<16)|rand());
 		args.push_back(new ThreadArgs(mWorkQueue, singleFrame, i));
-		threadHandle[i] = CreateThread(NULL, 0, RenderRow_Thread, args[i], 0, &threadId[i]);
+		threadId.push_back(NULL);
+		threadHandle.push_back(CreateThread(NULL, 0, RenderRow_Thread, args[i], 0, &threadId[i]));
 		if (threadHandle[i] == 0)
 		{
 			LOG(Error, "Camera.Render CreateThread failed");
@@ -164,7 +168,7 @@ void DCamera::Render(const DScene& scene, const int width, const int height, DCo
 		}
 	}
 
-	int finishedThread = WaitForMultipleObjects(NumThreads, threadHandle, true, INFINITE);
+	int finishedThread = WaitForMultipleObjects(NumThreads, &(threadHandle[0]), true, INFINITE);
 	if (finishedThread==-1)
 	{
 		LOG(Error, "Camera.Render WaitFailed");
