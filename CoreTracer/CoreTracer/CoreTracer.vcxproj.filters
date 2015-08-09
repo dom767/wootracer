@@ -171,6 +171,9 @@
     <ClInclude Include="Code\FFT.h">
       <Filter>Core\Helper</Filter>
     </ClInclude>
+    <ClInclude Include="Code\RenderFractal.h">
+      <Filter>Core</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -279,6 +282,9 @@
       <Filter>Core\Helper</Filter>
     </ClCompile>
     <ClCompile Include="Code\Vector3.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\RenderFractal.cpp">
       <Filter>Core</Filter>
     </ClCompile>
   </ItemGroup>

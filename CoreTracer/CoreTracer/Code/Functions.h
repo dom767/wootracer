@@ -337,7 +337,7 @@ BEGIN_FUNC(DDistMandelBox, "mandelbox");
                     dr /= r2;
                 }
             }*/
-			/*
+/*			
             float radiusSquared = mpos.MagnitudeSquared();
 			if (radiusSquared<1)
 			{
@@ -357,7 +357,7 @@ BEGIN_FUNC(DDistMandelBox, "mandelbox");
 				mpos *= fR2 / r2;
 				dr*= fR2 / r2;
 			}
-
+			
             mpos = mpos * mScale + c;
             dr = dr * mScale + 1.0f;
         }
@@ -378,6 +378,10 @@ BEGIN_VECFUNC(DDistMandelBoxStep, "mandelboxstep");
 		DVector3 mOldPos = mParam[0]->EvaluateVec(state);
 		DVector3 mpos = mParam[1]->EvaluateVec(state);
 		float mScale = mParam[2]->Evaluate(state);
+		float fixedRadius = 1.0;
+		float fR2 = fixedRadius * fixedRadius;
+		float minRadius = 0.5f;
+		float mR2 = minRadius * minRadius;
 
         DVector3 c = mOldPos;
         float dr = 1.0f;
@@ -395,45 +399,71 @@ BEGIN_VECFUNC(DDistMandelBoxStep, "mandelboxstep");
         else if (mpos[2] < -1)
             mpos[2] = -2 - mpos[2];
 
-		/*
-            float r2 = mpos.MagnitudeSquared();
-
-            if (r2 < 1)
-            {
-                if (r2 < 0.25f) // 0.5 squared
-                {
-                    mpos *= 4;
-                    dr *= 4;
-                }
-                else
-                {
-                    mpos /= r2;
-                    dr /= r2;
-                }
-            }*/
-/*
-        float radiusSquared = mpos.MagnitudeSquared();
-		if (radiusSquared<1)
-		{
-//			float radius = sqrtf(radiusSquared);
-			mpos = mpos / radiusSquared;//* (2-radius) / radius;
-		}*/
-
-		float fR2 = 1;
-		float mR2 = 0.5f * 0.5f;
 		float r2 = mpos.MagnitudeSquared();
+
 		if (r2 < mR2)
 		{
 			mpos *= fR2 / mR2;
+			dr*= fR2 / mR2;
 		}
 		else if (r2 < fR2)
 		{
 			mpos *= fR2 / r2;
+			dr*= fR2 / r2;
 		}
 
+			
         mpos = mpos * mScale + c;
-
+		
 		return mpos;
+	}
+END_FUNC
+
+BEGIN_FUNC(DDistMandelBoxStepScale, "mandelboxstepscale");
+	DDistMandelBoxStepScale()
+	{
+		mParam.push_back(new DFuncParam("mOldScale", Float));
+		mParam.push_back(new DFuncParam("mNewPos", Vec));
+		mParam.push_back(new DFuncParam("mScale", Float));
+	}
+
+	virtual float Evaluate(DFunctionState& state)
+	{
+		float dr = mParam[0]->Evaluate(state);
+		DVector3 mpos = mParam[1]->EvaluateVec(state);
+		float mScale = mParam[2]->Evaluate(state);
+		float fixedRadius = 1.0;
+		float fR2 = fixedRadius * fixedRadius;
+		float minRadius = 0.5f;
+		float mR2 = minRadius * minRadius;
+
+		if (mpos[0] > 1)
+            mpos[0] = 2 - mpos[0];
+        else if (mpos[0] < -1)
+            mpos[0] = -2 - mpos[0];
+        if (mpos[1] > 1)
+            mpos[1] = 2 - mpos[1];
+        else if (mpos[1] < -1)
+            mpos[1] = -2 - mpos[1];
+        if (mpos[2] > 1)
+            mpos[2] = 2 - mpos[2];
+        else if (mpos[2] < -1)
+            mpos[2] = -2 - mpos[2];
+
+		float r2 = mpos.MagnitudeSquared();
+
+		if (r2 < mR2)
+		{
+			dr*= fR2 / mR2;
+		}
+		else if (r2 < fR2)
+		{
+			dr*= fR2 / r2;
+		}
+
+        dr = dr * mScale + 1.0f;
+		
+		return dr;
 	}
 END_FUNC
 

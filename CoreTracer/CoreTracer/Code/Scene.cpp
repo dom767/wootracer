@@ -8,6 +8,7 @@
 #include "RenderCylinder.h"
 #include "RenderDistance.h"
 #include "RenderSVO.h"
+#include "RenderFractal.h"
 #include "ColourFunction.h"
 #include <stdlib.h>
 #include "tinyxml.h"
@@ -99,7 +100,7 @@ void DScene::Read(TiXmlElement* element)
 
 void DScene::CreateRenderObject(TiXmlElement* objectXml)
 {
-	DRenderObject* object;
+	DRenderObject* object = NULL;
 	int type;
 	
 	Convert::StrToInt(objectXml->Attribute("type"), type);
@@ -138,10 +139,17 @@ void DScene::CreateRenderObject(TiXmlElement* objectXml)
 		object = new DRenderSVO();
 		object->Read(objectXml);
 		break;
+	case 8:
+		object = new DRenderFractal();
+		object->Read(objectXml);
+		break;
 	};
 
-	object->SetObjectId(mRenderObjects.size()+1);
-	mRenderObjects.push_back(object);
+	if (object)
+	{
+		object->SetObjectId(mRenderObjects.size()+1);
+		mRenderObjects.push_back(object);
+	}
 }
 
 DRenderObject* DScene::GetObject(int idx) const

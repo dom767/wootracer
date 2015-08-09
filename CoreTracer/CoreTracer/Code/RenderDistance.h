@@ -13,7 +13,7 @@ public:
 		mAABoundingBox.TransformBy(mRotation);
 	}
 
-	DRenderObject* InternalClone()
+	virtual DRenderObject* InternalClone()
 	{
 		DRenderDistance* ret = new DRenderDistance();
 		return ret;
@@ -23,14 +23,21 @@ public:
 		mAABoundingBox = DAABoundingBox(mCentre, mDEExtents[0]*mScale[0], mDEExtents[1]*mScale[1], mDEExtents[2]*mScale[2]);
 		mAABoundingBox.TransformBy(mRotation);
 	}
-	void Read(TiXmlElement* element);
+	virtual float DistanceEstimator(DVector3& pos) const;
 
 protected:
 	virtual bool InternalIntersect(const DRayContext& rRayContext, DCollisionResponse& out_Response) const;
 	virtual void InternalRead(TiXmlElement* element);
+	virtual DColour DEColour(const DVector3& pos) const {return DColour(1,1,1);}
+
+	float mMinimumDistance;	
+	float mDEScale;
+	DVector3 mDEOffset;
+	int mDEIterations;
+	DVector3 mDEExtents;
+	float mStepSize;
 
 private:
-	float DistanceEstimator(DVector3& pos) const;
 	bool GetCollisionPoint(DVector3 &out_Point, const DVector3& start, const DVector3& end, const DVector3& direction) const;
 	bool GetBackfaceCollisionPoint(DVector3 &out_Point, const DVector3& start, const DVector3& end, const DVector3& direction) const;
 	DVector3 GetNormal(const DVector3& position, const DVector3& direction) const;
@@ -38,10 +45,4 @@ private:
 	void DeNudge(DVector3& out_Position, const DVector3& normal) const;
 
 	DProgram mDistanceProgram;
-	float mMinimumDistance;	
-	float mDEScale;
-	DVector3 mDEOffset;
-	int mDEIterations;
-	DVector3 mDEExtents;
-	float mStepSize;
 };

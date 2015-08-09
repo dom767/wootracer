@@ -138,6 +138,16 @@ public:
 		mComponent[1] = abs(mComponent[1]);
 		mComponent[2] = abs(mComponent[2]);
 	}
+	DVector3 GetAbs()
+	{
+		return DVector3(abs(mComponent[0]), abs(mComponent[1]), abs(mComponent[2]));
+	}
+	void SetMin(const DVector3& lhs, const DVector3& rhs)
+	{
+		mComponent[0] = min(lhs[0], rhs[0]);
+		mComponent[1] = min(lhs[1], rhs[1]);
+		mComponent[2] = min(lhs[2], rhs[2]);
+	}
 };
 
 #endif // DVECTOR3_H

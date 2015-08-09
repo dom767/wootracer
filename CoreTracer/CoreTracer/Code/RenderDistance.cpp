@@ -480,6 +480,7 @@ bool DRenderDistance::InternalIntersect(const DRayContext& rRayContext, DCollisi
 
 	DVector3 p;
 	DVector3 normal;
+	DColour col;
 
 	if ((rRayContext.m_RequestFlags&RequestBackface)==0)
 	{
@@ -487,6 +488,7 @@ bool DRenderDistance::InternalIntersect(const DRayContext& rRayContext, DCollisi
 		if (!GetCollisionPoint(p, start, end, direction))
 			return false;
 
+		col = DEColour(p);
 		normal = GetNormal(p, direction);
 		Nudge(p, normal);
 	}
@@ -501,6 +503,7 @@ bool DRenderDistance::InternalIntersect(const DRayContext& rRayContext, DCollisi
 		if (!GetBackfaceCollisionPoint(p, newStart, end, direction))
 			return false;
 
+		col = DEColour(p);
 		normal = GetNormal(p, direction);
 		Nudge(p, normal);
 		normal.Negate();
@@ -510,5 +513,6 @@ bool DRenderDistance::InternalIntersect(const DRayContext& rRayContext, DCollisi
 	out_Response.mObjectPosition = p;
 	out_Response.mObjectPosition *= mDEScale;
 	out_Response.mObjectPosition += mDEOffset;
+	out_Response.mColour = col;
 	return true;
 }

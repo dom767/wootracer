@@ -202,6 +202,7 @@
     <ClInclude Include="Code\RenderCube.h" />
     <ClInclude Include="Code\RenderCylinder.h" />
     <ClInclude Include="Code\RenderDistance.h" />
+    <ClInclude Include="Code\RenderFractal.h" />
     <ClInclude Include="Code\RenderFragment.h" />
     <ClInclude Include="Code\RenderManger.h" />
     <ClInclude Include="Code\RenderObject.h" />
@@ -243,6 +244,7 @@
     <ClCompile Include="Code\RenderCube.cpp" />
     <ClCompile Include="Code\RenderCylinder.cpp" />
     <ClCompile Include="Code\RenderDistance.cpp" />
+    <ClCompile Include="Code\RenderFractal.cpp" />
     <ClCompile Include="Code\RenderFragment.cpp" />
     <ClCompile Include="Code\RenderManger.cpp" />
     <ClCompile Include="Code\RenderObject.cpp" />
