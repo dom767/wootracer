@@ -144,8 +144,22 @@ void DFractalMandelBulb::Read(TiXmlElement* element)
 
 void DFractalMandelBulb::Calculate(DVector3& pos, const DVector3& origPos, float& scale)
 {
+/*	  float x = pos[0]; float x2 = x*x; float x4 = x2*x2;
+  float y = pos[2]; float y2 = y*y; float y4 = y2*y2;
+  float z = pos[1]; float z2 = z*z; float z4 = z2*z2;
+	scale =  pow( pos.Magnitude(), 8-1.0f)*8*8 + 1.0f;
+
+  float k3 = x2 + z2;
+  float k2 = 1/sqrtf( k3*k3*k3*k3*k3*k3*k3 );
+  float k1 = x4 + y4 + z4 - 6.0*y2*z2 - 6.0*x2*y2 + 2.0*z2*x2;
+  float k4 = x2 - y2 + z2;
+
+  pos[0] =  64.0*x*y*z*(x2-z2)*k4*(x4-6.0*x2*z2+z4)*k1*k2;
+  pos[2] = -16.0*y2*k3*k4*k4 + k1*k1;
+  pos[1] = -8.0*y*k4*(x4*x4 - 28.0*x4*x2*z2 + 70.0*x4*z4 - 28.0*x2*z2*z4 + z4*z4)*k1*k2;
+  pos += origPos;
+  */
 	float r = pos.Magnitude();
-	// convert to polar coordinates
 	float theta = acos(pos[2]/r);
 	float phi = atan2(pos[1],pos[0]);
 	scale =  pow( r, mScale-1.0f)*mScale*scale + 1.0f;
@@ -156,7 +170,6 @@ void DFractalMandelBulb::Calculate(DVector3& pos, const DVector3& origPos, float
 	phi = phi*mScale;
 
 	// convert back to cartesian coordinates
-//			z = DVector3(sin(theta)*cos(phi), sin(phi)*sin(theta), cos(theta))*zr + pos;
 	pos.mComponent[0] = sinf(theta)*cosf(phi)*zr + origPos.mComponent[0];
 	pos.mComponent[1] = sinf(phi)*sinf(theta)*zr + origPos.mComponent[1];
 	pos.mComponent[2] = cosf(theta)*zr + origPos.mComponent[2];
@@ -217,15 +230,20 @@ float DRenderFractal::DistanceEstimator(DVector3& pos) const
 	if (_FractalIterations.size()==0) return 10000000;
 	DVector3 modpos = pos;
 	float modscale = 1;
+	float r;
 	unsigned int fractalIteration = 0;
 	for (int i=0; i<15; i++)
 	{
+		r = modpos.Magnitude();
+		if (r>100) break;
+
 		_FractalIterations[fractalIteration]->Calculate(modpos, pos, modscale);
 
 		fractalIteration++;
 		if (fractalIteration>=_FractalIterations.size())
 			fractalIteration = 0;
 	}
+//	return 0.5f*log(r)*r/modscale;
 	return (modpos.Magnitude() - 1) / abs(modscale);
 //	return max(sphere2(pos, DVector3(0, 0, 0.3f), 0.7f), - sphere2(pos, DVector3(0,0,-0.5f), 0.5f));
 }
