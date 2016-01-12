@@ -24,6 +24,7 @@ void DCamera::Read(TiXmlElement* element)
 	Convert::StrToFloat(element->Attribute("fov"), mFOV);
 	Convert::StrToBool(element->Attribute("dofEnabled"), mDOFEnabled);
 	Convert::StrToBool(element->Attribute("aaEnabled"), mAAEnabled);
+	Convert::StrToBool(element->Attribute("fastPreview"), mFastPreview);
 	Convert::StrToFloat(element->Attribute("focusDepth"), mFocusDepth);
 	Convert::StrToFloat(element->Attribute("apertureSize"), mApertureSize);
 	Convert::StrToInt(element->Attribute("minSamples"), mMinSamples);
@@ -96,6 +97,7 @@ DCamera::DCamera() : mProgressMonitor(0),
 	mMaxSamples(128),
 	mDOFEnabled(false),
 	mAAEnabled(false),
+	mFastPreview(true),
 	mFocusDepth(1.0),
 	mApertureSize(0.0),
 	mPixelCount(0),
@@ -126,7 +128,7 @@ void DCamera::Render(const DScene& scene, const int width, const int height, DCo
 	{
 		for (int x=0; x<=width/16; x++)
 		{
-			mWorkQueue.Add(new DRenderFragment(&scene, width, height, this, x*16, y*16));
+			mWorkQueue.Add(new DRenderFragment(&scene, width, height, this, x*16, y*16, mFastPreview));
 		}
 	}
 
@@ -138,6 +140,7 @@ void DCamera::Render(const DScene& scene, const int width, const int height, DCo
 	GetSystemInfo( &sysinfo );
 
 	int NumThreads = sysinfo.dwNumberOfProcessors;
+	if (NumThreads>1) NumThreads--;
 #endif
 //	DScene sceneClones[NumThreads];
 	CalculateCameraMatrix();
@@ -202,7 +205,20 @@ void DCamera::CopyBuffer(DColour* buffer)
 	LockingCopy(buffer, mBuffer, 0, mWidth*mHeight);
 }
 
-void DCamera::CopyFragment(int width, int height, int left, int top, DColour* pixels, int samples)
+int GetPixelStage(int x, int y)
+{
+	if (x%16==0 && y%16==0)
+		return 0;
+	if (x%8==0 && y%8==0)
+		return 1;
+	if (x%4==0 && y%4==0)
+		return 2;
+	if (x%2==0 && y%2==0)
+		return 3;
+	return 4;
+}
+
+void DCamera::CopyFragment(int width, int height, int left, int top, DColour* pixels, int samples, int fastStage)
 {
 	EnterCriticalSection(&mCS);
 	int startOffset = left + top*width;
@@ -216,8 +232,22 @@ void DCamera::CopyFragment(int width, int height, int left, int top, DColour* pi
 	{
 		for (int x=0; x<maxx; x++)
 		{
-			if (left+x<width && top+y<height)
-				mBuffer[startOffset + y*width + x] = pixels[y*16 + x] / (float)samples;
+			if (fastStage==5)
+			{
+				if (left+x<width && top+y<height)
+					mBuffer[startOffset + y*width + x] = pixels[y*16 + x] / (float)samples;
+			}
+			else
+			{
+				int nx=x, ny=y;
+				if (GetPixelStage(x, y)>fastStage)
+				{
+					nx = nx - x%(1<<(4-fastStage));
+					ny = ny - y%(1<<(4-fastStage));
+				}
+				if (left+x<width && top+y<height)
+					mBuffer[startOffset + y*width + x] = pixels[ny*16 + nx] / (float)samples;
+			}
 		}
 	}
 	LeaveCriticalSection(&mCS);
@@ -317,11 +347,14 @@ bool DCamera::GetRay(DRay& out_ray, const DVector3 from, const int width, const 
 	return true;
 }
 
-float DCamera::GetDepth(const DScene& scene, const int width, const int height, const int x, const int y)
+float DCamera::GetDepth(const DScene& scene, const int width, const int height, const int x, const int y, const bool startedRender)
 {
-	CalculateCameraMatrix();
+	if (!startedRender)
+	{
+		CalculateCameraMatrix();
 
-	scene.SetRandomSeed((rand()<<16)|rand());
+		scene.SetRandomSeed((rand()<<16)|rand());
+	}
 
 	DRay ray;
 	bool success = GetRay(ray, mFrom, width, height, (float)x, (float)y, DVector3(0,0,0));
@@ -622,7 +655,8 @@ void DCamera::RenderRow(const DScene& scene, const int width, const int height, 
 	}
 }
 */
-void DCamera::RenderFragment(const DScene& scene, const int subframe, const int width, const int height, const int left, const int top, DColour *renderBuffer)
+
+void DCamera::RenderFragment(const DScene& scene, const int subframe, const int width, const int height, const int left, const int top, DColour *renderBuffer, int fastStage)
 {
 	int x, y;
 
@@ -637,26 +671,29 @@ void DCamera::RenderFragment(const DScene& scene, const int subframe, const int 
 	{
 		for (x=0; x<maxx; x++)
 		{
-			Patch parent(0.0, 1.0, 0.0, 1.0, scene, mDOFEnabled, mAAEnabled);
-			int samples = 1;
+			if (fastStage==5 || GetPixelStage(x, y)==fastStage)
+			{
+				Patch parent(0.0, 1.0, 0.0, 1.0, scene, mDOFEnabled, mAAEnabled);
+				int samples = 1;
 
-			if (mDOFEnabled || mAAEnabled)
-			{
-				PatchRenderer patchRenderer(parent, mDOFEnabled, mAAEnabled, mMinSamples, mMaxSamples);
-				patchRenderer.Render(*this, subframe, mApertureSize, mFrom, width, height, left+x, top+y);
-				samples = patchRenderer.mSamples;
-			}
-			else
-			{
-				parent.Sample(*this, subframe, 0, mFrom, width, height, left+x, top+y);
-			}
+				if (mDOFEnabled || mAAEnabled)
+				{
+					PatchRenderer patchRenderer(parent, mDOFEnabled, mAAEnabled, mMinSamples, mMaxSamples);
+					patchRenderer.Render(*this, subframe, mApertureSize, mFrom, width, height, left+x, top+y);
+					samples = patchRenderer.mSamples;
+				}
+				else
+				{
+					parent.Sample(*this, subframe, 0, mFrom, width, height, left+x, top+y);
+				}
 
 	//		DColour avg = parent.GetColour();
 	//		float var = 10 * parent.GetVariance(avg);
 	//		renderBuffer[nrow*width+x] = DColour(var, var, var);
 
-			mPatchSampleCount += samples;
-			renderBuffer[y*16+x] += parent.GetColour();
+				mPatchSampleCount += samples;
+				renderBuffer[y*16+x] += parent.GetColour();
+			}
 		}
 	}
 

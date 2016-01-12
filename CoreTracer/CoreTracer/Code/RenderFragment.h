@@ -16,9 +16,10 @@ public: int mLeft;
 public: 	int mTop;
 	float mVariance;
 	int mSubFrame;
+	bool mFastPreview;
+	int mFastStage;
 
 public:
-	DRenderFragment(const DScene* scene, int width, int height, DCamera* camera, int left, int top);
-
+	DRenderFragment(const DScene* scene, int width, int height, DCamera* camera, int left, int top, bool mFastPreview);
 	void Render();
 };

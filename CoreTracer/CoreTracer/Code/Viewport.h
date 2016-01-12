@@ -15,7 +15,7 @@ public:
 	/// Render me a patch please
 	//void RenderPatch(int x, int y);
 	/// get scene depth at specific pixel
-	float GetDepth(int width, int height);
+	float GetDepth(int width, int height, bool startedRender);
 
 	/// Set internal pointers
 	void SetBuffer(float* buffer);

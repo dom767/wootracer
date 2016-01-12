@@ -36,7 +36,7 @@ public:
 	void SetBuffer(float* buffer) {mViewport.SetBuffer(buffer);}
 	//void Render();
 //	void RenderPatch(int x, int y);
-	float GetDepth(int width, int height);
+	float GetDepth(int width, int height, bool startedRender);
 	int GetWidth() {return mViewport.GetWidth();}
 	int GetHeight() {return mViewport.GetHeight();}
 	void StartRender(bool singleFrame);

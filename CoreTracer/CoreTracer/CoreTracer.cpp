@@ -98,10 +98,10 @@ void DCoreTracer::RenderPatch(int x, int y)
 	mViewport.RenderPatch(x, y);
 }
 */
-float DCoreTracer::GetDepth(int width, int height)
+float DCoreTracer::GetDepth(int width, int height, bool startedRender)
 {
 	LOG(Error, "Coretracer.GetDepth");
-	return mViewport.GetDepth(width, height);
+	return mViewport.GetDepth(width, height, startedRender);
 }
 
 void DCoreTracer::CopyBuffer(float* buffer)
@@ -264,10 +264,8 @@ void SyncRender(float* buffer)
 void GetDepth(float& depth, int x, int y)
 {
 	LOG(Error, "DLL.GetDepth");
-	if (g_StartedRender==1)
-		return;
 
-	depth = g_CoreTracer->GetDepth(x, y);
+	depth = g_CoreTracer->GetDepth(x, y, g_StartedRender);
 }
 
 int GetDistanceSchemaLength()

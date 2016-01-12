@@ -36,11 +36,12 @@ void DViewport::RenderPatch(int x, int y)
 	mCamera.RenderPatch(mScene, mWidth, mHeight, (DColour*)mBuffer, x, y);
 }
 */
-float DViewport::GetDepth(int width, int height)
+float DViewport::GetDepth(int width, int height, bool startedRender)
 {
 	if (width>mWidth || height>mHeight)
 		return -2;
 
-	mScene.PrepareRender();
-	return mCamera.GetDepth(mScene, mWidth, mHeight, width, height);
+	if (!startedRender)
+		mScene.PrepareRender();
+	return mCamera.GetDepth(mScene, mWidth, mHeight, width, height, startedRender);
 }
