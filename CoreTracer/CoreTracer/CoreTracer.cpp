@@ -265,7 +265,7 @@ void GetDepth(float& depth, int x, int y)
 {
 	LOG(Error, "DLL.GetDepth");
 
-	depth = g_CoreTracer->GetDepth(x, y, g_StartedRender);
+	depth = g_CoreTracer->GetDepth(x, y, g_StartedRender>0);
 }
 
 int GetDistanceSchemaLength()
