@@ -101,6 +101,8 @@ public:
 	DColour mEmissive;
 	DColour mAbsorption;
 	DVector3 mTrapPosition;
+	float mShininess;
+	float mSpecularPower;
 };
 
 class DFuncParam

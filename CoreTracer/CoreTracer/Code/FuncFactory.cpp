@@ -48,7 +48,8 @@ DFuncFactory::DFuncFactory()
 	mFuncList.push_back(new DDistVoronoi());
 	mFuncList.push_back(new DDistWaves());
 	mFuncList.push_back(new DDistVecMin());
-
+	mFuncList.push_back(new DLerpF());
+	
 	mFuncList.push_back(new DDistPos());
 	mFuncList.push_back(new DDistVec());
 	mFuncList.push_back(new DDistRotX());
@@ -89,6 +90,8 @@ DFuncFactory::DFuncFactory()
 	mFuncList.push_back(new DDistRepeat());
 
 	mVariableList.push_back(new DVariable(Float, VNDistance, "distance"));
+	mVariableList.push_back(new DVariable(Float, VNPower, "power"));
+	mVariableList.push_back(new DVariable(Float, VNGloss, "gloss"));
 	mVariableList.push_back(new DVariable(Vec, VNPosition, "wpos"));
 	mVariableList.push_back(new DVariable(Vec, VNObjectPosition, "pos"));
 	mVariableList.push_back(new DVariable(Vec, VNDiffuse, "diff"));
@@ -125,6 +128,10 @@ float DFuncFactory::GetFloatValue(DFunctionState& state, DVariable* var)
 	{
 	case VNDistance:
 		return state.mDistance;
+	case VNPower:
+		return state.mSpecularPower;
+	case VNGloss:
+		return state.mShininess;
 	}
 
 	LOG(Error, "Missing variable in GetFloatValue");
@@ -175,6 +182,12 @@ void DFuncFactory::SetFloatValue(DFunctionState& state, DVariable* var, float va
 	{
 	case VNDistance:
 		state.mDistance = val;
+		return;
+	case VNPower:
+		state.mSpecularPower = val;
+		return;
+	case VNGloss:
+		state.mShininess = val;
 		return;
 	}
 

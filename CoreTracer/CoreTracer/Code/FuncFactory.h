@@ -25,6 +25,8 @@ enum EVariableName
 	VNEmissive,
 	VNAbsorption,
 	VNTrapPosition,
+	VNPower,
+	VNGloss,
 	END_VARIABLE_NAME
 };
 

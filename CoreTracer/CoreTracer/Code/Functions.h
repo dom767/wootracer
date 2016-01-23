@@ -215,6 +215,25 @@ BEGIN_FUNC(DDistFloatVar, "floatVar");
 	DVariable* mVariable;
 END_FUNC
 
+BEGIN_FUNC(DLerpF, "lerp");
+	DLerpF()
+	{
+		mParam.push_back(new DFuncParam("mFloat1", Float));
+		mParam.push_back(new DFuncParam("mFloat2", Float));
+		mParam.push_back(new DFuncParam("mAmount", Float));
+	}
+
+	virtual float Evaluate(DFunctionState& state)
+	{
+		float mFloat1 = mParam[0]->Evaluate(state);
+		float mFloat2 = mParam[1]->Evaluate(state);
+		float mAmount = clamp(mParam[2]->Evaluate(state),0,1);
+		float invAmount = 1-mAmount;
+
+		return mFloat1*invAmount + mFloat2*mAmount;
+	}
+END_FUNC
+
 BEGIN_VECFUNC(DDistVectorVar, "vecVar");
 	DDistVectorVar()
 	{

@@ -116,15 +116,42 @@ void DMaterial::CalculateColour(DColour &out_colour,
 	const DScene* const scene = rRayContext.m_Scene;
 	DColour diffuseLight(0.f,0.f,0.f), specularLight(0.f,0.f,0.f);
 
+	DFunctionState funcState;
+	funcState.mPosition = hitPos;
+	funcState.mObjectPosition = objectPos;
+	funcState.mDiffuse = mDiffuseColour->GetColour(hitPos) * out_colour;
+	funcState.mSpecular = mSpecularColour->GetColour(hitPos);
+	funcState.mReflectivity = mReflectivity->GetColour(hitPos);
+	funcState.mEmissive = mEmissiveColour->GetColour(hitPos);
+	funcState.mAbsorption = mAbsorptionColour->GetColour(hitPos);
+	funcState.mShininess = m_Shininess;
+	funcState.mSpecularPower = mSpecularPower;
+
+	// run shader if present
+	if (mMaterialProgram.Compiled())
+	{
+		mMaterialProgram.Run(funcState);
+
+		// clamp
+		funcState.mDiffuse.Clamp(DColour(0,0,0), DColour(1,1,1));
+		funcState.mSpecular.Clamp(DColour(0,0,0), DColour(1,1,1));
+		funcState.mReflectivity.Clamp(DColour(0,0,0), DColour(1,1,1));
+		funcState.mEmissive.Clamp(DColour(0,0,0), DColour(100000,100000,100000));
+		funcState.mAbsorption.Clamp(DColour(0,0,0), DColour(1,1,1));
+		funcState.mShininess = clamp(funcState.mShininess, 0, 1);
+		funcState.mSpecularPower = clamp(funcState.mShininess, 0.01, 1000);
+	}
+
+	DColour reflectivityCol = funcState.mReflectivity;
+
 	// shininess perturb
 	DVector3 perturb = scene->GetRandomDirection3d(rRayContext);//DVector3(scene->GetRandom()*2-1, scene->GetRandom()*2-1, scene->GetRandom()*2-1);
-	perturb *= 1.0f - m_Shininess;
+	perturb *= 1.0f - funcState.mShininess;
 	DVector3 normal = in_normal + perturb;
 	normal.Normalise();
 
 	DVector3 reflection = eyeVector - normal*(normal.Dot(eyeVector)*2.f);
 
-	DColour reflectivity = mReflectivity->GetColour(hitPos);
 	float refractiveIndex;
 	float n;
 	bool exiting = false;
@@ -152,29 +179,7 @@ void DMaterial::CalculateColour(DColour &out_colour,
 			reflectance = 0.f;
 		}
 		reflectance = clamp(reflectance, 0.f, 1.f);
-		reflectivity = DColour(reflectance, reflectance, reflectance);
-	}
-
-	DFunctionState funcState;
-	funcState.mPosition = hitPos;
-	funcState.mObjectPosition = objectPos;
-	funcState.mDiffuse = mDiffuseColour->GetColour(hitPos) * out_colour;
-	funcState.mSpecular = mSpecularColour->GetColour(hitPos);
-	funcState.mReflectivity = reflectivity;
-	funcState.mEmissive = mEmissiveColour->GetColour(hitPos);
-	funcState.mAbsorption = mAbsorptionColour->GetColour(hitPos);
-
-	// run shader if present
-	if (mMaterialProgram.Compiled())
-	{
-		mMaterialProgram.Run(funcState);
-
-		// clamp
-		funcState.mDiffuse.Clamp(DColour(0,0,0), DColour(1,1,1));
-		funcState.mSpecular.Clamp(DColour(0,0,0), DColour(1,1,1));
-		funcState.mReflectivity.Clamp(DColour(0,0,0), DColour(1,1,1));
-		funcState.mEmissive.Clamp(DColour(0,0,0), DColour(100000,100000,100000));
-		funcState.mAbsorption.Clamp(DColour(0,0,0), DColour(1,1,1));
+		reflectivityCol*=reflectance;
 	}
 
 	// return diffuse and specular lighting contributions
@@ -189,7 +194,7 @@ void DMaterial::CalculateColour(DColour &out_colour,
 		scene->CalculateLighting(colourContext,
 			hitId,
 			reflection,
-			mSpecularPower,
+			funcState.mSpecularPower,
 			funcState.mSpecular,
 			diffuseLight,
 			specularLight);
@@ -223,7 +228,6 @@ void DMaterial::CalculateColour(DColour &out_colour,
 		out_colour += addition;
 	}
 
-	DColour reflectivityCol = funcState.mReflectivity;
 	if (scene && reflectivityCol.Max()>0)
 	{
 		DRayContext reflectionContext(rRayContext);
