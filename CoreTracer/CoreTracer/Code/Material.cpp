@@ -139,7 +139,7 @@ void DMaterial::CalculateColour(DColour &out_colour,
 		funcState.mEmissive.Clamp(DColour(0,0,0), DColour(100000,100000,100000));
 		funcState.mAbsorption.Clamp(DColour(0,0,0), DColour(1,1,1));
 		funcState.mShininess = clamp(funcState.mShininess, 0, 1);
-		funcState.mSpecularPower = clamp(funcState.mShininess, 0.01f, 1000);
+		funcState.mSpecularPower = clamp(funcState.mSpecularPower, 0.01f, 1000);
 	}
 
 	DColour reflectivityCol = funcState.mReflectivity;
