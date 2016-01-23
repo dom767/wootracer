@@ -128,7 +128,7 @@ void DCamera::Render(const DScene& scene, const int width, const int height, DCo
 	{
 		for (int x=0; x<=width/16; x++)
 		{
-			mWorkQueue.Add(new DRenderFragment(&scene, width, height, this, x*16, y*16, mFastPreview));
+			mWorkQueue.Add(new DRenderFragment(&scene, width, height, this, x*16, y*16, singleFrame?false:mFastPreview));
 		}
 	}
 
