@@ -96,6 +96,7 @@ protected:
 
 private:
 //	virtual float DistanceEstimator(DVector3& pos);
-
+	int mFractalIterations;
+	int mColourIterations;
 	std::vector<DFractalIteration*> _FractalIterations;
 };

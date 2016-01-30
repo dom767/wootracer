@@ -179,7 +179,10 @@ void DFractalMandelBulb::Calculate(DVector3& pos, const DVector3& origPos, float
 
 void DRenderFractal::InternalRead(TiXmlElement* element)
 {
+	mFractalIterations = mColourIterations = 15;
 	DRenderDistance::InternalRead(element);
+	Convert::StrToInt(element->Attribute("iterationCount"), mFractalIterations);
+	Convert::StrToInt(element->Attribute("colourIterationCount"), mColourIterations);
 
 	TiXmlElement* iterationXml = (TiXmlElement*) element->FirstChildElement("ITERATION");
 	while (iterationXml)
@@ -232,7 +235,7 @@ float DRenderFractal::DistanceEstimator(DVector3& pos) const
 	float modscale = 1;
 	float r;
 	unsigned int fractalIteration = 0;
-	for (int i=0; i<15; i++)
+	for (int i=0; i<mFractalIterations; i++)
 	{
 		r = modpos.Magnitude();
 		if (r>100) break;
@@ -255,7 +258,7 @@ DColour DRenderFractal::DEColour(const DVector3& pos) const
 	DVector3 trap = DVector3(1000000,1000000,1000000);
 	float modscale = 1;
 	unsigned int fractalIteration = 0;
-	for (int i=0; i<15; i++)
+	for (int i=0; i<mColourIterations; i++)
 	{
 		_FractalIterations[fractalIteration]->Calculate(modpos, pos, modscale);
 
