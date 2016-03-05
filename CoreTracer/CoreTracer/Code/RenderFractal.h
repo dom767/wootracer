@@ -89,13 +89,13 @@ public:
 	}
 
 	virtual float DistanceEstimator(DVector3& pos) const;
-
 protected:
 	virtual void InternalRead(TiXmlElement* element);
 	virtual DColour DEColour(const DVector3& pos) const;
 
 private:
 //	virtual float DistanceEstimator(DVector3& pos);
+	void EscapeLength(DVector3& pos, DVector3& modpos, float& modscale, float& r, int& iterations) const;
 	int mFractalIterations;
 	int mColourIterations;
 	std::vector<DFractalIteration*> _FractalIterations;

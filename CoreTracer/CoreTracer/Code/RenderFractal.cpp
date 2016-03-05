@@ -160,8 +160,8 @@ void DFractalMandelBulb::Calculate(DVector3& pos, const DVector3& origPos, float
   pos += origPos;
   */
 	float r = pos.Magnitude();
-	float theta = acos(pos[2]/r);
-	float phi = atan2(pos[1],pos[0]);
+	float theta = acos(pos[1]/r);
+	float phi = atan2(pos[2],pos[0]);
 	scale =  pow( r, mScale-1.0f)*mScale*scale + 1.0f;
 
 	// scale and rotate the point
@@ -171,8 +171,8 @@ void DFractalMandelBulb::Calculate(DVector3& pos, const DVector3& origPos, float
 
 	// convert back to cartesian coordinates
 	pos.mComponent[0] = sinf(theta)*cosf(phi)*zr + origPos.mComponent[0];
-	pos.mComponent[1] = sinf(phi)*sinf(theta)*zr + origPos.mComponent[1];
-	pos.mComponent[2] = cosf(theta)*zr + origPos.mComponent[2];
+	pos.mComponent[2] = sinf(phi)*sinf(theta)*zr + origPos.mComponent[2];
+	pos.mComponent[1] = cosf(theta)*zr + origPos.mComponent[1];
 
 	return;
 }
@@ -228,13 +228,40 @@ float sphere2(DVector3 pos, DVector3 centre, float radius)
 	return (pos-centre).Magnitude() - radius;
 }
 
+void DRenderFractal::EscapeLength(DVector3& pos, DVector3& modpos, float& modscale, float& r, int& iterations) const
+{
+	modpos = pos;
+	modscale = 1;
+
+	unsigned int fractalIteration = 0;
+	int i;
+	for (i=0; i<mFractalIterations; i++)
+	{
+		r = modpos.Magnitude();
+		if ((r>100 && iterations==0)
+			|| (i>0 && i==iterations)) break;
+
+		_FractalIterations[fractalIteration]->Calculate(modpos, pos, modscale);
+
+		fractalIteration++;
+		if (fractalIteration>=_FractalIterations.size())
+			fractalIteration = 0;
+	}
+
+	if (iterations==0) iterations = i;
+}
+
 float DRenderFractal::DistanceEstimator(DVector3& pos) const
 {
 	if (_FractalIterations.size()==0) return 10000000;
+
 	DVector3 modpos = pos;
 	float modscale = 1;
 	float r;
-	unsigned int fractalIteration = 0;
+	int iterations=0;
+
+	EscapeLength(pos, modpos, modscale, r, iterations);
+/*	unsigned int fractalIteration = 0;
 	for (int i=0; i<mFractalIterations; i++)
 	{
 		r = modpos.Magnitude();
@@ -245,9 +272,28 @@ float DRenderFractal::DistanceEstimator(DVector3& pos) const
 		fractalIteration++;
 		if (fractalIteration>=_FractalIterations.size())
 			fractalIteration = 0;
-	}
-//	return 0.5f*log(r)*r/modscale;
-	return (modpos.Magnitude() - 1) / abs(modscale);
+	}*/
+	if (r<0) return 0.0;
+	float x, y, z;
+	float oldr = r;
+	float oldmodscale = modscale;
+/*	const float delta = 0.001;
+	EscapeLength(pos+DVector3(delta, 0, 0), modpos, modscale, r, iterations);
+	x = (r - oldr) / delta;
+	EscapeLength(pos+DVector3(0, delta, 0), modpos, modscale, r, iterations);
+	y = (r - oldr) / delta;
+	EscapeLength(pos+DVector3(0, 0, delta), modpos, modscale, r, iterations);
+	z = (r - oldr) / delta;
+	DVector3 gradient(x, y, z);
+
+	float gradlength = gradient.Magnitude();
+	if (gradlength>0)
+		return 0.5f*log(oldr)*oldr/gradient.Magnitude();  // Makin/Buddhi method
+	else
+		return 0.001;*/
+	return 0.5f*log(oldr)*oldr/oldmodscale;  // bulb method
+//	return (modpos.Magnitude() - 1) / abs(modscale); // KIFS method
+
 //	return max(sphere2(pos, DVector3(0, 0, 0.3f), 0.7f), - sphere2(pos, DVector3(0,0,-0.5f), 0.5f));
 }
 
@@ -257,9 +303,13 @@ DColour DRenderFractal::DEColour(const DVector3& pos) const
 	DVector3 modpos = pos;
 	DVector3 trap = DVector3(1000000,1000000,1000000);
 	float modscale = 1;
+	float r;
 	unsigned int fractalIteration = 0;
 	for (int i=0; i<mColourIterations; i++)
 	{
+		r = modpos.Magnitude();
+		if (r>100) break;
+
 		_FractalIterations[fractalIteration]->Calculate(modpos, pos, modscale);
 
 		trap.SetMin(trap, modpos.GetAbs());
