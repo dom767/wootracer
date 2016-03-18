@@ -7,6 +7,7 @@ class DFractalIteration
 public:
 	virtual void Calculate(DVector3& pos, const DVector3& origPos, float& scale)=0;
 	virtual void Read(TiXmlElement* element)=0;
+	virtual float Estimate(float r, float scale)=0;
 };
 
 class DFractalTetra : public DFractalIteration
@@ -14,6 +15,7 @@ class DFractalTetra : public DFractalIteration
 public:
 	void Read(TiXmlElement* element);
 	void Calculate(DVector3& pos, const DVector3& origPos, float& scale);
+	float Estimate(float r, float scale) {return (r - 1) / abs(scale);}
 
 private:
 	DMatrix4 mRotate1Matrix, mRotate2Matrix;
@@ -26,6 +28,7 @@ class DFractalCuboid : public DFractalIteration
 public:
 	void Read(TiXmlElement* element);
 	void Calculate(DVector3& pos, const DVector3& origPos, float& scale);
+	float Estimate(float r, float scale) {return (r - 1) / abs(scale);}
 
 private:
 	DMatrix4 mRotate1Matrix, mRotate2Matrix;
@@ -38,6 +41,7 @@ class DFractalMenger : public DFractalIteration
 public:
 	void Read(TiXmlElement* element);
 	void Calculate(DVector3& pos, const DVector3& origPos, float& scale);
+	float Estimate(float r, float scale) {return (r - 1) / abs(scale);}
 
 private:
 	DMatrix4 mRotate1Matrix, mRotate2Matrix;
@@ -50,6 +54,7 @@ class DFractalMandelBox : public DFractalIteration
 public:
 	void Read(TiXmlElement* element);
 	void Calculate(DVector3& pos, const DVector3& origPos, float& scale);
+	float Estimate(float r, float scale) {return (r - 1) / abs(scale);}
 
 private:
 	DMatrix4 mRotate1Matrix;
@@ -62,6 +67,7 @@ class DFractalMandelBulb : public DFractalIteration
 public:
 	void Read(TiXmlElement* element);
 	void Calculate(DVector3& pos, const DVector3& origPos, float& scale);
+	float Estimate(float r, float scale) {return 0.5f*log(r)*r/scale;}
 
 private:
 	DMatrix4 mRotate1Matrix;
@@ -72,7 +78,7 @@ private:
 class DRenderFractal : public DRenderDistance
 {
 public:
-	DRenderFractal() {}
+	DRenderFractal() : mDEMode(0) {}
 	~DRenderFractal()
 	{
 		for (unsigned int i=0; i<_FractalIterations.size(); i++)
@@ -95,8 +101,9 @@ protected:
 
 private:
 //	virtual float DistanceEstimator(DVector3& pos);
-	void EscapeLength(DVector3& pos, DVector3& modpos, float& modscale, float& r, int& iterations) const;
+	float EscapeLength(DVector3& pos, DVector3& modpos, float& modscale, int& iterations) const;
 	int mFractalIterations;
 	int mColourIterations;
+	int mDEMode;
 	std::vector<DFractalIteration*> _FractalIterations;
 };

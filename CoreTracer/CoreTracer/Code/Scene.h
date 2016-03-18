@@ -36,8 +36,8 @@ enum ERequestType
 
 struct DRayContext
 {
-	DRayContext(const DScene* scene, DRay ray, int requestType, int maxRecursion, const float refractionIndex, int pixelIndex, int subFrame) :
-m_Scene(scene), m_RecursionRemaining(maxRecursion), m_RefractiveIndex(refractionIndex), m_RequestFlags(requestType), m_Ray(ray), mPixelIndex(pixelIndex), mSampleIndex(4), mSubFrame(subFrame) {}
+	DRayContext(const DScene* scene, DVector3 cameraPos, DRay ray, int requestType, int maxRecursion, const float refractionIndex, int pixelIndex, int subFrame) :
+m_Scene(scene), m_CameraPos(cameraPos), m_RecursionRemaining(maxRecursion), m_RefractiveIndex(refractionIndex), m_RequestFlags(requestType), m_Ray(ray), mPixelIndex(pixelIndex), mSampleIndex(4), mSubFrame(subFrame) {}
 
 	bool Within(int idx) const
 	{
@@ -62,6 +62,7 @@ m_Scene(scene), m_RecursionRemaining(maxRecursion), m_RefractiveIndex(refraction
 
 	const static float AirRefractionIndex;
 	DRay m_Ray;
+	DVector3 m_CameraPos;
 	int m_RequestFlags;
 	float m_RefractiveIndex;
 	int m_RecursionRemaining;

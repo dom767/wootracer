@@ -183,6 +183,7 @@ void DRenderFractal::InternalRead(TiXmlElement* element)
 	DRenderDistance::InternalRead(element);
 	Convert::StrToInt(element->Attribute("iterationCount"), mFractalIterations);
 	Convert::StrToInt(element->Attribute("colourIterationCount"), mColourIterations);
+	Convert::StrToInt(element->Attribute("DEMode"), mDEMode);
 
 	TiXmlElement* iterationXml = (TiXmlElement*) element->FirstChildElement("ITERATION");
 	while (iterationXml)
@@ -228,10 +229,11 @@ float sphere2(DVector3 pos, DVector3 centre, float radius)
 	return (pos-centre).Magnitude() - radius;
 }
 
-void DRenderFractal::EscapeLength(DVector3& pos, DVector3& modpos, float& modscale, float& r, int& iterations) const
+float DRenderFractal::EscapeLength(DVector3& pos, DVector3& modpos, float& modscale, int& iterations) const
 {
 	modpos = pos;
 	modscale = 1;
+	float r=0;
 
 	unsigned int fractalIteration = 0;
 	int i;
@@ -249,6 +251,8 @@ void DRenderFractal::EscapeLength(DVector3& pos, DVector3& modpos, float& modsca
 	}
 
 	if (iterations==0) iterations = i;
+
+	return r;
 }
 
 float DRenderFractal::DistanceEstimator(DVector3& pos) const
@@ -260,40 +264,33 @@ float DRenderFractal::DistanceEstimator(DVector3& pos) const
 	float r;
 	int iterations=0;
 
-	EscapeLength(pos, modpos, modscale, r, iterations);
-/*	unsigned int fractalIteration = 0;
-	for (int i=0; i<mFractalIterations; i++)
-	{
-		r = modpos.Magnitude();
-		if (r>100) break;
+	r = EscapeLength(pos, modpos, modscale, iterations);
 
-		_FractalIterations[fractalIteration]->Calculate(modpos, pos, modscale);
-
-		fractalIteration++;
-		if (fractalIteration>=_FractalIterations.size())
-			fractalIteration = 0;
-	}*/
 	if (r<0) return 0.0;
-	float x, y, z;
-	float oldr = r;
-	float oldmodscale = modscale;
-/*	const float delta = 0.001;
-	EscapeLength(pos+DVector3(delta, 0, 0), modpos, modscale, r, iterations);
-	x = (r - oldr) / delta;
-	EscapeLength(pos+DVector3(0, delta, 0), modpos, modscale, r, iterations);
-	y = (r - oldr) / delta;
-	EscapeLength(pos+DVector3(0, 0, delta), modpos, modscale, r, iterations);
-	z = (r - oldr) / delta;
-	DVector3 gradient(x, y, z);
 
-	float gradlength = gradient.Magnitude();
-	if (gradlength>0)
-		return 0.5f*log(oldr)*oldr/gradient.Magnitude();  // Makin/Buddhi method
-	else
-		return 0.001;*/
-	return 0.5f*log(oldr)*oldr/oldmodscale;  // bulb method
-//	return (modpos.Magnitude() - 1) / abs(modscale); // KIFS method
+	if (mDEMode==3)
+	{
+		// Makin/Buddhi method
+		const float delta = 0.001f;
+		DVector3 gradient((EscapeLength(pos+DVector3(delta, 0, 0), modpos, modscale, iterations) - r) / delta,
+			(EscapeLength(pos+DVector3(0, delta, 0), modpos, modscale, iterations) - r) / delta,
+			(EscapeLength(pos+DVector3(0, 0, delta), modpos, modscale, iterations) - r) / delta);
 
+		float gradlength = gradient.Magnitude();
+		if (gradlength>0)
+			return 0.5f*log(r)*r/gradient.Magnitude();
+		else
+			return 0.001f;
+	}
+
+	if (mDEMode==0)
+		return 0.5f*log(r)*r/modscale;  // bulb method
+	if (mDEMode==1)
+		return (r - 1) / abs(modscale); // KIFS method
+	if (mDEMode==2)
+		return _FractalIterations[iterations%_FractalIterations.size()]->Estimate(r, modscale); // last iteration method
+
+	return 0.0;
 //	return max(sphere2(pos, DVector3(0, 0, 0.3f), 0.7f), - sphere2(pos, DVector3(0,0,-0.5f), 0.5f));
 }
 

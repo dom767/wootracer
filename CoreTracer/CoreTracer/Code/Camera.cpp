@@ -364,7 +364,7 @@ float DCamera::GetDepth(const DScene& scene, const int width, const int height, 
 
 	if (success)
 	{
-		hit = scene.Intersect(DRayContext(&scene, ray, RequestColour, scene.GetMaximumRecursion(), DRayContext::AirRefractionIndex, width*y+x, 0), response);
+		hit = scene.Intersect(DRayContext(&scene, mFrom, ray, RequestColour, scene.GetMaximumRecursion(), DRayContext::AirRefractionIndex, width*y+x, 0), response);
 	}
 
 	if (hit)
@@ -449,7 +449,7 @@ struct Patch
 			}
 			DCollisionResponse response;
 			LOG(Info, "Sample ray");
-			hit = mScene.Intersect(DRayContext(&mScene, ray, RequestColour, mScene.GetMaximumRecursion(), DRayContext::AirRefractionIndex, pixelIndex, subframe), response, debugInfo);
+			hit = mScene.Intersect(DRayContext(&mScene, camera.mFrom, ray, RequestColour, mScene.GetMaximumRecursion(), DRayContext::AirRefractionIndex, pixelIndex, subframe), response, debugInfo);
 			mColour = response.mColour;
 			if (mColour.mRed!=mColour.mRed)
 			{
@@ -458,7 +458,7 @@ struct Patch
 				sprintf_s(bdest, "NaN Detected (%i, %i)", x, y);
 				LOG(Error, &bdest[0]);
 				LOG(Info, "Resample ray following NaN detection");
-				hit = mScene.Intersect(DRayContext(&mScene, ray, RequestColour, mScene.GetMaximumRecursion(), DRayContext::AirRefractionIndex, pixelIndex, subframe), response, true);
+				hit = mScene.Intersect(DRayContext(&mScene, camera.mFrom, ray, RequestColour, mScene.GetMaximumRecursion(), DRayContext::AirRefractionIndex, pixelIndex, subframe), response, true);
 				Log().SetErrorLevel(Error);
 				
 			}

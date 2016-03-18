@@ -382,7 +382,7 @@ void StartRayTracer()
 	
 //	ss << my_documents << L"\\Wooscripter\\XML\\simplebox.xml";
 //	ss << my_documents << L"\\Wooscripter\\XML\\pedestal.xml";
-	ss << my_documents << L"\\Wooscripter\\XML\\distance.xml";
+	ss << my_documents << L"\\Woofractal\\XML\\testde.xml";
 //	ss << my_documents << L"\\Wooscripter\\XML\\tetraraw.xml";
 //	ss << my_documents << L"\\Wooscripter\\XML\\diffuseFunction2.xml";
 

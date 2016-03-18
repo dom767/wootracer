@@ -442,7 +442,7 @@ void DKDTree::IntersectRecurse(DKDTreeNode* node, EAxis axis, const DVector3& st
 				if (NotIgnoreForLighting && !FrontfaceAndInside)
 				{
 					mIntersections++;
-					if ((*iter)->Intersect(DRayContext(NULL, RenderCache.mRayContext.m_Ray, RequestDistance, 0, RenderCache.mRayContext.m_RefractiveIndex, RenderCache.mRayContext.mPixelIndex, RenderCache.mRayContext.mSubFrame), tempResponse)
+					if ((*iter)->Intersect(DRayContext(NULL, RenderCache.mRayContext.m_CameraPos, RenderCache.mRayContext.m_Ray, RequestDistance, 0, RenderCache.mRayContext.m_RefractiveIndex, RenderCache.mRayContext.mPixelIndex, RenderCache.mRayContext.mSubFrame), tempResponse)
 						&& (*iter)->GetObjectId()!=RenderCache.m_IgnoreObjectId)
 					{
 						RenderCache.m_HitPoints.push_back(hit(tempResponse.mDistance, tempResponse.mNormal, tempResponse.mColour, tempResponse.mHitPosition, tempResponse.mObjectPosition, iter));

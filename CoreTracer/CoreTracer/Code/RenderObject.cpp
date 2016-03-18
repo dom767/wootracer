@@ -46,6 +46,8 @@ bool DRenderObject::Intersect(const DRayContext& rRayContext, DCollisionResponse
 {
 	DRayContext temp = rRayContext;
 	temp.m_Ray.SetStart(mCentreTrans * temp.m_Ray.GetStart());
+
+	temp.m_CameraPos = mCentreTrans * temp.m_CameraPos;
 	 
 	DVector3 newDirection = mDirectionTrans * temp.m_Ray.GetDirection();
 	newDirection.Normalise();
