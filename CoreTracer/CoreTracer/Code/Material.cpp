@@ -154,6 +154,7 @@ void DMaterial::CalculateColour(DColour &out_colour,
 
 	float refractiveIndex;
 	float n;
+	float reflectance = 1;
 	bool exiting = false;
 
 	if (m_Opacity!=1)
@@ -173,12 +174,12 @@ void DMaterial::CalculateColour(DColour &out_colour,
 		float r0 = (n1-n2) / (n1+n2);
 		r0 = r0 * r0;
 
-		float reflectance = r0 + (1-r0) * (1-powf(cosf(1 + rRayContext.m_Ray.GetDirection().Dot(normal)), 5));
-		if (reflectance!=reflectance)
-		{
-			reflectance = 0.f;
-		}
+		reflectance = r0 + (1-r0) * (1-powf(cosf(1 + rRayContext.m_Ray.GetDirection().Dot(normal)), 5));
 		reflectance = clamp(reflectance, 0.f, 1.f);
+
+		float materialReflectance = (reflectivityCol.mRed + reflectivityCol.mGreen + reflectivityCol.mBlue) * 0.33333333f;
+		reflectance *= materialReflectance;
+
 		reflectivityCol*=reflectance;
 	}
 
@@ -291,7 +292,7 @@ void DMaterial::CalculateColour(DColour &out_colour,
 		if (scene)
 			scene->Intersect(refractionContext, RefractionResponse);
 	
-		float refractivity = 1-funcState.mReflectivity.mRed;
+		float refractivity = 1-reflectance;
 	
 		out_colour = out_colour + (RefractionResponse.mColour*refractivity);
 	}
