@@ -36,6 +36,7 @@ public:
 	void InitialiseSAH(const std::vector<DRenderObject*>& objects);
 	void InitialiseSimple(const std::vector<DRenderObject*>& objects);
 	int Intersect(const DRayContext& rRayContext, DCollisionResponse& out_Response, bool debuginfo) const;
+	void SetWithin(DRayContext& rRayContext) const;
 	mutable __int64 mRecursions;
 	mutable __int64 mIntersections;
 

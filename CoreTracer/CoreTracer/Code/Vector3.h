@@ -109,20 +109,20 @@ public:
 		return mComponent[0]*rhs.mComponent[0] + mComponent[1]*rhs.mComponent[1] + mComponent[2]*rhs.mComponent[2];
 	}
 	void Mul(const DMatrix4& rhs);
-	float Magnitude()
+	float Magnitude() const
 	{
 		return sqrtf(mComponent[0]*mComponent[0]+mComponent[1]*mComponent[1]+mComponent[2]*mComponent[2]);
 	}
-	float MagnitudeSquared()
+	float MagnitudeSquared() const
 	{
 		return mComponent[0]*mComponent[0]+mComponent[1]*mComponent[1]+mComponent[2]*mComponent[2];
 	}
-	float GetBiggestComponent()
+	float GetBiggestComponent() const
 	{
 		return MAX(mComponent[0], MAX(mComponent[1], mComponent[2]));
 	}
 	float mComponent[3];
-	DVector3 GetNegate()
+	DVector3 GetNegate() const
 	{
 		return DVector3(-mComponent[0], -mComponent[1], -mComponent[2]);
 	}

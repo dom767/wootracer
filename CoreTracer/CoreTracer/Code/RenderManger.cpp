@@ -268,3 +268,55 @@ bool DRenderManger::InternalIntersect(const DRayContext& rRayContext, DCollision
 
 	return false;
 }
+
+bool DRenderManger::InternalContains(const DVector3& position) const
+{
+	return InternalContainsRec(position, DVector3(-0.5, -0.5, -0.5), DVector3(0.5, 0.5, 0.5), mIterations);
+}
+
+bool DRenderManger::InternalContainsRec(const DVector3& position, const DVector3& min, const DVector3& max, const int iterations) const
+{
+	if (iterations==0)
+	{
+		return true;
+	}
+
+	float x0 = min.mComponent[0];
+	float x3 = max.mComponent[0];
+	float x1 = (x0*2+x3) / 3;
+	float x2 = (x0+x3*2) / 3;
+
+	float y0 = min.mComponent[1];
+	float y3 = max.mComponent[1];
+	float y1 = (y0*2+y3) / 3;
+	float y2 = (y0+y3*2) / 3;
+
+	float z0 = min.mComponent[2];
+	float z3 = max.mComponent[2];
+	float z1 = (z0*2+z3) / 3;
+	float z2 = (z0+z3*2) / 3;
+
+	int x = position.mComponent[0] <= x1 ? 0 :
+		position.mComponent[0] <= x2 ? 1 : 2;
+	int y = position.mComponent[1] <= y1 ? 0 :
+		position.mComponent[1] <= y2 ? 1 : 2;
+	int z = position.mComponent[2] <= z1 ? 0 :
+		position.mComponent[2] <= z2 ? 1 : 2;
+
+	DVector3 newmin, newmax;
+
+	newmin.mComponent[0] = x==0 ? x0 : x==1 ? x1 : x2;
+	newmin.mComponent[1] = y==0 ? y0 : y==1 ? y1 : y2;
+	newmin.mComponent[2] = z==0 ? z0 : z==1 ? z1 : z2;
+
+	newmax.mComponent[0] = x==0 ? x1 : x==1 ? x2 : x3;
+	newmax.mComponent[1] = y==0 ? y1 : y==1 ? y2 : y3;
+	newmax.mComponent[2] = z==0 ? z1 : z==1 ? z2 : z3;
+
+	if (mPattern[(x+z*3+y*9)]>0)
+	{
+		return InternalContainsRec(position, newmin, newmax, iterations-1);
+	}
+
+	return false;
+}

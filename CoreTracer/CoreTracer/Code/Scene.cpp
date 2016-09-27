@@ -297,6 +297,11 @@ bool DScene::Intersect(DRayContext& RayContext, DCollisionResponse& out_Response
 	return hit;
 }
 
+void DScene::SetWithin(DRayContext &rayContext) const
+{
+	mKDTree.SetWithin(rayContext);
+}
+
 void DScene::CalculateLighting(DRayContext &rayContext, int hitId, const DVector3& reflection, float specularPower, const DColour& specularColour, DColour& out_diffuseLight, DColour& out_specularLight) const
 {
 	std::vector<DLight*>::const_iterator iter = mLights.begin(), iterEnd = mLights.end();

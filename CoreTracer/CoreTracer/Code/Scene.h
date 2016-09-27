@@ -103,6 +103,7 @@ public:
 	bool IsCaustics() const {return mCaustics;}
 	bool ShadowsEnabled() const {return mShadows;}
 	DRenderObject* GetObject(int idx) const;
+	void SetWithin(DRayContext &rayContext) const;
 
 	mutable __int64 mRayCount;
 	DKDTree mKDTree;

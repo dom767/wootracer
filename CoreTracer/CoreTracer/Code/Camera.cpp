@@ -449,7 +449,9 @@ struct Patch
 			}
 			DCollisionResponse response;
 			LOG(Info, "Sample ray");
-			hit = mScene.Intersect(DRayContext(&mScene, camera.mFrom, ray, RequestColour, mScene.GetMaximumRecursion(), DRayContext::AirRefractionIndex, pixelIndex, subframe), response, debugInfo);
+			DRayContext context(&mScene, camera.mFrom, ray, RequestColour, mScene.GetMaximumRecursion(), DRayContext::AirRefractionIndex, pixelIndex, subframe);
+			mScene.SetWithin(context); //! could be better cached
+			hit = mScene.Intersect(context, response, debugInfo);
 			mColour = response.mColour;
 			if (mColour.mRed!=mColour.mRed)
 			{

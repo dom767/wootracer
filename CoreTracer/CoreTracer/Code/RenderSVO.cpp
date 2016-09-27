@@ -381,3 +381,55 @@ bool DSVO::InternalIntersect(const DRayContext& rRayContext, DCollisionResponse&
 
 	return false;
 }
+
+bool DRenderSVO::InternalContains(const DVector3& position) const
+{
+	return mSVO.InternalContains(position);
+}
+
+bool DSVO::InternalContains(const DVector3& position) const
+{
+	DVector3 min = DVector3(-0.5,-0.5,-0.5), max=DVector3(0.5,0.5,0.5);
+	return InternalContainsRec(position, min, max);
+}
+
+bool DSVO::InternalContainsRec(const DVector3& position, const DVector3& min, const DVector3& max) const
+{
+	if (mValue == 1)
+		return true;
+	if (mValue == 0)
+		return false;
+	
+	float x0 = min.mComponent[0];
+	float x2 = max.mComponent[0];
+	float x1 = (x0+x2) / 2;
+
+	float y0 = min.mComponent[1];
+	float y2 = max.mComponent[1];
+	float y1 = (y0+y2) / 2;
+
+	float z0 = min.mComponent[2];
+	float z2 = max.mComponent[2];
+	float z1 = (z0+z2) / 2;
+
+	int x = position.mComponent[0] <= x1 ? 0 : 1;
+	int y = position.mComponent[1] <= y1 ? 0 : 1;
+	int z = position.mComponent[2] <= z1 ? 0 : 1;
+
+	DVector3 newmin, newmax;
+
+	newmin.mComponent[0] = x==0 ? x0 : x1;
+	newmin.mComponent[1] = y==0 ? y0 : y1;
+	newmin.mComponent[2] = z==0 ? z0 : z1;
+
+	newmax.mComponent[0] = x==0 ? x1 : x2;
+	newmax.mComponent[1] = y==0 ? y1 : y2;
+	newmax.mComponent[2] = z==0 ? z1 : z2;
+
+	int childIdx = x+y*2+z*4;
+
+	if (mChildren[childIdx]->InternalContainsRec(position, newmin, newmax))
+		return true;
+
+	return false;
+}

@@ -14,6 +14,13 @@ void DRenderCube::InternalRead(TiXmlElement* element)
 	PostLoad();
 }
 
+bool DRenderCube::InternalContains(const DVector3& position) const
+{
+	return (position[0]>-0.5 && position[0]<0.5 &&
+		position[1]>-0.5 && position[1]<0.5 &&
+		position[2]>-0.5 && position[2]<0.5);
+}
+
 bool DRenderCube::InternalIntersect(const DRayContext& rRayContext, DCollisionResponse& out_Response) const
 {
 	DVector3 min = DVector3(-0.5, -0.5, -0.5);

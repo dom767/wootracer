@@ -64,3 +64,8 @@ bool DRenderSphere::InternalIntersect(const DRayContext& rRayContext, DCollision
 	// we've reached the end, so we must have hit the sphere
 	return true;
 }
+
+bool DRenderSphere::InternalContains(const DVector3& position) const
+{
+	return position.MagnitudeSquared() < 1;
+}

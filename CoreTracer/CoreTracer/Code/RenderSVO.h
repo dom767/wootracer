@@ -11,6 +11,7 @@ public:
 	void CreateSVO(DProgram& program, float minimumDistance, DVector3& min, DVector3& max, float stepsize, int depth);
 	char GetValue() {return mValue;}
 	bool InternalIntersect(const DRayContext& rRayContext, DCollisionResponse& out_Response) const;
+	bool InternalContains(const DVector3& position) const;
 
 private:
 	bool InternalIntersectRec(const DRayContext& rRayContext,
@@ -19,6 +20,7 @@ private:
 		const DVector3& normal,
 		const DVector3& min,
 		const DVector3& max) const;
+	bool InternalContainsRec(const DVector3& position, const DVector3& min, const DVector3& max) const;
 
 	char mValue; // -1 = haschildren, 0 = empty, 1 = full
 	DSVO* mChildren[8];
@@ -63,5 +65,6 @@ public:
 protected:
 	virtual bool InternalIntersect(const DRayContext& rRayContext, DCollisionResponse& out_Response) const;
 	virtual void InternalRead(TiXmlElement* element);
+	virtual bool InternalContains(const DVector3& position) const;
 
 };

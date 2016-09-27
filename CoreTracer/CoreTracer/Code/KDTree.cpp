@@ -327,6 +327,35 @@ public:
 	int m_WithinObjectId;
 };
 
+void DKDTree::SetWithin(DRayContext& rRayContext) const
+{
+	const DVector3 from = rRayContext.m_Ray.GetStart();
+	if (mRootBoundingBox.Contains(from))
+	{
+		DKDTreeNode* node = mRootNode;
+		EAxis axis = XAxis;
+		while (node->mLeft!=NULL)
+		{
+			if (from[axis]<node->mPoint[axis])
+				node = node->mLeft;
+			else
+				node = node->mRight;
+			axis = GetNextAxis(axis);
+		}
+
+		std::vector<DRenderObject*>::iterator iter=node->mObjects.begin(), iterEnd=node->mObjects.end();
+		while (iter!=iterEnd)
+		{
+			if ((*iter)->Contains(from))
+			{
+				rRayContext.mWithinIdx.push_back((*iter)->GetObjectId());
+				rRayContext.m_RefractiveIndex = (*iter)->GetRefractiveIndex();
+			}
+			iter++;
+		}
+	}
+}
+
 int DKDTree::Intersect(const DRayContext& rRayContext, DCollisionResponse& out_Response, bool debuginfo) const
 {
 	DVector3 start, end;

@@ -35,6 +35,7 @@ public:
 
 	void Read(TiXmlElement* element);
 
+	bool Contains(const DVector3& position);
 	bool Intersect(const DRayContext& rRayContext, DCollisionResponse& out_Response);
 	void CalculateColour(const DRayContext& rRayContext, DCollisionResponse& out_Response);
 	const DVector3& GetCentre() {return mCentre;}
@@ -52,6 +53,7 @@ public:
 protected:
 	virtual bool InternalIntersect(const DRayContext& rRayContext, DCollisionResponse& out_Response) const=0;
 	virtual void InternalRead(TiXmlElement* element)=0;
+	virtual bool InternalContains(const DVector3& position) const=0;
 	virtual DRenderObject* InternalClone() = 0;
 
 	DVector3 mCentre;

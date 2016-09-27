@@ -9,6 +9,14 @@ void DRenderCylinder::InternalRead(TiXmlElement* element)
 	PostLoad();
 }
 
+bool DRenderCylinder::InternalContains(const DVector3& position) const
+{
+	if (((position.mComponent[0]*position.mComponent[0] + position.mComponent[2] * position.mComponent[2])<1)
+		&& (position.mComponent[1] > -1) && (position.mComponent[1] < 1))
+		return true;
+	return false;
+}
+
 bool DRenderCylinder::InternalIntersect(const DRayContext& rRayContext, DCollisionResponse& out_Response) const
 {
 	float t0, t1;

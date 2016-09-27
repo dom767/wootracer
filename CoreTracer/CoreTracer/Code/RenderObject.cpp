@@ -42,6 +42,12 @@ void DRenderObject::Read(TiXmlElement* element)
 	InternalRead(element);
 }
 
+bool DRenderObject::Contains(const DVector3& position)
+{
+	DVector3 newPosition = mCentreTrans * position;
+	return InternalContains(newPosition);
+}
+
 bool DRenderObject::Intersect(const DRayContext& rRayContext, DCollisionResponse& out_Response)
 {
 	DRayContext temp = rRayContext;

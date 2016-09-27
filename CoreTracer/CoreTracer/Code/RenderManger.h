@@ -34,8 +34,10 @@ public:
 protected:
 	virtual bool InternalIntersect(const DRayContext& rRayContext, DCollisionResponse& out_Response) const;
 	virtual void InternalRead(TiXmlElement* element);
+	virtual bool InternalContains(const DVector3& position) const;
 
 private:
 	bool InternalIntersectRec(const DRayContext& rRayContext, DCollisionResponse& out_Response, const DVector3& hitPosition, const DVector3& normal, const DVector3& min, const DVector3& max, const int iterations) const;
+	bool InternalContainsRec(const DVector3& position, const DVector3& min, const DVector3& max, const int iterations) const;
 
 };

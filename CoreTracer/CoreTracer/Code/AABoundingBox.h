@@ -48,7 +48,7 @@ public:
 
 	const DVector3 GetMinPoint() const {return mCentre-mExtents;}
 	const DVector3 GetMaxPoint() const {return mCentre+mExtents;}
-	bool Contains(const DVector3& point);
+	bool Contains(const DVector3& point) const;
 
 	const void TransformBy(const DMatrix4& matrix);
 

@@ -23,11 +23,12 @@ public:
 		mAABoundingBox = DAABoundingBox(mCentre, mDEExtents[0]*mScale[0], mDEExtents[1]*mScale[1], mDEExtents[2]*mScale[2]);
 		mAABoundingBox.TransformBy(mRotation);
 	}
-	virtual float DistanceEstimator(DVector3& pos) const;
+	virtual float DistanceEstimator(const DVector3& pos) const;
 
 protected:
 	virtual bool InternalIntersect(const DRayContext& rRayContext, DCollisionResponse& out_Response) const;
 	virtual void InternalRead(TiXmlElement* element);
+	virtual bool InternalContains(const DVector3& position) const;
 	virtual DColour DEColour(const DVector3& pos) const {return DColour(1,1,1);}
 
 	float mMinimumDistance;	

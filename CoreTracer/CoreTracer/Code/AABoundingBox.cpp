@@ -3,7 +3,7 @@
 #include "Ray.h"
 #include "Matrix4.h"
 
-bool DAABoundingBox::Contains(const DVector3 &point)
+bool DAABoundingBox::Contains(const DVector3 &point) const
 {
 	DVector3 min = GetMinPoint();
 	DVector3 max = GetMaxPoint();
