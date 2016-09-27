@@ -246,7 +246,7 @@ float sierpinski3(DVector3 pos){
    return (sqrtf(r)-2)*powf(scale,-float(i));//the estimated distance
 }
 
-float DRenderDistance::DistanceEstimator(DVector3& pos) const
+float DRenderDistance::DistanceEstimator(const DVector3& pos) const
 {
 //	return sphere(pos, DVector3(0,0,0), 0.9f);
 //	return mandelbulb(pos);
@@ -358,7 +358,7 @@ bool DRenderDistance::GetCollisionPoint(const DRayContext& rRayContext, DVector3
 	
 	for (int steps=0; steps < mDEIterations; steps++)
 	{
-		minimumDistance = (out_Point-rRayContext.m_CameraPos).Magnitude() / 1024;
+//		minimumDistance = (out_Point-rRayContext.m_CameraPos).Magnitude() / 1024;
 
 		float distance = DistanceEstimator(out_Point);
 
@@ -418,7 +418,7 @@ bool DRenderDistance::GetBackfaceCollisionPoint(const DRayContext& rRayContext, 
 
 	for (int steps=0; steps < mDEIterations; steps++)
 	{
-		minimumDistance = (out_Point-rRayContext.m_CameraPos).Magnitude() / 1024;
+//		minimumDistance = (out_Point-rRayContext.m_CameraPos).Magnitude() / 1024;
 
 		float distance = DistanceEstimator(out_Point);
 
@@ -467,6 +467,14 @@ bool DRenderDistance::GetBackfaceCollisionPoint(const DRayContext& rRayContext, 
 	return false;
 }
 
+
+bool DRenderDistance::InternalContains(const DVector3& position) const
+{
+	if (DistanceEstimator(position)<mMinimumDistance)
+		return true;
+	return false;
+}
+
 bool DRenderDistance::InternalIntersect(const DRayContext& rRayContext, DCollisionResponse& out_Response) const
 {
 	// parse failed
@@ -494,7 +502,7 @@ bool DRenderDistance::InternalIntersect(const DRayContext& rRayContext, DCollisi
 		if (!GetCollisionPoint(rRayContext, p, start, end, direction))
 			return false;
 
-		float minimumDistance = (p-rRayContext.m_CameraPos).Magnitude() / 1024;
+		float minimumDistance = mMinimumDistance;//(p-rRayContext.m_CameraPos).Magnitude() / 1024;
 		col = DEColour(p);
 		normal = GetNormal(p, direction, minimumDistance);
 		Nudge(p, normal, minimumDistance);
@@ -502,7 +510,7 @@ bool DRenderDistance::InternalIntersect(const DRayContext& rRayContext, DCollisi
 	else
 	{
 		// BACKFACE FTW
-		float minimumDistance = (start-rRayContext.m_CameraPos).Magnitude() / 1024;
+		float minimumDistance = mMinimumDistance;//(start-rRayContext.m_CameraPos).Magnitude() / 1024;
 		DVector3 newStart = start;
 		normal = GetNormal(start, direction, minimumDistance);
 		DeNudge(newStart, normal, minimumDistance);
@@ -511,7 +519,7 @@ bool DRenderDistance::InternalIntersect(const DRayContext& rRayContext, DCollisi
 		if (!GetBackfaceCollisionPoint(rRayContext, p, newStart, end, direction))
 			return false;
 
-		minimumDistance = (p-rRayContext.m_CameraPos).Magnitude() / 1024;
+		minimumDistance = mMinimumDistance;//(p-rRayContext.m_CameraPos).Magnitude() / 1024;
 		col = DEColour(p);
 		normal = GetNormal(p, direction, minimumDistance);
 		Nudge(p, normal, minimumDistance);
